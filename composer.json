@@ -1,8 +1,10 @@
 {
-    "name": "itineris/gf-sagepay",
+    "name": "itinerisltd/gf-sagepay",
     "license": "proprietary",
     "require": {
-        "php": "^7.2"
+        "php": "^7.2",
+        "omnipay/sagepay": "^2.5",
+        "ramsey/uuid": "^3.7"
     },
     "require-dev": {
         "neronmoon/scriptsdev": "^0.1.2",
@@ -34,7 +36,6 @@
         "exclude": [
             "/*",
             ".*",
-            "!/languages",
             "!/src",
             "!/vendor",
             "!/LICENSE",
