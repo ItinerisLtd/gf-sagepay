@@ -9,7 +9,6 @@ use GFAPI;
 use GFPaymentAddOn;
 use Omnipay\Common\CreditCard;
 use Omnipay\Omnipay;
-use Omnipay\SagePay\Message\AbstractRequest;
 use Omnipay\SagePay\Message\ServerAuthorizeResponse;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
 use Omnipay\SagePay\Message\ServerNotifyResponse;
