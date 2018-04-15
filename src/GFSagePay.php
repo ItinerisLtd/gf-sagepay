@@ -13,7 +13,7 @@ class GFSagePay
 
     public function run(): void
     {
-        // TODO: Check `\GFForms` is loaded
+        // TODO: Check `\GFForms` is loaded.
         GFForms::include_payment_addon_framework();
         GFAddOn::register(AddOn::class);
     }
