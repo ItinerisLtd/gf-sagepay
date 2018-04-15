@@ -24,7 +24,7 @@ use Ramsey\Uuid\Uuid;
 class AddOn extends GFPaymentAddOn
 {
     protected $_version = GFSagePay::VERSION;
-    protected $_min_gravityforms_version = '2.2.6.5';
+    protected $_min_gravityforms_version = MinimumRequirements::GRAVITY_FORMS_VERSION;
     protected $_slug = 'gf-sagepay';
     protected $_path = 'gf-sagepay/src/AddOn.php';
     protected $_full_path = __FILE__;
