@@ -4,7 +4,7 @@ Gravity forms add-on for SagePay.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
 
 - [Minimum Requirements](#minimum-requirements)
 - [Installation](#installation)
@@ -101,7 +101,7 @@ Although these features are not supported by this plugin, but you might able to 
 
 ### HTTPS Everywhere
 
-Although SagePay accepts insure HTTP sites, you should **always use HTTPS** to protect all communication.
+Although SagePay accepts insecure HTTP sites, you should **always use HTTPS** to protect all communication.
 
 ### Payment Status
 
@@ -163,4 +163,4 @@ There are 3 different transaction references for a single payment.
 ### Code Style
 
 Check your code style with `$ composer check-style`. It's a mix of PSR-1, PSR-2, PSR-4 and [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards).
-Change [rulesets.xml](./rulesets.xml) when necessary.
+Change [ruleset.xml](./ruleset.xml) when necessary.
