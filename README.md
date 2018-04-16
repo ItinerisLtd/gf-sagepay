@@ -121,6 +121,9 @@ If you can't whitelist test server IPs, use `protxross` as `Vendor Code`.
 
 Use [ngrok](https://ngrok.com/) to make local notification URLs publicly accessible.
 
+
+Use one of the [test credit cards](https://www.sagepay.co.uk/support/12/36/test-card-details-for-your-test-transactions).
+
 ## Known Issues
 
 ### Package `guzzle/guzzle` is abandoned
@@ -151,14 +154,6 @@ Read the followings before developing:
 ### Gravity Forms
 
 Gravity Forms has undocumented hidden magics, read its source code.
-
-### Transaction References
-
-There are 3 different transaction references for a single payment.
-
-```bash
-# TODO: Add code examples!
-```
 
 ### Code Style
 
