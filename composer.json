@@ -1,5 +1,6 @@
 {
     "name": "itinerisltd/gf-sagepay",
+    "type": "wordpress-plugin",
     "license": "proprietary",
     "require": {
         "php": "^7.2",
