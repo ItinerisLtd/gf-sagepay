@@ -74,6 +74,6 @@ class AddOn extends GFPaymentAddOn
 
     public function callback()
     {
-        NotificationHandler::run($this);
+        CallbackHandler::run($this);
     }
 }

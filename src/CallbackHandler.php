@@ -8,7 +8,7 @@ use GFPaymentAddOn;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
 use Omnipay\SagePay\Message\ServerNotifyResponse;
 
-class NotificationHandler
+class CallbackHandler
 {
     public static function run(GFPaymentAddOn $addOn): void
     {
