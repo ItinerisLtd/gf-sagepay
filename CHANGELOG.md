@@ -1,5 +1,20 @@
 # Change Log
 
+## [0.2.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.2.0) (2018-04-17)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.1.1...0.2.0)
+
+**Merged pull requests:**
+
+- Add gift aid support [\#14](https://github.com/ItinerisLtd/gf-sagepay/pull/14) ([TangRufus](https://github.com/TangRufus))
+
+## [0.1.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.1.1) (2018-04-16)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.1.0...0.1.1)
+
+**Merged pull requests:**
+
+- Version bump 0.1.1 [\#11](https://github.com/ItinerisLtd/gf-sagepay/pull/11) ([TangRufus](https://github.com/TangRufus))
+- Composer: Add type `wordpress-plugin` [\#10](https://github.com/ItinerisLtd/gf-sagepay/pull/10) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.1.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.1.0) (2018-04-16)
 **Merged pull requests:**
 
