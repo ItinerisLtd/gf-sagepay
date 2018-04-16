@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace Itineris\SagePay;
 
-use GF_Fields;
 use GFAPI;
 use GFPaymentAddOn;
-use Omnipay\Common\CreditCard;
 use Omnipay\Omnipay;
-use Omnipay\SagePay\Message\ServerAuthorizeResponse;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
 use Omnipay\SagePay\Message\ServerNotifyResponse;
-use Omnipay\SagePay\Message\ServerPurchaseRequest;
 use Omnipay\SagePay\ServerGateway;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Avoid adding code in this class!
@@ -23,6 +18,10 @@ use Ramsey\Uuid\Uuid;
  */
 class AddOn extends GFPaymentAddOn
 {
+    /**
+     * @var self|null $_instance If available, contains an instance of this class.
+     */
+    private static $_instance = null;
     protected $_version = GFSagePay::VERSION;
     protected $_min_gravityforms_version = MinimumRequirements::GRAVITY_FORMS_VERSION;
     protected $_slug = 'gf-sagepay';
@@ -32,11 +31,6 @@ class AddOn extends GFPaymentAddOn
     protected $_short_title = 'GF SagePay';
     protected $_url = 'https://github.com/ItinerisLtd/gf-sagepay';
     protected $_supports_callbacks = true;
-
-    /**
-     * @var self|null $_instance If available, contains an instance of this class.
-     */
-    private static $_instance = null;
 
     /**
      * Returns an instance of this class, and stores it in the $_instance property.
@@ -213,86 +207,11 @@ class AddOn extends GFPaymentAddOn
      */
     public function redirect_url($feed, $submission_data, $form, $entry): string
     {
-        // See: https://docs.gravityforms.com/entry-object/#pricing-properties
-        GFAPI::update_entry_property($entry['id'], 'currency', rgar($entry, 'currency'));
-        GFAPI::update_entry_property($entry['id'], 'payment_status', 'Processing');
-        GFAPI::update_entry_property($entry['id'], 'is_fulfilled', 0);
-
-        // Create a unique transaction ID to track this transaction.
-        $uuid4 = Uuid::uuid4();
-        $transactionUuid = $uuid4->toString();
-        gform_update_meta($entry['id'], 'transaction_uuid', $transactionUuid);
-
-        GFAPI::update_entry_property($entry['id'], 'payment_amount', rgar($submission_data, 'payment_amount'));
-
-        /** @var ServerGateway $gateway */
-        $gateway = Omnipay::create('SagePay\Server');
-
-        $gateway->setVendor($feed['meta']['vendor']);
-        $gateway->setTestMode($feed['meta']['isTest']);
-
-        $billingCountry = GF_Fields::get('address')->get_country_code(rgar($entry,
-            $feed['meta']['billingInformation_country']));
-        $billingState = GF_Fields::get('address')->get_us_state_code(rgar($entry,
-            $feed['meta']['billingInformation_state']));
-        $shippingCountry = GF_Fields::get('address')->get_country_code(rgar($entry,
-            $feed['meta']['shippingInformation_country']));
-        $shippingState = GF_Fields::get('address')->get_us_state_code(rgar($entry,
-            $feed['meta']['shippingInformation_state']));
-
-        $creditCard = new CreditCard(
-            array_filter([
-                'firstName' => rgar($entry, $feed['meta']['customerInformation_firstName']),
-                'lastName' => rgar($entry, $feed['meta']['customerInformation_lastName']),
-                'email' => rgar($entry, $feed['meta']['customerInformation_email']),
-                'billingPhone' => rgar($entry, $feed['meta']['customerInformation_phone']),
-
-                'billingAddress1' => rgar($entry, $feed['meta']['billingInformation_address']),
-                'billingAddress2' => rgar($entry, $feed['meta']['billingInformation_address2']),
-                'billingCity' => rgar($entry, $feed['meta']['billingInformation_city']),
-                'billingPostcode' => rgar($entry, $feed['meta']['billingInformation_zip']),
-                'billingCountry' => $billingCountry,
-                'billingState' => $billingState,
-
-                'shippingAddress1' => rgar($entry, $feed['meta']['shippingInformation_address']),
-                'shippingAddress2' => rgar($entry, $feed['meta']['shippingInformation_address2']),
-                'shippingCity' => rgar($entry, $feed['meta']['shippingInformation_city']),
-                'shippingPostcode' => rgar($entry, $feed['meta']['shippingInformation_zip']),
-                'shippingCountry' => $shippingCountry,
-                'shippingState' => $shippingState,
-            ]));
-
-        /** @var ServerPurchaseRequest $request */
-        $request = $gateway->purchase([
-            'amount' => rgar($submission_data, 'payment_amount'),
-            'currency' => rgar($entry, 'currency'),
-            'card' => $creditCard,
-            'notifyUrl' => home_url('/?callback=' . $this->_slug . '&entry_id=' . $entry['id']),
-            'transactionId' => $transactionUuid,
-            'description' => $feed['meta']['description'],
-        ]);
-
-        $request->setApply3DSecure($feed['meta']['3dSecure']);
-        $request->setApplyAVSCV2($feed['meta']['avscv2']);
-
-        /** @var ServerAuthorizeResponse $response */
-        $response = $request->send();
-
-        // Note that at this point `transactionReference` is not yet complete for the Server transaction,
-        // but must be saved in the database for the notification handler to use.
-        GFAPI::update_entry_property($entry['id'], 'transaction_id', $response->getTransactionReference());
-
-        if (! $response->isRedirect()) {
-            // TODO: Stop the form!
-            GFAPI::update_entry_property($entry['id'], 'payment_status', 'Failed');
-            $this->add_feed_error(__METHOD__ . '(): Unable to forward user onto SagePay - ' . $response->getMessage(),
-                $feed, $entry, $form);
-
-            return '';
-        }
-
-        $this->log_debug(__METHOD__ . "(): Forward user onto SagePay's checkout form.");
-
-        return $response->getRedirectUrl();
+        return RedirectUrlFactory::build(
+            $this,
+            new Feed($feed),
+            new Entry($entry),
+            (float) rgar($submission_data, 'payment_amount')
+        );
     }
 }
