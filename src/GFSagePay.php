@@ -9,7 +9,7 @@ use GFForms;
 
 class GFSagePay
 {
-    public const VERSION = '0.0.1';
+    public const VERSION = '0.1.0';
 
     public function run(): void
     {
