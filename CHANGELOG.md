@@ -1,8 +1,9 @@
 # Change Log
 
-## [0.1.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.1.0) (2018-04-17)
+## [0.1.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.1.0) (2018-04-16)
 **Merged pull requests:**
 
+- Version bump 0.1.0 [\#9](https://github.com/ItinerisLtd/gf-sagepay/pull/9) ([TangRufus](https://github.com/TangRufus))
 - Apply coding style [\#8](https://github.com/ItinerisLtd/gf-sagepay/pull/8) ([TangRufus](https://github.com/TangRufus))
 - Bug fixes [\#7](https://github.com/ItinerisLtd/gf-sagepay/pull/7) ([TangRufus](https://github.com/TangRufus))
 - Add notification support [\#6](https://github.com/ItinerisLtd/gf-sagepay/pull/6) ([TangRufus](https://github.com/TangRufus))
