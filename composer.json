@@ -2,9 +2,15 @@
     "name": "itinerisltd/gf-sagepay",
     "type": "wordpress-plugin",
     "license": "proprietary",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/tangrufus/omnipay-sagepay.git"
+        }
+    ],
     "require": {
         "php": "^7.2",
-        "omnipay/sagepay": "^2.5",
+        "omnipay/sagepay": "dev-server-gift-aid",
         "ramsey/uuid": "^3.7"
     },
     "require-dev": {

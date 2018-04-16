@@ -53,4 +53,9 @@ class Feed
     {
         return (string) $this->getMeta('vendor');
     }
+
+    public function isAllowGiftAid(): bool
+    {
+        return 'donation' === $this->getMeta('transactionType');
+    }
 }

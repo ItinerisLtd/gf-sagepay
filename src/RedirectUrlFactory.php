@@ -28,10 +28,10 @@ class RedirectUrlFactory
             'notifyUrl' => home_url('/?callback=' . $addOn->get_slug() . '&entry=' . $entry->getId()),
             'transactionId' => $entry->getProperty('transaction_id'),
             'description' => $feed->getMeta('description'),
+            'apply3DSecure' => $feed->getMeta('3dSecure'),
+            'applyAVSCV2' => $feed->getMeta('avscv2'),
+            'allowGiftAid' => $feed->isAllowGiftAid(),
         ]);
-
-        $request->setApply3DSecure($feed->getMeta('3dSecure'));
-        $request->setApplyAVSCV2($feed->getMeta('avscv2'));
 
         /* @var ServerAuthorizeResponse $response */ // phpcs:ignore
         $response = $request->send();
