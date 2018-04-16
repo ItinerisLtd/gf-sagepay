@@ -3,7 +3,7 @@
  * Plugin Name:     GF SagePay
  * Plugin URI:      https://www.itineris.co.uk/
  * Description:     SagePay payment gateway for Gravity Forms
- * Version:         0.1.0
+ * Version:         0.1.1
  * Author:          Itineris Limited
  * Author URI:      https://www.itineris.co.uk/
  * Text Domain:     gf-sagepay
