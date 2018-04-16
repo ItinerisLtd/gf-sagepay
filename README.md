@@ -18,11 +18,12 @@ Gravity forms add-on for SagePay.
   - [Fraud Protection](#fraud-protection)
 - [Test Sandbox](#test-sandbox)
 - [Known Issues](#known-issues)
-  - [Package `guzzle/guzzle` is abandoned](#package-guzzleguzzle-is-abandoned)
+  - [Package `guzzle/guzzle` is Abandoned](#package-guzzleguzzle-is-abandoned)
+  - [Missing Gift Aid Acceptance Box](#missing-gift-aid-acceptance-box)
+  - [Gravity Forms Confirmation don't Work](#gravity-forms-confirmation-dont-work)
 - [Coding](#coding)
   - [Required Reading List](#required-reading-list)
   - [Gravity Forms](#gravity-forms)
-  - [Transaction References](#transaction-references)
   - [Code Style](#code-style)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -77,10 +78,12 @@ The unzipped directory name must be `gf-sagepay`, for example: `wp-content/plugi
 ## Features
 
 - [SagePay Server](https://www.sagepay.co.uk/support/15/36/sage-pay-server-understanding-the-process)
+- [Gift Aid](https://www.sagepay.co.uk/support/12/36/gift-aid)
 - [3D Secure](https://www.sagepay.co.uk/support/12/36/3d-secure-explained)
 - [AVS/CV2](https://www.sagepay.co.uk/support/28/36/activating-adding-avs/cv2-rules)
 - [Gravity Forms Logging](https://docs.gravityforms.com/logging-and-debugging/)
 - [Gravity Forms Notification Events](https://docs.gravityforms.com/gravity-forms-notification-events/)
+- [Gravity Forms Conditional Logic](https://docs.gravityforms.com/enable-conditional-logic/)
 
 ## Not Supported / Not Implemented
 
@@ -126,7 +129,7 @@ Use one of the [test credit cards](https://www.sagepay.co.uk/support/12/36/test-
 
 ## Known Issues
 
-### Package `guzzle/guzzle` is abandoned
+### Package `guzzle/guzzle` is Abandoned
 
 ```bash
 $ composer install
@@ -136,6 +139,16 @@ Package guzzle/guzzle is abandoned, you should avoid using it. Use guzzlehttp/gu
 
 This warning is safe to ignore.
 [thephpleague/omnipay-common](https://github.com/thephpleague/omnipay-common) has fixed this issue, wait for the next stable release.
+
+### Missing Gift Aid Acceptance Box
+
+Only registered charities can use [Gift Aid](https://www.sagepay.co.uk/support/12/36/gift-aid) through the Sage Pay platform.
+The gift aid acceptance box only appears if your vendor account is Gift Aid enabled.
+
+### Gravity Forms Confirmation don't Work
+
+`Next URL` replaces [Gravity Forms Confirmation](https://docs.gravityforms.com/confirmation/).
+Think it is a redirect-type confirmation. See: [#12](https://github.com/ItinerisLtd/gf-sagepay/issues/12)
 
 ## Coding
 

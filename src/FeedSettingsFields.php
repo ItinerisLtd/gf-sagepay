@@ -36,6 +36,10 @@ class FeedSettingsFields
                                 'label' => esc_html__('Products and Services', 'gf-sagepay'),
                                 'value' => 'product',
                             ],
+                            [
+                                'label' => esc_html__('Donation', 'gf-sagepay'),
+                                'value' => 'donation',
+                            ],
                         ],
                         'tooltip' => '<h6>' . esc_html__('Transaction Type', 'gf-sagepay') . '</h6>' . esc_html__('Select a transaction type.', 'gf-sagepay'),
                     ],

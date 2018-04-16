@@ -43,4 +43,19 @@ class Feed
     {
         return (bool) rgar($this->data, 'is_active');
     }
+
+    public function isTest(): bool
+    {
+        return (bool) $this->getMeta('isTest', true);
+    }
+
+    public function getVendor(): string
+    {
+        return (string) $this->getMeta('vendor');
+    }
+
+    public function isAllowGiftAid(): bool
+    {
+        return 'donation' === $this->getMeta('transactionType');
+    }
 }
