@@ -51,6 +51,15 @@ class AddOn extends GFPaymentAddOn
         return FeedSettingsFields::toArray($this);
     }
 
+    public function supported_notification_events($form): array
+    {
+        if (! $this->has_feed($form['id'])) {
+            return [];
+        }
+
+        return SupportedNotificationEvents::toArray();
+    }
+
     /**
      * Specify a URL to SagePay.
      *
@@ -72,7 +81,7 @@ class AddOn extends GFPaymentAddOn
         );
     }
 
-    public function callback()
+    public function callback(): void
     {
         CallbackHandler::run($this);
     }
