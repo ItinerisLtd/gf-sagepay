@@ -14,9 +14,9 @@ class GatewayFactory
         /* @var ServerGateway $gateway */ // phpcs:ignore
         $gateway = Omnipay::create('SagePay\Server');
 
-        $gateway->setVendor($feed->getMeta('vendor'));
+        $gateway->setVendor($feed->getVendor());
         $gateway->setTestMode(
-            (bool) $feed->getMeta('isTest', true)
+            $feed->isTest()
         );
 
         return $gateway;
