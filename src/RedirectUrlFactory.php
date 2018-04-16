@@ -22,11 +22,11 @@ class RedirectUrlFactory
 
         /* @var ServerPurchaseRequest $request SagePay server purchase request */
         $request = $gateway->purchase([
-            'amount' => $entry->getMeta('payment_amount'),
+            'amount' => $entry->getProperty('payment_amount'),
             'currency' => $entry->getProperty('currency'),
             'card' => CreditCardFactory::build($feed, $entry),
-            'notifyUrl' => home_url('/?callback=' . $addOn->get_slug()),
-            'transactionId' => $entry->getMeta('transaction_uuid'),
+            'notifyUrl' => home_url('/?callback=' . $addOn->get_slug() . '&entry=' . $entry->getId()),
+            'transactionId' => $entry->getProperty('transaction_id'),
             'description' => $feed->getMeta('description'),
         ]);
 
@@ -35,10 +35,12 @@ class RedirectUrlFactory
 
         /* @var ServerAuthorizeResponse $response SagePay server authorize response */
         $response = $request->send();
+        $addOn->log_debug(__METHOD__ . '():  ServerAuthorizeResponse - ' . $response->getMessage());
 
         // Note that at this point `transactionReference` is not yet complete for the Server transaction,
         // but must be saved in the database for the notification handler to use.
-        $entry->setProperty('transaction_id', $response->getTransactionReference());
+        $entry->setMeta('transaction_reference', $response->getTransactionReference());
+        $addOn->log_debug(__METHOD__ . '(): Setting transaction reference to ' . $entry->getMeta('transaction_reference'));
 
         if (! $response->isRedirect()) {
             $note = __METHOD__ . '(): Unable to forward user onto SagePay - ' . $response->getMessage();

@@ -10,7 +10,6 @@ use GFPaymentAddOn;
 class Entry
 {
     private const NOT_FULFILLED = 0;
-    private const FULFILLED = 1;
 
     /**
      * Gravity Forms entry object array
@@ -31,10 +30,38 @@ class Entry
 
     public function makeAsProcessing(string $uuid, float $amount): void
     {
-        $this->setMeta('transaction_uuid', $uuid);
+        $this->setProperty('transaction_id', $uuid);
         $this->setProperty('payment_amount', $amount);
         $this->setProperty('payment_status', 'Processing');
         $this->setProperty('is_fulfilled', self::NOT_FULFILLED);
+
+        $this->reload();
+    }
+
+    /**
+     * Updates a single property of an entry.
+     *
+     * @param string $property The property of the Entry object to be updated.
+     * @param mixed  $value    The value to which the property should be set.
+     *
+     * @return bool Whether the entry property was updated successfully.
+     */
+    public function setProperty($property, $value): bool
+    {
+        $result = (bool) GFAPI::update_entry_property($this->getId(), $property, $value);
+        $this->reload();
+
+        return $result;
+    }
+
+    public function getId(): int
+    {
+        return (int) $this->data['id'];
+    }
+
+    private function reload(): void
+    {
+        $this->data = GFAPI::get_entry($this->getId());
     }
 
     /**
@@ -48,24 +75,8 @@ class Entry
     public function setMeta($key, $value): void
     {
         gform_update_meta($this->getId(), $key, $value);
-    }
 
-    public function getId(): int
-    {
-        return $this->data['id'];
-    }
-
-    /**
-     * Updates a single property of an entry.
-     *
-     * @param string $property The property of the Entry object to be updated.
-     * @param mixed  $value    The value to which the property should be set.
-     *
-     * @return bool Whether the entry property was updated successfully.
-     */
-    public function setProperty($property, $value): bool
-    {
-        return GFAPI::update_entry_property($this->getId(), $property, $value);
+        $this->reload();
     }
 
     public function markAsPaid(GFPaymentAddOn $addOn, ?string $note = null): void
@@ -82,6 +93,8 @@ class Entry
                 'note' => $note,
             ]
         );
+
+        $this->reload();
     }
 
     public function toArray(): array
@@ -119,6 +132,8 @@ class Entry
                 'note' => $note,
             ]
         );
+
+        $this->reload();
     }
 
     public function markAsFailed(GFPaymentAddOn $addOn, ?string $note = null): void
@@ -135,21 +150,12 @@ class Entry
                 'note' => $note,
             ]
         );
+
+        $this->reload();
     }
 
-    /**
-     * Get a specific property of an array without needing to check if that property exists.
-     *
-     * Provide a default value if you want to return a specific value if the property is not set.
-     *
-     * @param string $prop    Name of the property to be retrieved.
-     * @param string $default Optional. Value that should be returned if the property is not set or empty. Defaults to
-     *                        null.
-     *
-     * @return null|string|mixed The value
-     */
-    public function getMeta(string $prop, $default = null)
+    public function getMeta(string $key)
     {
-        return rgars($this->data, 'meta/' . $prop, $default);
+        return gform_get_meta($this->getId(), $key);
     }
 }
