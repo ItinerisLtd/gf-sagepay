@@ -11,8 +11,7 @@ class GatewayFactory
 {
     public static function buildFromFeed(Feed $feed): ServerGateway
     {
-        /* @var ServerGateway $gateway OmniPay gateway object for SagePay server integration */
-        $gateway = Omnipay::create('SagePay\Server');
+        $gateway = self::create();
 
         $gateway->setVendor(
             (string) $feed->getMeta('vendor')
@@ -22,5 +21,10 @@ class GatewayFactory
         );
 
         return $gateway;
+    }
+
+    public static function create(): ServerGateway
+    {
+        return Omnipay::create('SagePay\Server');
     }
 }
