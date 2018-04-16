@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Itineris\SagePay;
 
+use GFAPI;
 use GFPaymentAddOn;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
 use Omnipay\SagePay\Message\ServerNotifyResponse;
@@ -12,25 +13,26 @@ class CallbackHandler
 {
     public static function run(GFPaymentAddOn $addOn): void
     {
-        $temporaryGateway = GatewayFactory::create();
-        /* @var ServerNotifyRequest $temporaryRequest Temporary until we find out the vendor code and environment */
-        $temporaryRequest = $temporaryGateway->acceptNotification();
+        $entryId = rgget('entry');
+        $addOn->log_debug(__METHOD__ . '(): Looking for entry #' . $entryId);
+        $rawEntry = GFAPI::get_entry($entryId);
 
-        $rawEntry = $addOn->get_entry_by_transaction_id(
-            $temporaryRequest->getTransactionId()
-        );
         if (empty($rawEntry)) {
-            wp_die('Unable to find entry, vendor code or environment', 'Bad Request', 400);
+            $addOn->log_error(__METHOD__ . '(): Unable to find entry');
+            wp_die('Unable to find entry', 'Bad Request', 400);
         }
         $entry = new Entry($rawEntry);
 
-        $rawFeed = $addOn->get_payment_feed($entry);
+        $rawFeed = $addOn->get_payment_feed($entry->toArray());
         if (empty($rawFeed)) {
-            wp_die('Unable to find entry, vendor code or environment', 'Bad Request', 400);
+            $addOn->log_error(__METHOD__ . '(): Unable to find vendor code or environment');
+            wp_die('Unable to find vendor code or environment', 'Bad Request', 400);
         }
         $feed = new Feed($rawFeed);
 
         $gateway = GatewayFactory::buildFromFeed($feed);
+
+        $addOn->log_debug(__METHOD__ . '(): Before accepting notification');
 
         /* @var ServerNotifyRequest $request */
         $request = $gateway->acceptNotification();
@@ -40,7 +42,7 @@ class CallbackHandler
         $addOn->log_debug(__METHOD__ . '(): Data - ' . wp_json_encode($request->getData()));
 
         $request->setTransactionReference(
-            $entry->getProperty('transaction_id')
+            $entry->getMeta('transaction_reference')
         );
 
         // Get the response message ready for returning.
