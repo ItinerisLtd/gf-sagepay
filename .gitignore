@@ -2,6 +2,7 @@
 /release/
 
 ### Composer ###
+/composer.lock
 /vendor/
 
 ### PhpStorm ###
