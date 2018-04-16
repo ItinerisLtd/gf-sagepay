@@ -5,7 +5,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/tangrufus/omnipay-sagepay.git"
+            "url": "https://github.com/tangrufus/omnipay-sagepay"
         }
     ],
     "require": {

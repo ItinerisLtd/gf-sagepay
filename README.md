@@ -46,12 +46,17 @@ Gravity forms add-on for SagePay.
     {
       "type": "vcs",
       "url": "git@github.com:ItinerisLtd/gf-sagepay.git"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/tangrufus/omnipay-sagepay.git"
     }
   ]
 }
 ```
 
 ```bash
+$ composer require omnipay/sagepay:dev-server-gift-aid
 $ composer require itinerisltd/gf-sagepay
 ```
 
