@@ -29,53 +29,12 @@ class Entry
         $this->data = $data;
     }
 
-    /**
-     * Get a specific property of an array without needing to check if that property exists.
-     *
-     * Provide a default value if you want to return a specific value if the property is not set.
-     *
-     * @param string $prop    Name of the property to be retrieved.
-     * @param string $default Optional. Value that should be returned if the property is not set or empty. Defaults to
-     *                        null.
-     *
-     * @return null|string|mixed The value
-     */
-    public function getProperty(string $prop, $default = null)
-    {
-        return rgar($this->data, $prop, $default);
-    }
-
     public function makeAsProcessing(string $uuid, float $amount): void
     {
         $this->setMeta('transaction_uuid', $uuid);
         $this->setProperty('payment_amount', $amount);
         $this->setProperty('payment_status', 'Processing');
         $this->setProperty('is_fulfilled', self::NOT_FULFILLED);
-    }
-
-    public function markAsFailed(GFPaymentAddOn $addOn, string $note): void
-    {
-        $this->setProperty('payment_status', 'Failed');
-
-        $addOn->add_note(
-            $this->getId(),
-            $note
-        );
-
-        $addOn->log_error($note);
-
-        $addOn->post_payment_action(
-            $this->toArray(),
-            [
-                'type' => 'fail_payment',
-                'amount' => $this->getProperty('payment_amount'),
-                'transaction_type' => $this->getProperty('transaction_type'),
-                'transaction_id' => $this->getProperty('transaction_id'),
-                'entry_id' => $this->getId(),
-                'payment_status' => $this->getProperty('payment_status'),
-                'note' => $note,
-            ]
-        );
     }
 
     /**
@@ -109,6 +68,75 @@ class Entry
         return GFAPI::update_entry_property($this->getId(), $property, $value);
     }
 
+    public function markAsPaid(GFPaymentAddOn $addOn, ?string $note = null): void
+    {
+        $asArray = $this->toArray();
+
+        $addOn->complete_payment(
+            $asArray,
+            [
+                'type' => 'complete_payment',
+                'amount' => $this->getProperty('payment_amount'),
+                'transaction_id' => $this->getProperty('transaction_id'),
+                'entry_id' => $this->getId(),
+                'note' => $note,
+            ]
+        );
+    }
+
+    public function toArray(): array
+    {
+        return $this->data;
+    }
+
+    /**
+     * Get a specific property of an array without needing to check if that property exists.
+     *
+     * Provide a default value if you want to return a specific value if the property is not set.
+     *
+     * @param string $prop    Name of the property to be retrieved.
+     * @param string $default Optional. Value that should be returned if the property is not set or empty. Defaults to
+     *                        null.
+     *
+     * @return null|string|mixed The value
+     */
+    public function getProperty(string $prop, $default = null)
+    {
+        return rgar($this->data, $prop, $default);
+    }
+
+    public function markAsPending(GFPaymentAddOn $addOn, ?string $note = null): void
+    {
+        $asArray = $this->toArray();
+
+        $addOn->add_pending_payment(
+            $asArray,
+            [
+                'type' => 'add_pending_payment',
+                'amount' => $this->getProperty('payment_amount'),
+                'transaction_id' => $this->getProperty('transaction_id'),
+                'entry_id' => $this->getId(),
+                'note' => $note,
+            ]
+        );
+    }
+
+    public function markAsFailed(GFPaymentAddOn $addOn, ?string $note = null): void
+    {
+        $asArray = $this->toArray();
+
+        $addOn->fail_payment(
+            $asArray,
+            [
+                'type' => 'fail_payment',
+                'amount' => $this->getProperty('payment_amount'),
+                'transaction_id' => $this->getProperty('transaction_id'),
+                'entry_id' => $this->getId(),
+                'note' => $note,
+            ]
+        );
+    }
+
     /**
      * Get a specific property of an array without needing to check if that property exists.
      *
@@ -122,11 +150,6 @@ class Entry
      */
     public function getMeta(string $prop, $default = null)
     {
-        return rgar($this->data, $prop, $default);
-    }
-
-    public function toArray(): array
-    {
-        return $this->data;
+        return rgars($this->data, 'meta/' . $prop, $default);
     }
 }

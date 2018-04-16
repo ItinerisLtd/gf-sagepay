@@ -36,6 +36,11 @@ class Feed
      */
     public function getMeta(string $prop, $default = null)
     {
-        return rgar($this->data, $prop, $default);
+        return rgars($this->data, 'meta/' . $prop, $default);
+    }
+
+    public function isActive(): bool
+    {
+        return (bool) rgar($this->data, 'is_active');
     }
 }
