@@ -18,7 +18,7 @@ class RedirectUrlFactory
             $amount
         );
 
-        $gateway = GatewayFactory::build($feed);
+        $gateway = GatewayFactory::buildFromFeed($feed);
 
         /* @var ServerPurchaseRequest $request SagePay server purchase request */
         $request = $gateway->purchase([

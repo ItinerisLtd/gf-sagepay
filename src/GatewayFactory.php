@@ -9,7 +9,7 @@ use Omnipay\SagePay\ServerGateway;
 
 class GatewayFactory
 {
-    public static function build(Feed $feed): ServerGateway
+    public static function buildFromFeed(Feed $feed): ServerGateway
     {
         /* @var ServerGateway $gateway OmniPay gateway object for SagePay server integration */
         $gateway = Omnipay::create('SagePay\Server');
