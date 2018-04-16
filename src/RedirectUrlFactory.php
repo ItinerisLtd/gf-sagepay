@@ -42,7 +42,7 @@ class RedirectUrlFactory
 
         if (! $response->isRedirect()) {
             $note = __METHOD__ . '(): Unable to forward user onto SagePay - ' . $response->getMessage();
-            self::markEntryAsFailed($addOn, $entry, $note);
+            $entry->markAsFailed($addOn, $note);
 
             return '';
         }
@@ -50,30 +50,5 @@ class RedirectUrlFactory
         $addOn->log_debug(__METHOD__ . '(): Forward user onto SagePay checkout form.');
 
         return $response->getRedirectUrl();
-    }
-
-    private static function markEntryAsFailed(GFPaymentAddOn $addOn, Entry $entry, string $note): void
-    {
-        $entry->setProperty('payment_status', 'Failed');
-
-        $addOn->add_note(
-            $entry->getId(),
-            $note
-        );
-
-        $addOn->log_error($note);
-
-        $addOn->post_payment_action(
-            $entry->toArray(),
-            [
-                'type' => 'fail_payment',
-                'amount' => $entry->getProperty('payment_amount'),
-                'transaction_type' => $entry->getProperty('transaction_type'),
-                'transaction_id' => $entry->getProperty('transaction_id'),
-                'entry_id' => $entry->getId(),
-                'payment_status' => $entry->getProperty('payment_status'),
-                'note' => $note,
-            ]
-        );
     }
 }

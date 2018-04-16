@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Itineris\SagePay;
 
 use GFAPI;
+use GFPaymentAddOn;
 
 class Entry
 {
     private const NOT_FULFILLED = 0;
     private const FULFILLED = 1;
+
     /**
      * Gravity Forms entry object array
      *
@@ -43,12 +45,37 @@ class Entry
         return rgar($this->data, $prop, $default);
     }
 
-    public function makeAsProcessing(string $uuid, float $amount)
+    public function makeAsProcessing(string $uuid, float $amount): void
     {
         $this->setMeta('transaction_uuid', $uuid);
         $this->setProperty('payment_amount', $amount);
         $this->setProperty('payment_status', 'Processing');
         $this->setProperty('is_fulfilled', self::NOT_FULFILLED);
+    }
+
+    public function markAsFailed(GFPaymentAddOn $addOn, string $note): void
+    {
+        $this->setProperty('payment_status', 'Failed');
+
+        $addOn->add_note(
+            $this->getId(),
+            $note
+        );
+
+        $addOn->log_error($note);
+
+        $addOn->post_payment_action(
+            $this->toArray(),
+            [
+                'type' => 'fail_payment',
+                'amount' => $this->getProperty('payment_amount'),
+                'transaction_type' => $this->getProperty('transaction_type'),
+                'transaction_id' => $this->getProperty('transaction_id'),
+                'entry_id' => $this->getId(),
+                'payment_status' => $this->getProperty('payment_status'),
+                'note' => $note,
+            ]
+        );
     }
 
     /**
