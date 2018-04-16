@@ -20,7 +20,7 @@ class RedirectUrlFactory
 
         $gateway = GatewayFactory::buildFromFeed($feed);
 
-        /* @var ServerPurchaseRequest $request SagePay server purchase request */
+        /* @var ServerPurchaseRequest $request */ // phpcs:ignore
         $request = $gateway->purchase([
             'amount' => $entry->getProperty('payment_amount'),
             'currency' => $entry->getProperty('currency'),
@@ -33,14 +33,14 @@ class RedirectUrlFactory
         $request->setApply3DSecure($feed->getMeta('3dSecure'));
         $request->setApplyAVSCV2($feed->getMeta('avscv2'));
 
-        /* @var ServerAuthorizeResponse $response SagePay server authorize response */
+        /* @var ServerAuthorizeResponse $response */ // phpcs:ignore
         $response = $request->send();
         $addOn->log_debug(__METHOD__ . '():  ServerAuthorizeResponse - ' . $response->getMessage());
 
         // Note that at this point `transactionReference` is not yet complete for the Server transaction,
         // but must be saved in the database for the notification handler to use.
         $entry->setMeta('transaction_reference', $response->getTransactionReference());
-        $addOn->log_debug(__METHOD__ . '(): Setting transaction reference to ' . $entry->getMeta('transaction_reference'));
+        $addOn->log_debug(__METHOD__ . '(): Set transaction reference to ' . $entry->getMeta('transaction_reference'));
 
         if (! $response->isRedirect()) {
             $note = __METHOD__ . '(): Unable to forward user onto SagePay - ' . $response->getMessage();

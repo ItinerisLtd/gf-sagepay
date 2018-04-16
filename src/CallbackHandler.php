@@ -34,7 +34,7 @@ class CallbackHandler
 
         $addOn->log_debug(__METHOD__ . '(): Before accepting notification');
 
-        /* @var ServerNotifyRequest $request */
+        /* @var ServerNotifyRequest $request */ // phpcs:ignore
         $request = $gateway->acceptNotification();
 
         $addOn->log_debug(__METHOD__ . '(): Status - ' . $request->getTransactionStatus());
@@ -46,7 +46,7 @@ class CallbackHandler
         );
 
         // Get the response message ready for returning.
-        /* @var ServerNotifyResponse $response */
+        /* @var ServerNotifyResponse $response */ // phpcs:ignore
         $response = $request->send();
 
         $addOn->log_debug(__METHOD__ . '(): Status - ' . $response->getTransactionStatus());
