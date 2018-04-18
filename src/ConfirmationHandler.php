@@ -24,9 +24,9 @@ class ConfirmationHandler
     public static function maybeThankYouPage(): void
     {
         $entryId = (int) rgget('entry');
-        $hash = rgget('gf-sagepay-hash');
+        $token = rgget('gf-sagepay-token');
 
-        if (empty($entryId) || empty($hash)) {
+        if (empty($entryId) || empty($token)) {
             return;
         }
 
@@ -40,8 +40,8 @@ class ConfirmationHandler
             return;
         }
 
-        $confirmationToken = $entry->getConfirmationToken();
-        $correctHash = self::hash($confirmationToken);
+        $correctHash = $entry->getConfirmationTokenHash();
+        $hash = self::hash($token);
         if (! hash_equals($correctHash, $hash)) {
             return;
         }
@@ -84,7 +84,10 @@ class ConfirmationHandler
     public static function buildUrlFor(Entry $entry): string
     {
         $confirmationToken = GFFormsModel::get_uuid('-');
-        $entry->setConfirmationToken($confirmationToken);
+
+        $entry->setConfirmationTokenHash(
+            self::hash($confirmationToken)
+        );
 
         $entry->setConfirmationTokenExpiredAt(
             (int) apply_filters(
@@ -98,7 +101,7 @@ class ConfirmationHandler
             add_query_arg(
                 [
                     'entry' => $entry->getId(),
-                    'gf-sagepay-hash' => self::hash($confirmationToken),
+                    'gf-sagepay-token' => $confirmationToken,
                 ],
                 $entry->getProperty('source_url')
             )

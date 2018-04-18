@@ -144,9 +144,9 @@ class Entry
         return (int) rgar($this->data, 'form_id');
     }
 
-    public function getConfirmationToken(): string
+    public function getConfirmationTokenHash(): string
     {
-        return (string) $this->getMeta('gf-sagepay-confirmation-token');
+        return (string) $this->getMeta('gf_sagepay_token_hash');
     }
 
     public function getMeta(string $key)
@@ -154,9 +154,9 @@ class Entry
         return gform_get_meta($this->getId(), $key);
     }
 
-    public function setConfirmationToken($confirmationToken): void
+    public function setConfirmationTokenHash($confirmationToken): void
     {
-        $this->setMeta('gf-sagepay-confirmation-token', $confirmationToken);
+        $this->setMeta('gf_sagepay_token_hash', $confirmationToken);
     }
 
     /**
