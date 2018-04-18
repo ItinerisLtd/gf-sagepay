@@ -150,11 +150,6 @@ This warning is safe to ignore.
 Only registered charities can use [Gift Aid](https://www.sagepay.co.uk/support/12/36/gift-aid) through the Sage Pay platform.
 The gift aid acceptance box only appears if your vendor account is Gift Aid enabled.
 
-### Gravity Forms Confirmation don't Work
-
-As we need to forward users to SagePay checkout forms, only [page confirmation](https://docs.gravityforms.com/configuring-confirmations-in-gravity-forms/#page-confirmations) and [redirect confirmation](https://docs.gravityforms.com/configuring-confirmations-in-gravity-forms/#redirect-confirmation) are supported.
-See: [#12](https://github.com/ItinerisLtd/gf-sagepay/issues/12), [#20](https://github.com/ItinerisLtd/gf-sagepay/issues/20), [#22](https://github.com/ItinerisLtd/gf-sagepay/issues/22)
-
 ## Coding
 
 ### Required Reading List

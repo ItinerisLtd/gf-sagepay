@@ -64,21 +64,6 @@ class Entry
         $this->data = GFAPI::get_entry($this->getId());
     }
 
-    /**
-     * Add or update metadata associated with an entry.
-     *
-     * Data will be serialized. Don't forget to sanitize user input.
-     *
-     * @param string $key   The key for the meta data to be stored.
-     * @param mixed  $value The data to be stored for the entry.
-     */
-    public function setMeta($key, $value): void
-    {
-        gform_update_meta($this->getId(), $key, $value);
-
-        $this->reload();
-    }
-
     public function markAsPaid(GFPaymentAddOn $addOn, ?string $note = null): void
     {
         $asArray = $this->toArray();
@@ -154,8 +139,38 @@ class Entry
         $this->reload();
     }
 
+    public function getFormId(): int
+    {
+        return (int) rgar($this->data, 'form_id');
+    }
+
+    public function getConfirmationToken(): string
+    {
+        return (string) $this->getMeta('gf-sagepay-confirmation-token');
+    }
+
     public function getMeta(string $key)
     {
         return gform_get_meta($this->getId(), $key);
+    }
+
+    public function setConfirmationToken($confirmationToken): void
+    {
+        $this->setMeta('gf-sagepay-confirmation-token', $confirmationToken);
+    }
+
+    /**
+     * Add or update metadata associated with an entry.
+     *
+     * Data will be serialized. Don't forget to sanitize user input.
+     *
+     * @param string $key   The key for the meta data to be stored.
+     * @param mixed  $value The data to be stored for the entry.
+     */
+    public function setMeta($key, $value): void
+    {
+        gform_update_meta($this->getId(), $key, $value);
+
+        $this->reload();
     }
 }
