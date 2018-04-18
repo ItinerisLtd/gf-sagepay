@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Itineris\SagePay;
 
+use GFFormsModel;
 use GFPaymentAddOn;
 use Omnipay\SagePay\Message\ServerAuthorizeResponse;
 use Omnipay\SagePay\Message\ServerPurchaseRequest;
-use Ramsey\Uuid\Uuid;
 
 class RedirectUrlFactory
 {
     public static function build(GFPaymentAddOn $addOn, Feed $feed, Entry $entry, float $amount): string
     {
         $entry->makeAsProcessing(
-            Uuid::uuid4()->toString(),
+            GFFormsModel::get_uuid('-'),
             $amount
         );
 
