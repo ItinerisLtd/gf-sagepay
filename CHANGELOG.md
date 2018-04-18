@@ -1,10 +1,29 @@
 # Change Log
 
-## [0.2.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.2.0) (2018-04-17)
-[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.1.1...0.2.0)
+## [0.3.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.3.0) (2018-04-18)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.2.0...0.3.0)
+
+**Closed issues:**
+
+- \(feature\) "Next URL" needs to make use of Gravity Forms Confirmations [\#12](https://github.com/ItinerisLtd/gf-sagepay/issues/12)
 
 **Merged pull requests:**
 
+- Use Gravity Forms redirection confirmation as `nextUrl` [\#20](https://github.com/ItinerisLtd/gf-sagepay/pull/20) ([TangRufus](https://github.com/TangRufus))
+- Refactor: Make `CallbackHandler` more like `omnipay-sagepay` readme example [\#19](https://github.com/ItinerisLtd/gf-sagepay/pull/19) ([TangRufus](https://github.com/TangRufus))
+- Use `GFFormsModel::get\_uuid` instead of ramsey/uuid package [\#18](https://github.com/ItinerisLtd/gf-sagepay/pull/18) ([TangRufus](https://github.com/TangRufus))
+- Readme: Fix install instruction [\#16](https://github.com/ItinerisLtd/gf-sagepay/pull/16) ([TangRufus](https://github.com/TangRufus))
+
+## [0.2.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.2.0) (2018-04-16)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.1.1...0.2.0)
+
+**Closed issues:**
+
+- \(feature\) Gift Aid functionality [\#13](https://github.com/ItinerisLtd/gf-sagepay/issues/13)
+
+**Merged pull requests:**
+
+- Version bump 0.2.0 [\#15](https://github.com/ItinerisLtd/gf-sagepay/pull/15) ([TangRufus](https://github.com/TangRufus))
 - Add gift aid support [\#14](https://github.com/ItinerisLtd/gf-sagepay/pull/14) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.1.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.1.1) (2018-04-16)
