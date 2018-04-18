@@ -173,4 +173,14 @@ class Entry
 
         $this->reload();
     }
+
+    public function setConfirmationTokenExpiredAt(int $confirmationTokenExpiredAt): void
+    {
+        $this->setMeta('gf_sagepay_confirmation_token_expired_at', $confirmationTokenExpiredAt);
+    }
+
+    public function getConfirmationTokenExpiredAt(): int
+    {
+        return (int) $this->getMeta('gf_sagepay_confirmation_token_expired_at');
+    }
 }

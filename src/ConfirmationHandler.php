@@ -36,11 +36,13 @@ class ConfirmationHandler
         }
         $entry = new Entry($rawEntry);
 
+        if (time() > $entry->getConfirmationTokenExpiredAt()) {
+            return;
+        }
+
         $confirmationToken = $entry->getConfirmationToken();
         $correctHash = self::hash($confirmationToken);
         if (! hash_equals($correctHash, $hash)) {
-            AddOn::get_instance()->log_debug(__METHOD__ . '(): hash not equal');
-
             return;
         }
 
@@ -80,6 +82,14 @@ class ConfirmationHandler
     {
         $confirmationToken = GFFormsModel::get_uuid('-');
         $entry->setConfirmationToken($confirmationToken);
+
+        $entry->setConfirmationTokenExpiredAt(
+            (int) apply_filters(
+                'gf_sagepay_confirmation_token_expired_at',
+                time() + 3600, // One hour later.
+                $entry
+            )
+        );
 
         return esc_url_raw(
             add_query_arg(
