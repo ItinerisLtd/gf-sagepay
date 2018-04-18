@@ -55,8 +55,12 @@ class CallbackHandler
             self::invalid($response, 'Feed inactive', $entry, $feed, $addOn);
         }
 
-        if ($feed->isTest() !== (bool) rgpost('isTest')) {
+        if ($feed->isTest() !== (bool) rgget('isTest')) {
             self::invalid($response, 'Feed environment changed', $entry, $feed, $addOn);
+        }
+
+        if ($feed->getVendor() !== rgget('vendor')) {
+            self::invalid($response, 'Feed vendor code changed', $entry, $feed, $addOn);
         }
 
         // Validation passed.
@@ -80,8 +84,8 @@ class CallbackHandler
 
     private static function buildGatewayBySuperglobals(GFPaymentAddOn $addOn): ServerGateway
     {
-        $vendor = rgpost('vendor');
-        $isTest = rgpost('isTest');
+        $vendor = rgget('vendor');
+        $isTest = rgget('isTest');
 
         $addOn->log_debug(__METHOD__ . '(): Vendor - ' . $vendor . ' isTest - ' . $isTest);
 
