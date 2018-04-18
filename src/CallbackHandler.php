@@ -8,38 +8,23 @@ use GFAPI;
 use GFPaymentAddOn;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
 use Omnipay\SagePay\Message\ServerNotifyResponse;
+use Omnipay\SagePay\ServerGateway;
+use WP_Error;
 
 class CallbackHandler
 {
     public static function run(GFPaymentAddOn $addOn): void
     {
-        $entryId = rgget('entry');
-        $addOn->log_debug(__METHOD__ . '(): Looking for entry #' . $entryId);
-        $rawEntry = GFAPI::get_entry($entryId);
-
-        if (empty($rawEntry)) {
-            $addOn->log_error(__METHOD__ . '(): Unable to find entry');
-            wp_die('Unable to find entry', 'Bad Request', 400);
-        }
-        $entry = new Entry($rawEntry);
-
-        $rawFeed = $addOn->get_payment_feed($entry->toArray());
-        if (empty($rawFeed)) {
-            $addOn->log_error(__METHOD__ . '(): Unable to find vendor code or environment');
-            wp_die('Unable to find vendor code or environment', 'Bad Request', 400);
-        }
-        $feed = new Feed($rawFeed);
-
-        $gateway = GatewayFactory::buildFromFeed($feed);
+        $gateway = self::buildGatewayBySuperglobals($addOn);
 
         $addOn->log_debug(__METHOD__ . '(): Before accepting notification');
 
         /* @var ServerNotifyRequest $request */ // phpcs:ignore
         $request = $gateway->acceptNotification();
 
-        $addOn->log_debug(__METHOD__ . '(): Status - ' . $request->getTransactionStatus());
-        $addOn->log_debug(__METHOD__ . '(): Message - ' . $request->getMessage());
-        $addOn->log_debug(__METHOD__ . '(): Data - ' . wp_json_encode($request->getData()));
+        self::logDebug($request, $addOn);
+
+        $entry = self::getEntryByRequest($request, $addOn);
 
         $request->setTransactionReference(
             $entry->getMeta('transaction_reference')
@@ -49,11 +34,7 @@ class CallbackHandler
         /* @var ServerNotifyResponse $response */ // phpcs:ignore
         $response = $request->send();
 
-        $addOn->log_debug(__METHOD__ . '(): Status - ' . $response->getTransactionStatus());
-        $addOn->log_debug(__METHOD__ . '(): Message - ' . $response->getMessage());
-        $addOn->log_debug(__METHOD__ . '(): Data - ' . wp_json_encode($response->getData()));
-
-        $nextUrl = $feed->getMeta('nextUrl');
+        self::logDebug($response, $addOn);
 
         // Save the final transactionReference against the transaction in the database. It will
         // be needed if you want to capture the payment (for an authorize) or void or refund or
@@ -63,16 +44,22 @@ class CallbackHandler
             $response->getTransactionReference()
         );
 
+        $feed = self::getFeedByEntry($entry, $response, $addOn);
+
+        // Start validation.
         if (! $request->isValid()) {
-            $entry->markAsFailed($addOn, 'Signature not valid');
-            $response->invalid($nextUrl, 'Signature not valid');
+            self::invalid($response, 'Signature not valid', $entry, $feed, $addOn);
         }
 
         if (! $feed->isActive()) {
-            $entry->markAsFailed($addOn, 'Feed inactive');
-            $response->invalid($nextUrl, 'Feed inactive');
+            self::invalid($response, 'Feed inactive', $entry, $feed, $addOn);
         }
 
+        if ($feed->isTest() !== (bool) rgpost('isTest')) {
+            self::invalid($response, 'Feed environment changed', $entry, $feed, $addOn);
+        }
+
+        // Validation passed.
         switch ($request->getTransactionStatus()) {
             case $request::STATUS_COMPLETED:
                 $entry->markAsPaid($addOn);
@@ -85,6 +72,110 @@ class CallbackHandler
                 break;
         }
 
-        $response->confirm($nextUrl);
+        $addOn->log_debug(__METHOD__ . '(): Confirm!');
+        $response->confirm(
+            self::getNextUrl($feed)
+        );
+    }
+
+    private static function buildGatewayBySuperglobals(GFPaymentAddOn $addOn): ServerGateway
+    {
+        $vendor = rgpost('vendor');
+        $isTest = rgpost('isTest');
+
+        $addOn->log_debug(__METHOD__ . '(): Vendor - ' . $vendor . ' isTest - ' . $isTest);
+
+        if ('' === $vendor || '' === $isTest) {
+            $message = 'Unable to get vendor code and/or environment from superglobals';
+            $addOn->log_error(__METHOD__ . '(): ' . $message);
+            wp_die(esc_html($message), 'Bad Request', 400);
+        }
+
+        return GatewayFactory::build($vendor, (bool) $isTest);
+    }
+
+    /**
+     * Log SagePay api object via Gravity Forms logger.
+     *
+     * @param ServerNotifyRequest|ServerNotifyResponse $request SagePay api object.
+     * @param GFPaymentAddOn                           $addOn   Add-on instance.
+     */
+    private static function logDebug($request, GFPaymentAddOn $addOn): void
+    {
+        $addOn->log_debug(__METHOD__ . '(): Status - ' . $request->getTransactionStatus());
+        $addOn->log_debug(__METHOD__ . '(): Message - ' . $request->getMessage());
+        $addOn->log_debug(__METHOD__ . '(): Data - ' . wp_json_encode($request->getData()));
+    }
+
+    private static function getEntryByRequest(ServerNotifyRequest $request, GFPaymentAddOn $addOn): Entry
+    {
+        $entryId = $addOn->get_entry_by_transaction_id(
+            $request->getTransactionId()
+        );
+
+        $rawEntry = GFAPI::get_entry($entryId);
+        if (is_wp_error($rawEntry)) {
+            /* @var WP_Error $rawEntry */ // phpcs:ignore
+            $message = $rawEntry->get_error_message();
+            $addOn->log_error(__METHOD__ . '(): ' . $message);
+
+            /* @var ServerNotifyResponse $response */ // phpcs:ignore
+            $response = $request->send();
+            $response->error(
+                self::getNextUrlWithoutFeed(),
+                $message
+            );
+        }
+
+        return new Entry($rawEntry);
+    }
+
+    private static function getNextUrlWithoutFeed(): string
+    {
+        return home_url();
+    }
+
+    private static function getFeedByEntry(Entry $entry, ServerNotifyResponse $response, GFPaymentAddOn $addOn): Feed
+    {
+        $rawFeed = $addOn->get_payment_feed($entry->toArray());
+
+        if (empty($rawFeed)) {
+            $message = 'Unable to locate feed';
+
+            $addOn->log_error(__METHOD__ . '(): ' . $message);
+            $entry->markAsFailed($addOn, $message);
+            $response->error(
+                self::getNextUrlWithoutFeed(),
+                $message
+            );
+        }
+
+        return new Feed($rawFeed);
+    }
+
+    private static function invalid(
+        ServerNotifyResponse $response,
+        string $message,
+        Entry $entry,
+        Feed $feed,
+        GFPaymentAddOn $addOn
+    ): void {
+        $addOn->log_error(__METHOD__ . '(): ' . $message);
+        $entry->markAsFailed($addOn, $message);
+        $response->invalid(
+            self::getNextUrl($feed),
+            $message
+        );
+    }
+
+    private static function getNextUrl(Feed $feed): string
+    {
+        $nextUrl = $feed->getMeta('nextUrl');
+
+        if (empty($nextUrl)) {
+            return self::getNextUrlWithoutFeed();
+        }
+
+        return $nextUrl;
     }
 }
