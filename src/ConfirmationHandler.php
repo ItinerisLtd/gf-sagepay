@@ -46,6 +46,9 @@ class ConfirmationHandler
             return;
         }
 
+        // Token validation passed. Make it invalid after first use.
+        $entry->setConfirmationTokenExpiredAt(0);
+
         $form = GFAPI::get_form(
             $entry->getFormId()
         );
