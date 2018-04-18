@@ -23,6 +23,21 @@ class Feed
         $this->data = $data;
     }
 
+    public function getFormId(): int
+    {
+        return (int) rgar($this->data, 'form_id');
+    }
+
+    public function isActive(): bool
+    {
+        return (bool) rgar($this->data, 'is_active');
+    }
+
+    public function isTest(): bool
+    {
+        return (bool) $this->getMeta('isTest', true);
+    }
+
     /**
      * Get a specific property of an array without needing to check if that property exists.
      *
@@ -36,17 +51,7 @@ class Feed
      */
     public function getMeta(string $prop, $default = null)
     {
-        return rgar($this->data['meta'] ?? [], $prop, $default);
-    }
-
-    public function isActive(): bool
-    {
-        return (bool) rgar($this->data, 'is_active');
-    }
-
-    public function isTest(): bool
-    {
-        return (bool) $this->getMeta('isTest', true);
+        return rgars($this->data, 'meta/' . $prop, $default);
     }
 
     public function getVendor(): string

@@ -220,13 +220,6 @@ class FeedSettingsFields
                 'tooltip' => esc_html__('A brief description of the goods or services purchased.', 'gf-sagepay'),
             ],
             [
-                'type' => 'text',
-                'name' => 'nextUrl',
-                'label' => esc_html__('Next URL', 'gf-sagepay'),
-                'required' => true,
-                'tooltip' => esc_html__('URL which user being redirected to after entering SagePay checkout form.', 'gf-sagepay'),
-            ],
-            [
                 'name' => 'isTest',
                 'label' => esc_html__('Environment', 'gf-sagepay'),
                 'required' => true,
