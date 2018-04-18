@@ -87,7 +87,7 @@ The unzipped directory name must be `gf-sagepay`, for example: `wp-content/plugi
 - [AVS/CV2](https://www.sagepay.co.uk/support/28/36/activating-adding-avs/cv2-rules)
 - [Gravity Forms Logging](https://docs.gravityforms.com/logging-and-debugging/)
 - [Gravity Forms Notification Events](https://docs.gravityforms.com/gravity-forms-notification-events/)
-- [Gravity Forms Redirect Confirmation](https://docs.gravityforms.com/configuring-confirmations-in-gravity-forms/#redirect-confirmation)
+- [Gravity Forms Confirmation](https://docs.gravityforms.com/configuring-confirmations-in-gravity-forms/)
 - [Gravity Forms Conditional Logic](https://docs.gravityforms.com/enable-conditional-logic/)
 
 ## Not Supported / Not Implemented
@@ -152,8 +152,8 @@ The gift aid acceptance box only appears if your vendor account is Gift Aid enab
 
 ### Gravity Forms Confirmation don't Work
 
-As we need to forward users to SagePay checkout forms, only [redirect confirmation](https://docs.gravityforms.com/configuring-confirmations-in-gravity-forms/#redirect-confirmation) is supported.
-See: [#12](https://github.com/ItinerisLtd/gf-sagepay/issues/12), [#20](https://github.com/ItinerisLtd/gf-sagepay/issues/20)
+As we need to forward users to SagePay checkout forms, only [page confirmation](https://docs.gravityforms.com/configuring-confirmations-in-gravity-forms/#page-confirmations) and [redirect confirmation](https://docs.gravityforms.com/configuring-confirmations-in-gravity-forms/#redirect-confirmation) are supported.
+See: [#12](https://github.com/ItinerisLtd/gf-sagepay/issues/12), [#20](https://github.com/ItinerisLtd/gf-sagepay/issues/20), [#22](https://github.com/ItinerisLtd/gf-sagepay/issues/22)
 
 ## Coding
 
