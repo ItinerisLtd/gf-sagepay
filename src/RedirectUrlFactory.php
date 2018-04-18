@@ -56,13 +56,28 @@ class RedirectUrlFactory
 
     private static function getNotifyUrl(GFPaymentAddOn $addOn, Feed $feed): string
     {
-        return add_query_arg(
-            [
-                'callback' => $addOn->get_slug(),
-                'vendor' => $feed->getVendor(),
-                'isTest' => $feed->isTest() ? 'true' : 'false',
-            ],
-            home_url()
+        $addOn->log_debug(__METHOD__ . '(): URL '. esc_url_raw(
+            add_query_arg(
+                [
+                    'callback' => $addOn->get_slug(),
+                    'vendor' => $feed->getVendor(),
+                    'isTest' => $feed->isTest() ? 'true' : 'false',
+                ],
+                home_url()
+            )
+        ));
+
+
+
+        return esc_url_raw(
+            add_query_arg(
+                [
+                    'callback' => $addOn->get_slug(),
+                    'vendor' => $feed->getVendor(),
+                    'isTest' => $feed->isTest() ? 'true' : 'false',
+                ],
+                home_url()
+            )
         );
     }
 }
