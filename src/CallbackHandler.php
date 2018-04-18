@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Itineris\SagePay;
 
 use GFAPI;
+use GFCommon;
+use GFFormDisplay;
 use GFPaymentAddOn;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
 use Omnipay\SagePay\Message\ServerNotifyResponse;
@@ -76,9 +78,10 @@ class CallbackHandler
                 break;
         }
 
+        $addOn->log_debug(__METHOD__ . '(): ' . self::getNextUrl($feed, $entry));
         $addOn->log_debug(__METHOD__ . '(): Confirm!');
         $response->confirm(
-            self::getNextUrl($feed)
+            self::getNextUrl($feed, $entry)
         );
     }
 
@@ -126,7 +129,7 @@ class CallbackHandler
             /* @var ServerNotifyResponse $response */ // phpcs:ignore
             $response = $request->send();
             $response->error(
-                self::getNextUrlWithoutFeed(),
+                self::getFallbackNextUrl(),
                 $message
             );
         }
@@ -134,7 +137,7 @@ class CallbackHandler
         return new Entry($rawEntry);
     }
 
-    private static function getNextUrlWithoutFeed(): string
+    private static function getFallbackNextUrl(): string
     {
         return home_url();
     }
@@ -149,7 +152,7 @@ class CallbackHandler
             $addOn->log_error(__METHOD__ . '(): ' . $message);
             $entry->markAsFailed($addOn, $message);
             $response->error(
-                self::getNextUrlWithoutFeed(),
+                self::getFallbackNextUrl(),
                 $message
             );
         }
@@ -167,17 +170,28 @@ class CallbackHandler
         $addOn->log_error(__METHOD__ . '(): ' . $message);
         $entry->markAsFailed($addOn, $message);
         $response->invalid(
-            self::getNextUrl($feed),
+            self::getNextUrl($feed, $entry),
             $message
         );
     }
 
-    private static function getNextUrl(Feed $feed): string
+    private static function getNextUrl(Feed $feed, Entry $entry): string
     {
-        $nextUrl = $feed->getMeta('nextUrl');
+        // Taken from `GFPayPal::maybe_thankyou_page`.
+        if (! class_exists('GFFormDisplay')) {
+            require_once GFCommon::get_base_path() . '/form_display.php';
+        }
+
+        $form = GFAPI::get_form(
+            $feed->getFormId()
+        );
+
+        [
+            'redirect' => $nextUrl,
+        ] = GFFormDisplay::handle_confirmation($form, $entry->toArray(), false);
 
         if (empty($nextUrl)) {
-            return self::getNextUrlWithoutFeed();
+            return self::getFallbackNextUrl();
         }
 
         return $nextUrl;
