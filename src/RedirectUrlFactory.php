@@ -25,7 +25,7 @@ class RedirectUrlFactory
             'amount' => $entry->getProperty('payment_amount'),
             'currency' => $entry->getProperty('currency'),
             'card' => CreditCardFactory::build($feed, $entry),
-            'notifyUrl' => home_url('/?callback=' . $addOn->get_slug() . '&entry=' . $entry->getId()),
+            'notifyUrl' => self::getNotifyUrl($addOn, $feed),
             'transactionId' => $entry->getProperty('transaction_id'),
             'description' => $feed->getMeta('description'),
             'apply3DSecure' => $feed->getMeta('3dSecure'),
@@ -52,5 +52,19 @@ class RedirectUrlFactory
         $addOn->log_debug(__METHOD__ . '(): Forward user onto SagePay checkout form.');
 
         return $response->getRedirectUrl();
+    }
+
+    private static function getNotifyUrl(GFPaymentAddOn $addOn, Feed $feed): string
+    {
+        return esc_url_raw(
+            add_query_arg(
+                [
+                    'callback' => $addOn->get_slug(),
+                    'vendor' => $feed->getVendor(),
+                    'isTest' => $feed->isTest() ? 'true' : 'false',
+                ],
+                home_url()
+            )
+        );
     }
 }
