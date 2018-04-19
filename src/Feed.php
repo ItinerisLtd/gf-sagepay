@@ -56,7 +56,13 @@ class Feed
 
     public function getVendor(): string
     {
-        return (string) $this->getMeta('vendor');
+        $vendor = (string) $this->getMeta('vendor');
+
+        if ('gf_custom' === $vendor) {
+            return (string) $this->getMeta('vendor_custom');
+        }
+
+        return $vendor;
     }
 
     public function isAllowGiftAid(): bool
