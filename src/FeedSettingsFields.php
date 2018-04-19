@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Itineris\SagePay;
 
-use GFPaymentAddOn;
+use GFFeedAddOn;
 use Omnipay\SagePay\Message\AbstractRequest;
 
 class FeedSettingsFields
 {
-    public static function toArray(GFPaymentAddOn $addOn): array
+    public static function toArray(GFFeedAddOn $addOn): array
     {
         return [
             [
@@ -55,7 +55,7 @@ class FeedSettingsFields
                         'donation',
                     ],
                 ],
-                'fields' => self::sagePaySettingsFields(),
+                'fields' => self::sagePaySettingsFields($addOn),
             ],
             [
                 'title' => esc_html__('Products &amp; Services Settings', 'gf-sagepay'),
@@ -203,14 +203,17 @@ class FeedSettingsFields
         ];
     }
 
-    private static function sagePaySettingsFields(): array
+    private static function sagePaySettingsFields(GFFeedAddOn $addOn): array
     {
         return [
             [
-                'type' => 'text',
+                'type' => 'select_custom',
                 'name' => 'vendor',
                 'label' => esc_html__('Vendor Code', 'gf-sagepay'),
                 'required' => true,
+                'choices' => self::getAllVendors($addOn),
+                'after_input' => esc_html__('Letters (A-Z and a-z) and Numbers(0-9)', 'gf-sagepay'),
+                'tooltip' => esc_html__('Used to authenticate your site. This should contain the Sage Pay Vendor Name supplied by Sage Pay when your account was created.', 'gf-sagepay'),
             ],
             [
                 'type' => 'text',
@@ -295,5 +298,30 @@ class FeedSettingsFields
                 ],
             ],
         ];
+    }
+
+    private static function getAllVendors(GFFeedAddOn $addOn): array
+    {
+        $rawFeeds = $addOn->get_feeds();
+
+        $feeds = array_map(function (array $rawFeed): Feed {
+            return new Feed($rawFeed);
+        }, $rawFeeds);
+
+        $allVendors = array_map(function (Feed $feed): string {
+            return $feed->getVendor();
+        }, $feeds);
+
+        $uniqueVendors = array_unique(
+            array_filter($allVendors)
+        );
+
+        $choices = array_map(function (string $vendor): array {
+            return ['label' => $vendor];
+        }, $uniqueVendors);
+
+        return array_merge([
+            ['value' => '', 'label' => 'Select a Vendor Code'],
+        ], $choices);
     }
 }
