@@ -47,7 +47,7 @@ class ConfirmationHandler
         }
 
         // Token validation passed. Make it invalid after first use.
-        $entry->setConfirmationTokenExpiredAt(0);
+        $entry->expireConfirmationTokenNow();
 
         $form = GFAPI::get_form(
             $entry->getFormId()
@@ -81,16 +81,13 @@ class ConfirmationHandler
         );
     }
 
-    public static function buildUrlFor(Entry $entry): string
+    public static function buildUrlFor(Entry $entry, int $ttlInSeconds = 3600): string
     {
         $confirmationToken = GFFormsModel::get_uuid('-');
 
         $entry->setConfirmationTokenHash(
-            self::hash($confirmationToken)
-        );
-
-        $entry->setConfirmationTokenExpiredAt(
-                time() + 3600 // One hour later.
+            self::hash($confirmationToken),
+            time() + $ttlInSeconds
         );
 
         return esc_url_raw(

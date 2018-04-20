@@ -154,9 +154,10 @@ class Entry
         return gform_get_meta($this->getId(), $key);
     }
 
-    public function setConfirmationTokenHash($confirmationToken): void
+    public function setConfirmationTokenHash(string $confirmationToken, int $expiredAt): void
     {
         $this->setMeta('gf_sagepay_token_hash', $confirmationToken);
+        $this->setMeta('gf_sagepay_token_expired_at', $expiredAt);
     }
 
     /**
@@ -174,9 +175,9 @@ class Entry
         $this->reload();
     }
 
-    public function setConfirmationTokenExpiredAt(int $confirmationTokenExpiredAt): void
+    public function expireConfirmationTokenNow(): void
     {
-        $this->setMeta('gf_sagepay_token_expired_at', $confirmationTokenExpiredAt);
+        $this->setMeta('gf_sagepay_token_expired_at', 0);
     }
 
     public function getConfirmationTokenExpiredAt(): int
