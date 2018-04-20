@@ -90,11 +90,7 @@ class ConfirmationHandler
         );
 
         $entry->setConfirmationTokenExpiredAt(
-            (int) apply_filters(
-                'gf_sagepay_confirmation_token_expired_at',
-                time() + 3600, // One hour later.
-                $entry
-            )
+                time() + 3600 // One hour later.
         );
 
         return esc_url_raw(
