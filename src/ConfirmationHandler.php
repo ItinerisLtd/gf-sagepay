@@ -18,10 +18,10 @@ class ConfirmationHandler
 
     public static function init(): void
     {
-        add_action('wp', [self::class, 'maybeThankYouPage'], 5);
+        add_action('wp', [self::class, 'maybeContinue'], 5);
     }
 
-    public static function maybeThankYouPage(): void
+    public static function maybeContinue(): void
     {
         $entryId = (int) rgget('entry');
         $token = rgget('gf-sagepay-token');
