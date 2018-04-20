@@ -1,5 +1,19 @@
 # Change Log
 
+## [0.4.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.4.0) (2018-04-20)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.3.0...0.4.0)
+
+**Closed issues:**
+
+- \(feature\) default settings  [\#17](https://github.com/ItinerisLtd/gf-sagepay/issues/17)
+
+**Merged pull requests:**
+
+- Expose `ConfirmationHandler::buildUrlFor` as a public api [\#25](https://github.com/ItinerisLtd/gf-sagepay/pull/25) ([TangRufus](https://github.com/TangRufus))
+- Feed Settings Form: Use `select\_custom` as vendor code field type [\#24](https://github.com/ItinerisLtd/gf-sagepay/pull/24) ([TangRufus](https://github.com/TangRufus))
+- Verify token from query string before passing onto confirmation [\#23](https://github.com/ItinerisLtd/gf-sagepay/pull/23) ([TangRufus](https://github.com/TangRufus))
+- Readme: Clarify page confirmation is supported [\#22](https://github.com/ItinerisLtd/gf-sagepay/pull/22) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.3.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.3.0) (2018-04-18)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.2.0...0.3.0)
 
@@ -9,6 +23,7 @@
 
 **Merged pull requests:**
 
+- Version bump 0.3.0 [\#21](https://github.com/ItinerisLtd/gf-sagepay/pull/21) ([TangRufus](https://github.com/TangRufus))
 - Use Gravity Forms redirection confirmation as `nextUrl` [\#20](https://github.com/ItinerisLtd/gf-sagepay/pull/20) ([TangRufus](https://github.com/TangRufus))
 - Refactor: Make `CallbackHandler` more like `omnipay-sagepay` readme example [\#19](https://github.com/ItinerisLtd/gf-sagepay/pull/19) ([TangRufus](https://github.com/TangRufus))
 - Use `GFFormsModel::get\_uuid` instead of ramsey/uuid package [\#18](https://github.com/ItinerisLtd/gf-sagepay/pull/18) ([TangRufus](https://github.com/TangRufus))
