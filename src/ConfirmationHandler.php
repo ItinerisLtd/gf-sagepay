@@ -18,10 +18,10 @@ class ConfirmationHandler
 
     public static function init(): void
     {
-        add_action('wp', [self::class, 'maybeThankYouPage'], 5);
+        add_action('wp', [self::class, 'maybeContinue'], 5);
     }
 
-    public static function maybeThankYouPage(): void
+    public static function maybeContinue(): void
     {
         $entryId = (int) rgget('entry');
         $token = rgget('gf-sagepay-token');
@@ -47,7 +47,7 @@ class ConfirmationHandler
         }
 
         // Token validation passed. Make it invalid after first use.
-        $entry->setConfirmationTokenExpiredAt(0);
+        $entry->expireConfirmationTokenNow();
 
         $form = GFAPI::get_form(
             $entry->getFormId()
@@ -81,20 +81,13 @@ class ConfirmationHandler
         );
     }
 
-    public static function buildUrlFor(Entry $entry): string
+    public static function buildUrlFor(Entry $entry, int $ttlInSeconds = 3600): string
     {
         $confirmationToken = GFFormsModel::get_uuid('-');
 
         $entry->setConfirmationTokenHash(
-            self::hash($confirmationToken)
-        );
-
-        $entry->setConfirmationTokenExpiredAt(
-            (int) apply_filters(
-                'gf_sagepay_confirmation_token_expired_at',
-                time() + 3600, // One hour later.
-                $entry
-            )
+            self::hash($confirmationToken),
+            time() + $ttlInSeconds
         );
 
         return esc_url_raw(

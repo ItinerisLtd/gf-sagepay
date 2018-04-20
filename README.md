@@ -20,7 +20,8 @@ Gravity forms add-on for SagePay.
 - [Known Issues](#known-issues)
   - [Package `guzzle/guzzle` is Abandoned](#package-guzzleguzzle-is-abandoned)
   - [Missing Gift Aid Acceptance Box](#missing-gift-aid-acceptance-box)
-  - [Gravity Forms Confirmation don't Work](#gravity-forms-confirmation-dont-work)
+- [Public API](#public-api)
+  - [Build URL for continuing confirmation](#build-url-for-continuing-confirmation)
 - [Coding](#coding)
   - [Required Reading List](#required-reading-list)
   - [Gravity Forms](#gravity-forms)
@@ -149,6 +150,46 @@ This warning is safe to ignore.
 
 Only registered charities can use [Gift Aid](https://www.sagepay.co.uk/support/12/36/gift-aid) through the Sage Pay platform.
 The gift aid acceptance box only appears if your vendor account is Gift Aid enabled.
+
+## Public API
+
+### Build URL for continuing confirmation
+
+`ConfirmationHandler::buildUrlFor(Entry $entry, int $ttlInSeconds = 3600): string`
+
+Usage:
+```php
+<?php
+$entryId = 123;
+$rawEntry = GFAPI::get_entry($entryId);
+if (is_wp_error($rawEntry)) {
+    wp_die('Entry not found');
+}
+
+$url = ConfirmationHandler::buildUrlFor(
+    new Entry($rawEntry),
+    86400 // expires in 24 hours (24*3600=86400)
+);
+
+echo $url;
+// https://example.com?entry=123&gf-sagepay-token=XXXXXXXXXXXX
+```
+
+Use Case:
+With ["using confirmation query strings to populate a form based on another submission"](https://docs.gravityforms.com/using-confirmation-query-strings-to-populate-a-form-based-on-another-submission/):
+1. User fills in formA
+1. User completes SagePay checkout form
+1. User comes back and hits `CallbackHandler`
+1. `CallbackHandler` sends user to formB according to confirmation settings
+1. User arrives formB url with merged query strings
+
+If the user quits before completing formB, you could use `ConfirmationHandler::buildUrlFor` generate a single-use, short-lived url for the user to resume formB.
+
+Note:
+- The url continues Gravity Forms confirmation
+- Whoever got the url will go on confirmation, no authentication performed
+- The confirmation will use latest field values from database which could have changed
+- No payment status checking
 
 ## Coding
 
