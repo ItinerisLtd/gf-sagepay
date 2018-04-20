@@ -16,5 +16,7 @@ class GFSagePay
         // TODO: Check `\GFForms` is loaded.
         GFForms::include_payment_addon_framework();
         GFAddOn::register(AddOn::class);
+
+        ConfirmationHandler::init();
     }
 }

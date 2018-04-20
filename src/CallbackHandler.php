@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Itineris\SagePay;
 
 use GFAPI;
-use GFCommon;
-use GFFormDisplay;
 use GFPaymentAddOn;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
 use Omnipay\SagePay\Message\ServerNotifyResponse;
@@ -50,19 +48,19 @@ class CallbackHandler
 
         // Start validation.
         if (! $request->isValid()) {
-            self::invalid($response, 'Signature not valid', $entry, $feed, $addOn);
+            self::invalid($response, 'Signature not valid', $entry, $addOn);
         }
 
         if (! $feed->isActive()) {
-            self::invalid($response, 'Feed inactive', $entry, $feed, $addOn);
+            self::invalid($response, 'Feed inactive', $entry, $addOn);
         }
 
         if ($feed->isTest() !== (bool) rgget('isTest')) {
-            self::invalid($response, 'Feed environment changed', $entry, $feed, $addOn);
+            self::invalid($response, 'Feed environment changed', $entry, $addOn);
         }
 
         if ($feed->getVendor() !== rgget('vendor')) {
-            self::invalid($response, 'Feed vendor code changed', $entry, $feed, $addOn);
+            self::invalid($response, 'Feed vendor code changed', $entry, $addOn);
         }
 
         // Validation passed.
@@ -78,10 +76,10 @@ class CallbackHandler
                 break;
         }
 
-        $addOn->log_debug(__METHOD__ . '(): ' . self::getNextUrl($feed, $entry));
+        $addOn->log_debug(__METHOD__ . '(): ' . self::getNextUrl($entry));
         $addOn->log_debug(__METHOD__ . '(): Confirm!');
         $response->confirm(
-            self::getNextUrl($feed, $entry)
+            self::getNextUrl($entry)
         );
     }
 
@@ -164,36 +162,18 @@ class CallbackHandler
         ServerNotifyResponse $response,
         string $message,
         Entry $entry,
-        Feed $feed,
         GFPaymentAddOn $addOn
     ): void {
         $addOn->log_error(__METHOD__ . '(): ' . $message);
         $entry->markAsFailed($addOn, $message);
         $response->invalid(
-            self::getNextUrl($feed, $entry),
+            self::getNextUrl($entry),
             $message
         );
     }
 
-    private static function getNextUrl(Feed $feed, Entry $entry): string
+    private static function getNextUrl(Entry $entry): string
     {
-        // Taken from `GFPayPal::maybe_thankyou_page`.
-        if (! class_exists('GFFormDisplay')) {
-            require_once GFCommon::get_base_path() . '/form_display.php';
-        }
-
-        $form = GFAPI::get_form(
-            $feed->getFormId()
-        );
-
-        [
-            'redirect' => $nextUrl,
-        ] = GFFormDisplay::handle_confirmation($form, $entry->toArray(), false);
-
-        if (empty($nextUrl)) {
-            return self::getFallbackNextUrl();
-        }
-
-        return $nextUrl;
+        return ConfirmationHandler::buildUrlFor($entry);
     }
 }
