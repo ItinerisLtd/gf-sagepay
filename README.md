@@ -20,6 +20,7 @@ Gravity forms add-on for SagePay.
 - [Known Issues](#known-issues)
   - [Package `guzzle/guzzle` is Abandoned](#package-guzzleguzzle-is-abandoned)
   - [Missing Gift Aid Acceptance Box](#missing-gift-aid-acceptance-box)
+  - [GF SagePay is Missing on Form Settings](#gf-sagepay-is-missing-on-form-settings)
 - [Public API](#public-api)
   - [Build URL for continuing confirmation](#build-url-for-continuing-confirmation)
 - [Coding](#coding)
@@ -150,6 +151,12 @@ This warning is safe to ignore.
 
 Only registered charities can use [Gift Aid](https://www.sagepay.co.uk/support/12/36/gift-aid) through the Sage Pay platform.
 The gift aid acceptance box only appears if your vendor account is Gift Aid enabled.
+
+### GF SagePay is Missing on Form Settings
+
+Gravity Forms capabilities behave differently on multi-user sites and its documents are incomplete.
+If GF SagePay is missing on form settings, grant yourself `gf_sagepay` and `gf_sagepay_uninstall` capabilities.
+See: [https://docs.gravityforms.com/role-management-guide/](https://docs.gravityforms.com/role-management-guide/)   
 
 ## Public API
 
