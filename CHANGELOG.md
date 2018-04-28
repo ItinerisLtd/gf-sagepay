@@ -9,6 +9,7 @@
 
 **Merged pull requests:**
 
+- Version bump 0.4.0 [\#26](https://github.com/ItinerisLtd/gf-sagepay/pull/26) ([TangRufus](https://github.com/TangRufus))
 - Expose `ConfirmationHandler::buildUrlFor` as a public api [\#25](https://github.com/ItinerisLtd/gf-sagepay/pull/25) ([TangRufus](https://github.com/TangRufus))
 - Feed Settings Form: Use `select\_custom` as vendor code field type [\#24](https://github.com/ItinerisLtd/gf-sagepay/pull/24) ([TangRufus](https://github.com/TangRufus))
 - Verify token from query string before passing onto confirmation [\#23](https://github.com/ItinerisLtd/gf-sagepay/pull/23) ([TangRufus](https://github.com/TangRufus))
