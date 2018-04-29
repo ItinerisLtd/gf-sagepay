@@ -1,5 +1,22 @@
 # Change Log
 
+## [0.5.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.0) (2018-04-30)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.4.1...0.5.0)
+
+**Merged pull requests:**
+
+- Fix: `AddOn::$\_path` should point to `gf-sagepay.php` [\#31](https://github.com/ItinerisLtd/gf-sagepay/pull/31) ([TangRufus](https://github.com/TangRufus))
+- New feature: Cancel url [\#30](https://github.com/ItinerisLtd/gf-sagepay/pull/30) ([TangRufus](https://github.com/TangRufus))
+- Lower PHP requirement to ^7.1; Bump GF requirement to v2.3.0.4 [\#29](https://github.com/ItinerisLtd/gf-sagepay/pull/29) ([TangRufus](https://github.com/TangRufus))
+- Add capabilities [\#28](https://github.com/ItinerisLtd/gf-sagepay/pull/28) ([TangRufus](https://github.com/TangRufus))
+
+## [0.4.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.4.1) (2018-04-28)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.4.0...0.4.1)
+
+**Merged pull requests:**
+
+- Version bump 0.4.1 [\#27](https://github.com/ItinerisLtd/gf-sagepay/pull/27) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.4.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.4.0) (2018-04-20)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.3.0...0.4.0)
 
