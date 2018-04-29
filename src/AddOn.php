@@ -20,7 +20,7 @@ class AddOn extends GFPaymentAddOn
     protected $_version = GFSagePay::VERSION;
     protected $_min_gravityforms_version = MinimumRequirements::GRAVITY_FORMS_VERSION;
     protected $_slug = 'gf-sagepay';
-    protected $_path = 'gf-sagepay/src/AddOn.php';
+    protected $_path = 'gf-sagepay/gf-sagepay.php';
     protected $_full_path = __FILE__;
     protected $_title = 'GF SagePay';
     protected $_short_title = 'GF SagePay';
