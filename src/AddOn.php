@@ -27,6 +27,11 @@ class AddOn extends GFPaymentAddOn
     protected $_url = 'https://github.com/ItinerisLtd/gf-sagepay';
     protected $_supports_callbacks = true;
 
+    protected $_capabilities = ['gf_sagepay', 'gf_sagepay_uninstall'];
+    protected $_capabilities_settings_page = 'gf_sagepay';
+    protected $_capabilities_form_settings = 'gf_sagepay';
+    protected $_capabilities_uninstall = 'gf_sagepay_uninstall';
+
     /**
      * Returns an instance of this class, and stores it in the $_instance property.
      *
