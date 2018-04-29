@@ -6,7 +6,7 @@ namespace Itineris\SagePay;
 
 class MinimumRequirements
 {
-    public const GRAVITY_FORMS_VERSION = '2.2.6.5';
+    public const GRAVITY_FORMS_VERSION = '2.3.0.4';
 
     public static function toArray(): array
     {
@@ -15,7 +15,7 @@ class MinimumRequirements
                 'version' => '4.9.5',
             ],
             'php' => [
-                'version' => '7.2',
+                'version' => '7.1',
                 'extensions' => [
                     'curl',
                 ],
