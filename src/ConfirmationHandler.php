@@ -49,13 +49,55 @@ class ConfirmationHandler
         // Token validation passed. Make it invalid after first use.
         $entry->expireConfirmationTokenNow();
 
-        $form = GFAPI::get_form(
-            $entry->getFormId()
-        );
+        if (! $entry->isPaidOrPending()) {
+            self::handleFailedPayment($entry);
+        }
 
+        self::handle($entry);
+    }
+
+    private static function hash(string $confirmationToken): string
+    {
+        return hash_hmac(
+            self::HASH_HMAC_ALGO,
+            $confirmationToken,
+            wp_salt('auth')
+        );
+    }
+
+    private static function handleFailedPayment($entry): void
+    {
+        $addon = AddOn::get_instance();
+        $rawFeed = $addon->get_payment_feed($entry->toArray());
+
+        if (empty($rawFeed)) {
+            wp_die('Unable to locate feed');
+        }
+
+        $feed = new Feed($rawFeed);
+
+        $cancelUrl = $feed->getCancelUrl();
+
+        if (empty($cancelUrl)) {
+            // Continue normal Gravity Forms confirmation.
+            return;
+        }
+
+        wp_redirect( // phpcs:ignore
+            $feed->getCancelUrl()
+        );
+        exit;
+    }
+
+    private static function handle(Entry $entry): void
+    {
         if (! class_exists('GFFormDisplay')) {
             require_once GFCommon::get_base_path() . '/form_display.php';
         }
+
+        $form = GFAPI::get_form(
+            $entry->getFormId()
+        );
 
         $confirmation = GFFormDisplay::handle_confirmation($form, $entry->toArray(), false);
 
@@ -70,15 +112,6 @@ class ConfirmationHandler
             'form' => $form,
             'lead' => $entry->toArray(),
         ];
-    }
-
-    private static function hash(string $confirmationToken): string
-    {
-        return hash_hmac(
-            self::HASH_HMAC_ALGO,
-            $confirmationToken,
-            wp_salt('auth')
-        );
     }
 
     public static function buildUrlFor(Entry $entry, int $ttlInSeconds = 3600): string
