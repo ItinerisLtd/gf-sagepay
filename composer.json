@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.1",
         "omnipay/sagepay": "dev-server-gift-aid"
     },
     "require-dev": {
