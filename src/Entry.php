@@ -89,7 +89,6 @@ class Entry
 
     /**
      * Get a specific property of an array without needing to check if that property exists.
-     *
      * Provide a default value if you want to return a specific value if the property is not set.
      *
      * @param string $prop    Name of the property to be retrieved.
@@ -162,7 +161,6 @@ class Entry
 
     /**
      * Add or update metadata associated with an entry.
-     *
      * Data will be serialized. Don't forget to sanitize user input.
      *
      * @param string $key   The key for the meta data to be stored.
@@ -183,5 +181,14 @@ class Entry
     public function getConfirmationTokenExpiredAt(): int
     {
         return (int) $this->getMeta('gf_sagepay_token_expired_at');
+    }
+
+    public function isPaidOrPending(): bool
+    {
+        return in_array(
+            $this->getProperty('payment_status', 'Failed'),
+            ['Paid', 'Pending'],
+            true
+        );
     }
 }

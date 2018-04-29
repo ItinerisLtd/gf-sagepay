@@ -40,7 +40,6 @@ class Feed
 
     /**
      * Get a specific property of an array without needing to check if that property exists.
-     *
      * Provide a default value if you want to return a specific value if the property is not set.
      *
      * @param string $prop    Name of the property to be retrieved.
@@ -68,5 +67,12 @@ class Feed
     public function isAllowGiftAid(): bool
     {
         return 'donation' === $this->getMeta('transactionType');
+    }
+
+    public function getCancelUrl(): string
+    {
+        return esc_url_raw(
+            (string) $this->getMeta('cancelUrl')
+        );
     }
 }
