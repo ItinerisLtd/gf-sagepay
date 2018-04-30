@@ -1,10 +1,19 @@
 # Change Log
 
-## [0.5.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.0) (2018-04-30)
+## [0.5.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.1) (2018-04-30)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.5.0...0.5.1)
+
+**Merged pull requests:**
+
+- Lower Gravity Forms requirment to v2.2.6.1 [\#34](https://github.com/ItinerisLtd/gf-sagepay/pull/34) ([TangRufus](https://github.com/TangRufus))
+- Apply coding style [\#33](https://github.com/ItinerisLtd/gf-sagepay/pull/33) ([TangRufus](https://github.com/TangRufus))
+
+## [0.5.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.0) (2018-04-29)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.4.1...0.5.0)
 
 **Merged pull requests:**
 
+- Version bump 0.5.0 [\#32](https://github.com/ItinerisLtd/gf-sagepay/pull/32) ([TangRufus](https://github.com/TangRufus))
 - Fix: `AddOn::$\_path` should point to `gf-sagepay.php` [\#31](https://github.com/ItinerisLtd/gf-sagepay/pull/31) ([TangRufus](https://github.com/TangRufus))
 - New feature: Cancel url [\#30](https://github.com/ItinerisLtd/gf-sagepay/pull/30) ([TangRufus](https://github.com/TangRufus))
 - Lower PHP requirement to ^7.1; Bump GF requirement to v2.3.0.4 [\#29](https://github.com/ItinerisLtd/gf-sagepay/pull/29) ([TangRufus](https://github.com/TangRufus))
