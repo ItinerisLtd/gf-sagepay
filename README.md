@@ -35,7 +35,7 @@ Gravity forms add-on for SagePay.
 - PHP v7.1
 - php-curl
 - WordPress v4.9.5
-- Gravity Forms v2.3.0.4
+- Gravity Forms v2.2.6.1
 
 ## Installation
 
