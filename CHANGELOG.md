@@ -1,10 +1,18 @@
 # Change Log
 
+## [0.5.2](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.2) (2018-05-17)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.5.1...0.5.2)
+
+**Merged pull requests:**
+
+- `wp\_die` when redirect URL retrievals fail [\#36](https://github.com/ItinerisLtd/gf-sagepay/pull/36) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.5.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.1) (2018-04-30)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.5.0...0.5.1)
 
 **Merged pull requests:**
 
+- Version bump 0.5.1 [\#35](https://github.com/ItinerisLtd/gf-sagepay/pull/35) ([TangRufus](https://github.com/TangRufus))
 - Lower Gravity Forms requirment to v2.2.6.1 [\#34](https://github.com/ItinerisLtd/gf-sagepay/pull/34) ([TangRufus](https://github.com/TangRufus))
 - Apply coding style [\#33](https://github.com/ItinerisLtd/gf-sagepay/pull/33) ([TangRufus](https://github.com/TangRufus))
 
