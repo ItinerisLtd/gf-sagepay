@@ -23,6 +23,7 @@ Gravity forms add-on for SagePay.
   - [GF SagePay is Missing on Form Settings](#gf-sagepay-is-missing-on-form-settings)
 - [Public API](#public-api)
   - [Build URL for continuing confirmation](#build-url-for-continuing-confirmation)
+  - [Redirect URL Retrieval Failure Handling](#redirect-url-retrieval-failure-handling)
 - [Coding](#coding)
   - [Required Reading List](#required-reading-list)
   - [Gravity Forms](#gravity-forms)
@@ -197,6 +198,42 @@ Note:
 - Whoever got the url will go on confirmation, no authentication performed
 - The confirmation will use latest field values from database which could have changed
 - No payment status checking
+
+### Redirect URL Retrieval Failure Handling
+
+After form submit, this plugin sends order information to SagePay in exchange for a redirect URL(the SagePay hosted checkout form URL).
+
+By default, when redirect URL retrieval fails:
+1. Mark entry payment status as `Failed`
+1. [Log](https://docs.gravityforms.com/logging-and-debugging/) the error     
+1. `wp_die` **immediately**
+
+Common failure reasons:
+- Incorrect vendor code
+- Server IP not whitelisted
+
+Tips: Check the [log](https://docs.gravityforms.com/logging-and-debugging/).
+
+
+You can use `'gf_sagepay_redirect_url_failure_wp_die'` filter to:
+- continue Gravity Forms' feed and confirmation flow
+- perform extra operations
+- redirect to a different error page
+
+**Important:** If this filter returns `false`, normal Gravity Forms' feed and confirmation flow continues.
+Improper settings might lead to disasters. 
+
+Example:
+```php
+add_filter('gf_sagepay_redirect_url_failure_wp_die', function(bool $shouldWpDie, ServerAuthorizeResponse $response, Entry $entry, GFPaymentAddOn $addOn): bool {
+    
+    // Do something.
+    
+    return true; // Do `wp_die` 
+    return false; // Don't `wp_die`, continue normal flow
+    return $shouldWpDie; // Undecisive 
+}, 10, 4);
+```
 
 ## Coding
 
