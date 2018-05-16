@@ -43,8 +43,7 @@ class RedirectUrlFactory
         $addOn->log_debug(__METHOD__ . '(): Set transaction reference to ' . $entry->getMeta('transaction_reference'));
 
         if (! $response->isRedirect()) {
-            $note = __METHOD__ . '(): Unable to forward user onto SagePay - ' . $response->getMessage();
-            $entry->markAsFailed($addOn, $note);
+            self::handleFailure($response, $entry, $addOn);
 
             return '';
         }
@@ -64,6 +63,28 @@ class RedirectUrlFactory
                     'isTest' => $feed->isTest() ? 'true' : 'false',
                 ],
                 home_url()
+            )
+        );
+    }
+
+    private static function handleFailure(ServerAuthorizeResponse $response, Entry $entry, GFPaymentAddOn $addOn): void
+    {
+        $entry->markAsFailed(
+            $addOn,
+            __METHOD__ . '(): Unable to retrieve SagePay redirect url - ' . $response->getMessage()
+        );
+
+
+        $shouldWpDie = (bool) apply_filters('gf_sagepay_redirect_url_failure_wp_die', true, $response, $entry, $addOn);
+
+        if (! $shouldWpDie) {
+            return;
+        }
+
+        wp_die(
+            esc_html__(
+                'Error: Failed to retrieve SagePay checkout form URL. Please contact site administrators.',
+                'gf-sagepay'
             )
         );
     }
