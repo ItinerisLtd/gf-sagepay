@@ -17,8 +17,7 @@ Gravity forms add-on for SagePay.
   - [Payment Status](#payment-status)
   - [Fraud Protection](#fraud-protection)
 - [Test Sandbox](#test-sandbox)
-- [Known Issues](#known-issues)
-  - [Package `guzzle/guzzle` is Abandoned](#package-guzzleguzzle-is-abandoned)
+- [FAQ](#faq)
   - [Missing Gift Aid Acceptance Box](#missing-gift-aid-acceptance-box)
   - [GF SagePay is Missing on Form Settings](#gf-sagepay-is-missing-on-form-settings)
 - [Public API](#public-api)
@@ -49,17 +48,13 @@ Gravity forms add-on for SagePay.
     {
       "type": "vcs",
       "url": "git@github.com:ItinerisLtd/gf-sagepay.git"
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/tangrufus/omnipay-sagepay.git"
     }
   ]
 }
 ```
 
 ```bash
-$ composer require omnipay/sagepay:dev-server-gift-aid itinerisltd/gf-sagepay
+$ composer require itinerisltd/gf-sagepay
 ```
 
 ### Build from Source
@@ -135,18 +130,7 @@ Use [ngrok](https://ngrok.com/) to make local notification URLs publicly accessi
 
 Use one of the [test credit cards](https://www.sagepay.co.uk/support/12/36/test-card-details-for-your-test-transactions).
 
-## Known Issues
-
-### Package `guzzle/guzzle` is Abandoned
-
-```bash
-$ composer install
-$ composer update
-Package guzzle/guzzle is abandoned, you should avoid using it. Use guzzlehttp/guzzle instead.
-```
-
-This warning is safe to ignore.
-[thephpleague/omnipay-common](https://github.com/thephpleague/omnipay-common) has fixed this issue, wait for the next stable release.
+## FAQ
 
 ### Missing Gift Aid Acceptance Box
 
