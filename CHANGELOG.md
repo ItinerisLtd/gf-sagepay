@@ -1,10 +1,18 @@
 # Change Log
 
 ## [0.5.2](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.2) (2018-05-17)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.5.2...0.5.2)
+
+**Merged pull requests:**
+
+- Update omnipay/sagepay to ^3.0 [\#38](https://github.com/ItinerisLtd/gf-sagepay/pull/38) ([TangRufus](https://github.com/TangRufus))
+
+## [0.5.2](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.2) (2018-05-16)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.5.1...0.5.2)
 
 **Merged pull requests:**
 
+- Version bump 0.5.2 [\#37](https://github.com/ItinerisLtd/gf-sagepay/pull/37) ([TangRufus](https://github.com/TangRufus))
 - `wp\_die` when redirect URL retrievals fail [\#36](https://github.com/ItinerisLtd/gf-sagepay/pull/36) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.5.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.1) (2018-04-30)
