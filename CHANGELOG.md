@@ -1,10 +1,22 @@
 # Change Log
 
-## [0.5.2](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.2) (2018-05-17)
-[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.5.2...0.5.2)
+## [0.6.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.6.0) (2018-05-28)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.5.3...0.6.0)
+
+**Implemented enhancements:**
+
+- Conditional user payment details [\#40](https://github.com/ItinerisLtd/gf-sagepay/issues/40)
 
 **Merged pull requests:**
 
+- New Feature: Copy billing address to shipping address [\#41](https://github.com/ItinerisLtd/gf-sagepay/pull/41) ([TangRufus](https://github.com/TangRufus))
+
+## [0.5.3](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.3) (2018-05-17)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.5.2...0.5.3)
+
+**Merged pull requests:**
+
+- Version bump 0.5.3 [\#39](https://github.com/ItinerisLtd/gf-sagepay/pull/39) ([TangRufus](https://github.com/TangRufus))
 - Update omnipay/sagepay to ^3.0 [\#38](https://github.com/ItinerisLtd/gf-sagepay/pull/38) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.5.2](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.2) (2018-05-16)
