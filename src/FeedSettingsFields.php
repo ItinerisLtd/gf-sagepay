@@ -276,7 +276,17 @@ class FeedSettingsFields
                 'name' => 'shippingInformation',
                 'label' => esc_html__('Shipping Information', 'gf-sagepay'),
                 'type' => 'field_map',
-                'field_map' => self::addressFields(),
+                'field_map' => array_merge(self::addressFields(), [
+                    [
+                        'type' => 'checkbox',
+                        'name' => 'shipToBillingAddress',
+                        'label' => esc_html__('Ship to Billing Address', 'gf-sagepay'),
+                        'tooltip' => esc_html__(
+                            'If this <code>radio button</code> field is <code>true</code>, use billing address as shipping address.',
+                            'gf-sagepay'
+                        ),
+                    ],
+                ]),
                 'tooltip' => '<h6>' . esc_html__('Shipping Information',
                         'gf-sagepay') . '</h6>' . esc_html__('Map your Form Fields to the available listed fields.',
                         'gf-sagepay'),
