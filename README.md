@@ -146,29 +146,6 @@ Gravity Forms capabilities behave differently on multi-user sites and its docume
 If GF SagePay is missing on form settings, grant yourself `gf_sagepay` and `gf_sagepay_uninstall` capabilities.
 See: [https://docs.gravityforms.com/role-management-guide/](https://docs.gravityforms.com/role-management-guide/)   
 
-## Shipping Address
-
-OmniPay requires a shipping address. 
-
-### Use case: Not delivering any physical goods
-
-Map the shipping address fields to the billing ones. Leave **Ship to Billing Address** unset.
-
-### Use case: Allow ship to billing address
-
-This is similar to the the WooCommerce way.
-
-1. Create a `raido button` or `dropdown` field
-1. Set the **Ship to billing address** value to be `true`(lowercase)
-    ![](./ship-to-billing-address-field.png)
-1. Map this field as **Ship to Billing Address**
-1. Hide/show shipping address field by [conditional logic](https://docs.gravityforms.com/enable-conditional-logic/) accordingly 
-
-Limitation:
-
-- Only one active `gf-sagepay` feed per form
-- `Checkboxes` are not supported
-
 ## Public API
 
 ### Build URL for continuing confirmation
