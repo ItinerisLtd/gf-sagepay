@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.7.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.7.0) (2018-07-23)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.6.0...0.7.0)
+
+**Merged pull requests:**
+
+- Revert "New Feature: Copy billing address to shipping address" [\#43](https://github.com/ItinerisLtd/gf-sagepay/pull/43) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.6.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.6.0) (2018-05-28)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.5.3...0.6.0)
 
@@ -9,6 +16,7 @@
 
 **Merged pull requests:**
 
+- Version bump 0.6.0 [\#42](https://github.com/ItinerisLtd/gf-sagepay/pull/42) ([TangRufus](https://github.com/TangRufus))
 - New Feature: Copy billing address to shipping address [\#41](https://github.com/ItinerisLtd/gf-sagepay/pull/41) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.5.3](https://github.com/ItinerisLtd/gf-sagepay/tree/0.5.3) (2018-05-17)
