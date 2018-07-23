@@ -38,7 +38,7 @@ Gravity forms add-on for SagePay.
 - PHP v7.1
 - php-curl
 - WordPress v4.9.5
-- Gravity Forms v2.2.6.1
+- Gravity Forms v2.3.0
 
 ## Installation
 
@@ -146,6 +146,20 @@ Gravity Forms capabilities behave differently on multi-user sites and its docume
 If GF SagePay is missing on form settings, grant yourself `gf_sagepay` and `gf_sagepay_uninstall` capabilities.
 See: [https://docs.gravityforms.com/role-management-guide/](https://docs.gravityforms.com/role-management-guide/)   
 
+## Shipping Address
+
+OmniPay requires both billing address and shipping address.
+
+### Use case: Not delivering any physical goods
+
+Map the shipping address fields to the billing ones.
+
+### Use case: Allow ship to billing address
+
+This is similar to the the WooCommerce way.
+
+Use Gravity Forms' built-in feature: [Display option to use the values submitted in different field](https://docs.gravityforms.com/address-field/#advanced)
+
 ## Public API
 
 ### Build URL for continuing confirmation
@@ -208,17 +222,17 @@ You can use `'gf_sagepay_redirect_url_failure_wp_die'` filter to:
 - redirect to a different error page
 
 **Important:** If this filter returns `false`, normal Gravity Forms' feed and confirmation flow continues.
-Improper settings might lead to disasters. 
+Improper settings might lead to disasters.
 
 Example:
 ```php
 add_filter('gf_sagepay_redirect_url_failure_wp_die', function(bool $shouldWpDie, ServerAuthorizeResponse $response, Entry $entry, GFPaymentAddOn $addOn): bool {
-    
+
     // Do something.
-    
-    return true; // Do `wp_die` 
+
+    return true; // Do `wp_die`
     return false; // Don't `wp_die`, continue normal flow
-    return $shouldWpDie; // Undecisive 
+    return $shouldWpDie; // Undecisive
 }, 10, 4);
 ```
 
