@@ -17,7 +17,6 @@ class GFSagePay
         GFForms::include_payment_addon_framework();
         GFAddOn::register(AddOn::class);
 
-        AddressCopier::init();
         ConfirmationHandler::init();
     }
 }
