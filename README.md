@@ -215,6 +215,14 @@ add_filter('gf_sagepay_redirect_url_failure_wp_die', function(bool $shouldWpDie,
 }, 10, 4);
 ```
 
+## Preflight
+
+Checker ID: `gf-sagepay-production-mode`
+
+- ensure all gf-sagepay feeds are in production mode
+- this checker can't be disabled
+- this checker has no config options
+
 ## Coding
 
 ### Required Reading List

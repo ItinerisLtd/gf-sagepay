@@ -35,7 +35,7 @@ class Feed
 
     public function isTest(): bool
     {
-        return (bool) $this->getMeta('isTest', true);
+        return 'production' !== (string) $this->getMeta('isTest');
     }
 
     /**
@@ -74,5 +74,10 @@ class Feed
         return esc_url_raw(
             (string) $this->getMeta('cancelUrl')
         );
+    }
+
+    public function getId(): int
+    {
+        return (int) $this->data['id'];
     }
 }

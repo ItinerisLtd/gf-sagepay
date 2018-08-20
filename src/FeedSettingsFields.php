@@ -178,15 +178,15 @@ class FeedSettingsFields
                 'label' => esc_html__('Environment', 'gf-sagepay'),
                 'required' => true,
                 'type' => 'radio',
-                'default_value' => true,
+                'default_value' => 'test',
                 'choices' => [
                     [
                         'label' => esc_html__('Live', 'gf-sagepay'),
-                        'value' => false,
+                        'value' => 'production',
                     ],
                     [
                         'label' => esc_html__('Test', 'gf-sagepay'),
-                        'value' => true,
+                        'value' => 'test',
                     ],
                 ],
             ],
