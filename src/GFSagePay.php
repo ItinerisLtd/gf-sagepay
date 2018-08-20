@@ -6,6 +6,7 @@ namespace Itineris\SagePay;
 
 use GFAddOn;
 use GFForms;
+use Itineris\SagePay\Preflight\ProductionMode;
 
 class GFSagePay
 {
@@ -18,5 +19,7 @@ class GFSagePay
         GFAddOn::register(AddOn::class);
 
         ConfirmationHandler::init();
+
+        add_action('preflight_checker_collection_register', [ProductionMode::class, 'register']);
     }
 }
