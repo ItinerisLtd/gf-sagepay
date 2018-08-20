@@ -92,6 +92,7 @@ class ConfirmationHandler
     private static function handle(Entry $entry): void
     {
         if (! class_exists('GFFormDisplay')) {
+            // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile
             require_once GFCommon::get_base_path() . '/form_display.php';
         }
 

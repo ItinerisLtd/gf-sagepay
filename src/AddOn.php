@@ -13,9 +13,6 @@ use GFPaymentAddOn;
  */
 class AddOn extends GFPaymentAddOn
 {
-    /**
-     * @var self|null $_instance If available, contains an instance of this class.
-     */
     private static $_instance = null;
     protected $_version = GFSagePay::VERSION;
     protected $_min_gravityforms_version = MinimumRequirements::GRAVITY_FORMS_VERSION;

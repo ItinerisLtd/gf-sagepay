@@ -1,6 +1,7 @@
 {
     "name": "itinerisltd/gf-sagepay",
     "type": "wordpress-plugin",
+    "description": "Gravity Forms Add-on for SagePay",
     "license": "proprietary",
     "require": {
         "php": "^7.1",
@@ -8,8 +9,9 @@
         "omnipay/sagepay": "^3.0"
     },
     "require-dev": {
-        "neronmoon/scriptsdev": "^0.1.2",
-        "wp-coding-standards/wpcs": "^0.14.1"
+        "automattic/vipwpcs": "dev-master",
+        "roave/security-advisories": "dev-master",
+        "wp-coding-standards/wpcs": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -17,31 +19,9 @@
         }
     },
     "scripts": {
-        "build": [
-            "rm -fr vendor",
-            "composer install --no-dev --prefer-dist --optimize-autoloader --no-suggest",
-            "composer archive --format=zip --dir=release --file=gf-sagepay"
-        ],
         "check-style": "phpcs --standard=ruleset.xml --colors -p -s"
     },
     "config": {
         "sort-packages": true
-    },
-    "extra": {
-        "scripts-dev": {
-            "post-install-cmd": "phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs",
-            "post-update-cmd": "phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs"
-        }
-    },
-    "archive": {
-        "exclude": [
-            "/*",
-            ".*",
-            "!/src",
-            "!/vendor",
-            "!/LICENSE",
-            "!/README.txt",
-            "!/*.php"
-        ]
     }
 }

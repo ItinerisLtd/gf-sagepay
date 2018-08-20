@@ -9,7 +9,6 @@ Gravity forms add-on for SagePay.
 - [Minimum Requirements](#minimum-requirements)
 - [Installation](#installation)
   - [Via Composer (Recommended)](#via-composer-recommended)
-  - [Build from Source](#build-from-source)
 - [Features](#features)
 - [Not Supported / Not Implemented](#not-supported--not-implemented)
 - [Best Practices](#best-practices)
@@ -59,26 +58,6 @@ Gravity forms add-on for SagePay.
 ```bash
 $ composer require itinerisltd/gf-sagepay
 ```
-
-### Build from Source
-
-```bash
-# Grab the source code
-$ git clone https://github.com/ItinerisLtd/gf-sagepay.git
-$ cd gf-sagepay
-
-# Verify PHP version
-# Your local PHP version must be the same as the remote server one
-$ php -v
-
-$ composer build
-# ...omitted...
-Creating the archive into "release".
-Created: release/gf-sagepay.zip
-```
-
-Then, upload and install `gf-sagepay.zip` as a usual plugin.
-The unzipped directory name must be `gf-sagepay`, for example: `wp-content/plugins/gf-sagepay`.
 
 ## Features
 
