@@ -11,6 +11,36 @@ class FeedSettingsFields
 {
     public static function toArray(GFFeedAddOn $addOn): array
     {
+        $feedNameTooltip =
+            '<h6>' .
+            esc_html__('Name', 'gf-sagepay') .
+            '</h6>' .
+            esc_html__('Enter a feed name to uniquely identify this setup.', 'gf-sagepay');
+
+        $transactionTypeTooltip =
+            '<h6>' .
+            esc_html__('Transaction Type', 'gf-sagepay') .
+            '</h6>' .
+            esc_html__('Select a transaction type.', 'gf-sagepay');
+
+        $paymentAmountTooltip =
+            '<h6>' .
+            esc_html__('Payment Amount', 'gf-sagepay') .
+            '</h6>' .
+            esc_html__(
+                "Select which field determines the payment amount, or select 'Form Total' to use the total of all pricing fields as the payment amount.",
+                'gf-sagepay'
+            );
+
+        $conditionalLogicTooltip =
+            '<h6>' .
+            esc_html__('Conditional Logic', 'gf-sagepay') .
+            '</h6>' .
+            esc_html__(
+                'When conditions are enabled, form submissions will only be sent to the payment gateway when the conditions are met. When disabled, all form submissions will be sent to the payment gateway.',
+                'gf-sagepay'
+            );
+
         return [
             [
                 'fields' => [
@@ -20,9 +50,7 @@ class FeedSettingsFields
                         'type' => 'text',
                         'class' => 'medium',
                         'required' => true,
-                        'tooltip' => '<h6>' . esc_html__('Name',
-                                'gf-sagepay') . '</h6>' . esc_html__('Enter a feed name to uniquely identify this setup.',
-                                'gf-sagepay'),
+                        'tooltip' => $feedNameTooltip,
                     ],
                     [
                         'name' => 'transactionType',
@@ -43,8 +71,7 @@ class FeedSettingsFields
                                 'value' => 'donation',
                             ],
                         ],
-                        'tooltip' => '<h6>' . esc_html__('Transaction Type',
-                                'gf-sagepay') . '</h6>' . esc_html__('Select a transaction type.', 'gf-sagepay'),
+                        'tooltip' => $transactionTypeTooltip,
                     ],
                 ],
             ],
@@ -77,9 +104,7 @@ class FeedSettingsFields
                         'choices' => $addOn->product_amount_choices(),
                         'required' => true,
                         'default_value' => 'form_total',
-                        'tooltip' => '<h6>' . esc_html__('Payment Amount',
-                                'gf-sagepay') . '</h6>' . esc_html__("Select which field determines the payment amount, or select 'Form Total' to use the total of all pricing fields as the payment amount.",
-                                'gf-sagepay'),
+                        'tooltip' => $paymentAmountTooltip,
                     ],
                 ],
             ],
@@ -110,9 +135,7 @@ class FeedSettingsFields
                         'name' => 'conditionalLogic',
                         'label' => esc_html__('Conditional Logic', 'gf-sagepay'),
                         'type' => 'feed_condition',
-                        'tooltip' => '<h6>' . esc_html__('Conditional Logic',
-                                'gf-sagepay') . '</h6>' . esc_html__('When conditions are enabled, form submissions will only be sent to the payment gateway when the conditions are met. When disabled, all form submissions will be sent to the payment gateway.',
-                                'gf-sagepay'),
+                        'tooltip' => $conditionalLogicTooltip,
                     ],
                 ],
             ],
@@ -121,6 +144,18 @@ class FeedSettingsFields
 
     private static function sagePaySettingsFields(GFFeedAddOn $addOn): array
     {
+        $venforTooltip =
+            esc_html__(
+                'Used to authenticate your site. This should contain the Sage Pay Vendor Name supplied by Sage Pay when your account was created.',
+                'gf-sagepay'
+            );
+
+        $cancelUrlTooltip =
+            esc_html__(
+                'Enter the URL the user should be sent to if they cancelled the SagePay checkout form or payment failed.',
+                'gf-sagepay'
+            );
+
         return [
             [
                 'type' => 'select_custom',
@@ -129,8 +164,7 @@ class FeedSettingsFields
                 'required' => true,
                 'choices' => self::getAllVendors($addOn),
                 'after_input' => esc_html__('Letters (A-Z and a-z) and Numbers(0-9)', 'gf-sagepay'),
-                'tooltip' => esc_html__('Used to authenticate your site. This should contain the Sage Pay Vendor Name supplied by Sage Pay when your account was created.',
-                    'gf-sagepay'),
+                'tooltip' => $venforTooltip,
             ],
             [
                 'type' => 'text',
@@ -220,8 +254,7 @@ class FeedSettingsFields
                 'label' => esc_html__('Cancel URL', 'gf-sagepay'),
                 'class' => 'large',
                 'after_input' => esc_html__('Leave blank to use Gravity Forms confirmations', 'gf-sagepay'),
-                'tooltip' => esc_html__('Enter the URL the user should be sent to if they cancelled the SagePay checkout form or payment failed.',
-                    'gf-sagepay'),
+                'tooltip' => $cancelUrlTooltip,
             ],
         ];
     }
@@ -247,39 +280,54 @@ class FeedSettingsFields
         }, $uniqueVendors);
 
         return array_merge([
-            ['value' => '', 'label' => 'Select a Vendor Code'],
+            [
+                'value' => '',
+                'label' => 'Select a Vendor Code',
+            ],
         ], $choices);
     }
 
     private static function orderSettingsFields(): array
     {
+        $customerInformationTooltip =
+            '<h6>' .
+            esc_html__('Customer Information', 'gf-sagepay') .
+            '</h6>' .
+            esc_html__('Map your Form Fields to the available listed fields.', 'gf-sagepay');
+
+        $billingInformationTooltip =
+            '<h6>' .
+            esc_html__('Billing Information', 'gf-sagepay') .
+            '</h6>' .
+            esc_html__('Map your Form Fields to the available listed fields.', 'gf-sagepay');
+
+        $shippingInformationTooltip =
+            '<h6>' .
+            esc_html__('Shipping Information', 'gf-sagepay') .
+            '</h6>' .
+            esc_html__('Map your Form Fields to the available listed fields.', 'gf-sagepay');
+
         return [
             [
                 'name' => 'customerInformation',
                 'label' => esc_html__('Customer Information', 'gf-sagepay'),
                 'type' => 'field_map',
                 'field_map' => self::customerInfoFields(),
-                'tooltip' => '<h6>' . esc_html__('Customer Information',
-                        'gf-sagepay') . '</h6>' . esc_html__('Map your Form Fields to the available listed fields.',
-                        'gf-sagepay'),
+                'tooltip' => $customerInformationTooltip,
             ],
             [
                 'name' => 'billingInformation',
                 'label' => esc_html__('Billing Information', 'gf-sagepay'),
                 'type' => 'field_map',
                 'field_map' => self::addressFields(),
-                'tooltip' => '<h6>' . esc_html__('Billing Information',
-                        'gf-sagepay') . '</h6>' . esc_html__('Map your Form Fields to the available listed fields.',
-                        'gf-sagepay'),
+                'tooltip' => $billingInformationTooltip,
             ],
             [
                 'name' => 'shippingInformation',
                 'label' => esc_html__('Shipping Information', 'gf-sagepay'),
                 'type' => 'field_map',
                 'field_map' => self::addressFields(),
-                'tooltip' => '<h6>' . esc_html__('Shipping Information',
-                        'gf-sagepay') . '</h6>' . esc_html__('Map your Form Fields to the available listed fields.',
-                        'gf-sagepay'),
+                'tooltip' => $shippingInformationTooltip,
             ],
         ];
     }

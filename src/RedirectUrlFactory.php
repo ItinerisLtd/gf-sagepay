@@ -74,7 +74,6 @@ class RedirectUrlFactory
             __METHOD__ . '(): Unable to retrieve SagePay redirect url - ' . $response->getMessage()
         );
 
-
         $shouldWpDie = (bool) apply_filters('gf_sagepay_redirect_url_failure_wp_die', true, $response, $entry, $addOn);
 
         if (! $shouldWpDie) {
