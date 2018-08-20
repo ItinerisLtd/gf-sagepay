@@ -25,6 +25,7 @@ Gravity forms add-on for SagePay.
 - [Public API](#public-api)
   - [Build URL for continuing confirmation](#build-url-for-continuing-confirmation)
   - [Redirect URL Retrieval Failure Handling](#redirect-url-retrieval-failure-handling)
+- [Preflight](#preflight)
 - [Coding](#coding)
   - [Required Reading List](#required-reading-list)
   - [Gravity Forms](#gravity-forms)

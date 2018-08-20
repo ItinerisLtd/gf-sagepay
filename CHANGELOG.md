@@ -1,10 +1,19 @@
 # Change Log
 
+## [0.8.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.8.0) (2018-08-20)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.7.0...0.8.0)
+
+**Merged pull requests:**
+
+- Add preflight checker; Fix incorrect fallback to test mode [\#47](https://github.com/ItinerisLtd/gf-sagepay/pull/47) ([TangRufus](https://github.com/TangRufus))
+- Bikeshedding [\#46](https://github.com/ItinerisLtd/gf-sagepay/pull/46) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.7.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.7.0) (2018-07-23)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.6.0...0.7.0)
 
 **Merged pull requests:**
 
+- Version bump 0.7.0 [\#44](https://github.com/ItinerisLtd/gf-sagepay/pull/44) ([TangRufus](https://github.com/TangRufus))
 - Revert "New Feature: Copy billing address to shipping address" [\#43](https://github.com/ItinerisLtd/gf-sagepay/pull/43) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.6.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.6.0) (2018-05-28)
