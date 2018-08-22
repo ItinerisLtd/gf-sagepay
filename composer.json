@@ -2,17 +2,48 @@
     "name": "itinerisltd/gf-sagepay",
     "type": "wordpress-plugin",
     "description": "Gravity Forms Add-on for SagePay",
-    "license": "proprietary",
+    "keywords": [
+        "gravityforms",
+        "payment",
+        "sagepay",
+        "wordpress",
+        "wp"
+    ],
+    "homepage": "https://github.com/ItinerisLtd/gf-sagepay",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Itineris Limited",
+            "email": "hello@itineris.co.uk",
+            "homepage": "https://itineris.co.uk/",
+            "role": "Company"
+        },
+        {
+            "name": "Tang Rufus",
+            "email": "tangrufus@gmail.com",
+            "homepage": "https://typist.tech/",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": "^7.1",
+        "ext-curl": "*",
         "league/omnipay": "^3.0",
         "omnipay/sagepay": "^3.0"
     },
     "require-dev": {
         "automattic/vipwpcs": "dev-master",
-        "itinerisltd/preflight-command": "^0.4.0",
+        "itinerisltd/preflight-command": "^0.6.0",
         "roave/security-advisories": "dev-master",
         "wp-coding-standards/wpcs": "^1.0"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8.x-dev"
+        }
     },
     "autoload": {
         "psr-4": {
@@ -20,9 +51,18 @@
         }
     },
     "scripts": {
-        "check-style": "phpcs --standard=ruleset.xml --colors -p -s"
+        "check-style": "phpcs --standard=ruleset.xml --colors -p -s",
+        "pretag": [
+            "composer update",
+            "@check-style",
+            "composer normalize",
+            "doctoc README.md",
+            "github_changelog_generator --no-verbose"
+        ]
     },
-    "config": {
-        "sort-packages": true
+    "support": {
+        "email": "hello@itineris.co.uk",
+        "issues": "https://github.com/ItinerisLtd/gf-sagepay/issues",
+        "source": "https://github.com/ItinerisLtd/gf-sagepay"
     }
 }
