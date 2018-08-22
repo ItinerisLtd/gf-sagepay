@@ -1,5 +1,12 @@
 # gf-sagepay
 
+[![Packagist Version](https://img.shields.io/packagist/v/itinerisltd/gf-sagepay.svg)](https://packagist.org/packages/itinerisltd/gf-sagepay)
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/itinerisltd/gf-sagepay.svg)](https://packagist.org/packages/itinerisltd/gf-sagepay)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/itinerisltd/gf-sagepay.svg)](https://packagist.org/packages/itinerisltd/gf-sagepay)
+[![GitHub License](https://img.shields.io/github/license/itinerisltd/gf-sagepay.svg)](https://github.com/ItinerisLtd/gf-sagepay/blob/master/LICENSE)
+[![Hire Itineris](https://img.shields.io/badge/Hire-Itineris-ff69b4.svg)](https://www.itineris.co.uk/contact/)
+
+
 Gravity forms add-on for SagePay.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -8,7 +15,6 @@ Gravity forms add-on for SagePay.
 
 - [Minimum Requirements](#minimum-requirements)
 - [Installation](#installation)
-  - [Via Composer (Recommended)](#via-composer-recommended)
 - [Features](#features)
 - [Not Supported / Not Implemented](#not-supported--not-implemented)
 - [Best Practices](#best-practices)
@@ -30,6 +36,10 @@ Gravity forms add-on for SagePay.
   - [Required Reading List](#required-reading-list)
   - [Gravity Forms](#gravity-forms)
   - [Code Style](#code-style)
+- [Author Information](#author-information)
+- [Feedback](#feedback)
+- [Change log](#change-log)
+- [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -41,20 +51,6 @@ Gravity forms add-on for SagePay.
 - Gravity Forms v2.3.0
 
 ## Installation
-
-### Via Composer (Recommended)
-
-```bash
-# composer.json
-{
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:ItinerisLtd/gf-sagepay.git"
-    }
-  ]
-}
-```
 
 ```bash
 $ composer require itinerisltd/gf-sagepay
@@ -118,7 +114,7 @@ Use one of the [test credit cards](https://www.sagepay.co.uk/support/12/36/test-
 ### Missing Gift Aid Acceptance Box
 
 Only registered charities can use [Gift Aid](https://www.sagepay.co.uk/support/12/36/gift-aid) through the Sage Pay platform.
-The gift aid acceptance box only appears if your vendor account is Gift Aid enabled.
+The gift aid acceptance box only appears if your vendor account is Gift Aid enabled and using **Donation** as transaction type.
 
 ### GF SagePay is Missing on Form Settings
 
@@ -218,18 +214,20 @@ add_filter('gf_sagepay_redirect_url_failure_wp_die', function(bool $shouldWpDie,
 
 ## Preflight
 
-Checker ID: `gf-sagepay-production-mode`
+This plugin provides built-in support for [preflight-command](https://github.com/itinerisltd/preflight-command).
+No extra setup steps required.
 
-- ensure all gf-sagepay feeds are in production mode
-- this checker can't be disabled
-- this checker has no config options
+
+Checker ID: `gf-sagepay-production-mode`
+- ensure all gf-sagepay feeds are in live mode (i.e: not in test mode)
+- can't be disabled
+- no config options available
 
 ## Coding
 
 ### Required Reading List
 
 Read the followings before developing:
-
 - [SagePay Server: Understanding the process](https://www.sagepay.co.uk/support/15/36/sage-pay-server-understanding-the-process)
 - [SagePay Server integration kits, protocols and documents](https://www.sagepay.co.uk/support/find-an-integration-document/server-integration-documents)
 - [Gravity Forms: GFPaymentAddOn](https://docs.gravityforms.com/gfpaymentaddon/)
@@ -246,3 +244,23 @@ Gravity Forms has undocumented hidden magics, read its source code.
 
 Check your code style with `$ composer check-style`. It's a mix of PSR-1, PSR-2, PSR-4 and [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards).
 Change [ruleset.xml](./ruleset.xml) when necessary.
+
+## Author Information
+
+[gf-sagepay](https://github.com/ItinerisLtd/gf-sagepay) is a [Itineris Limited](https://www.itineris.co.uk/) project created by [Tang Rufus](https://typist.tech).
+
+Full list of contributors can be found [here](https://github.com/ItinerisLtd/gf-sagepay/graphs/contributors).
+
+## Feedback
+
+**Please provide feedback!** We want to make this library useful in as many projects as possible.
+Please submit an [issue](https://github.com/ItinerisLtd/gf-sagepay/issues/new) and point out what you do and don't like, or fork the project and make suggestions.
+**No issue is too small.**
+
+## Change log
+
+Please see [CHANGELOG](./CHANGELOG.md) for more information on what has changed recently.
+
+## License
+
+[gf-sagepay](https://github.com/ItinerisLtd/gf-sagepay) is released under the [MIT License](https://opensource.org/licenses/MIT).
