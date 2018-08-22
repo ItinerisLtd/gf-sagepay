@@ -1,10 +1,24 @@
 # Change Log
 
+## [0.9.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.0) (2018-08-22)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.8.0...0.9.0)
+
+**Closed issues:**
+
+- Fix typo: `Entry::makeAsProcessing` [\#45](https://github.com/ItinerisLtd/gf-sagepay/issues/45)
+
+**Merged pull requests:**
+
+- :bike:Bikeshedding for open sourcing [\#52](https://github.com/ItinerisLtd/gf-sagepay/pull/52) ([TangRufus](https://github.com/TangRufus))
+- Create LICENSE [\#51](https://github.com/ItinerisLtd/gf-sagepay/pull/51) ([TangRufus](https://github.com/TangRufus))
+- Rename: `Entry::{make --\> mark}AsProcessing` [\#50](https://github.com/ItinerisLtd/gf-sagepay/pull/50) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.8.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.8.0) (2018-08-20)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.7.0...0.8.0)
 
 **Merged pull requests:**
 
+- Version bump 0.8.0 [\#48](https://github.com/ItinerisLtd/gf-sagepay/pull/48) ([TangRufus](https://github.com/TangRufus))
 - Add preflight checker; Fix incorrect fallback to test mode [\#47](https://github.com/ItinerisLtd/gf-sagepay/pull/47) ([TangRufus](https://github.com/TangRufus))
 - Bikeshedding [\#46](https://github.com/ItinerisLtd/gf-sagepay/pull/46) ([TangRufus](https://github.com/TangRufus))
 
