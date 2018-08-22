@@ -13,7 +13,7 @@ class RedirectUrlFactory
 {
     public static function build(GFPaymentAddOn $addOn, Feed $feed, Entry $entry, float $amount): string
     {
-        $entry->makeAsProcessing(
+        $entry->markAsProcessing(
             GFFormsModel::get_uuid('-'),
             $amount
         );

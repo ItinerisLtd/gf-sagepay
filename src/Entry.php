@@ -28,7 +28,7 @@ class Entry
         $this->data = $data;
     }
 
-    public function makeAsProcessing(string $uuid, float $amount): void
+    public function markAsProcessing(string $uuid, float $amount): void
     {
         $this->setProperty('transaction_id', $uuid);
         $this->setProperty('payment_amount', $amount);
