@@ -68,6 +68,5 @@
     <rule ref="Generic.Files.LineLength.TooLong">
         <exclude-pattern>/src/FeedSettingsFields.php</exclude-pattern>
     </rule>
-
 </ruleset>
 
