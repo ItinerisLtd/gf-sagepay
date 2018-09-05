@@ -32,8 +32,8 @@
         "omnipay/sagepay": "^3.0"
     },
     "require-dev": {
-        "automattic/vipwpcs": "dev-master",
-        "itinerisltd/preflight-command": "^0.6.0",
+        "automattic/vipwpcs": "^0.3.0",
+        "itinerisltd/preflight-command": "^0.6.1",
         "roave/security-advisories": "dev-master",
         "wp-coding-standards/wpcs": "^1.0"
     },
@@ -51,9 +51,9 @@
         }
     },
     "scripts": {
-        "check-style": "phpcs --standard=ruleset.xml --colors -p -s",
+        "check-style": "phpcs --colors -p",
         "pretag": [
-            "composer update",
+            "composer update --no-suggest",
             "@check-style",
             "composer normalize",
             "doctoc README.md",

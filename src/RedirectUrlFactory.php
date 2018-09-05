@@ -59,7 +59,7 @@ class RedirectUrlFactory
         $vendor = $feed->getVendor();
         $isTest = $feed->isTest() ? 'true' : 'false';
 
-        $addOn->log_debug(__METHOD__ . '(): Callback - ' . $callback . ' Vendor - ' . $vendor . ' $isTest - ' . $isTest);
+        $addOn->log_debug(__METHOD__ . '(): Callback - ' . $callback . ' Vendor - ' . $vendor . ' isTest - ' . $isTest);
 
         return esc_url_raw(
             add_query_arg(
