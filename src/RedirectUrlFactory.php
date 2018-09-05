@@ -40,7 +40,7 @@ class RedirectUrlFactory
         // Note that at this point `transactionReference` is not yet complete for the Server transaction,
         // but must be saved in the database for the notification handler to use.
         $entry->setMeta('transaction_reference', $response->getTransactionReference());
-        $addOn->log_debug(__METHOD__ . '(): Set transaction reference to ' . $entry->getMeta('transaction_reference'));
+        $addOn->log_debug(__METHOD__ . '(): Transaction reference saved');
 
         if (! $response->isRedirect()) {
             self::handleFailure($response, $entry, $addOn);
@@ -55,12 +55,18 @@ class RedirectUrlFactory
 
     private static function getNotifyUrl(GFPaymentAddOn $addOn, Feed $feed): string
     {
+        $callback = $addOn->get_slug();
+        $vendor = $feed->getVendor();
+        $isTest = $feed->isTest() ? 'true' : 'false';
+
+        $addOn->log_debug(__METHOD__ . '(): Callback - ' . $callback . ' Vendor - ' . $vendor . ' $isTest - ' . $isTest);
+
         return esc_url_raw(
             add_query_arg(
                 [
-                    'callback' => $addOn->get_slug(),
-                    'vendor' => $feed->getVendor(),
-                    'isTest' => $feed->isTest() ? 'true' : 'false',
+                    'callback' => $callback,
+                    'vendor' => $vendor,
+                    'isTest' => $isTest,
                 ],
                 home_url()
             )

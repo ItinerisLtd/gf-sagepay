@@ -30,6 +30,8 @@ class CallbackHandler
             $entry->getMeta('transaction_reference')
         );
 
+        $addOn->log_debug(__METHOD__ . '(): After accepting notification');
+
         // Get the response message ready for returning.
         /* @var ServerNotifyResponse $response */ // phpcs:ignore
         $response = $request->send();
@@ -43,6 +45,8 @@ class CallbackHandler
             'final_transaction_reference',
             $response->getTransactionReference()
         );
+
+        $addOn->log_debug(__METHOD__ . '(): Final transaction reference saved');
 
         $feed = self::getFeedByEntry($entry, $response, $addOn);
 
