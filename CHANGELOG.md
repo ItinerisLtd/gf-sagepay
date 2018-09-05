@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.9.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.1) (2018-09-06)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.0...0.9.1)
+
+**Merged pull requests:**
+
+- Update code standards; Add PrettryCI config [\#56](https://github.com/ItinerisLtd/gf-sagepay/pull/56) ([TangRufus](https://github.com/TangRufus))
+- Better logging [\#55](https://github.com/ItinerisLtd/gf-sagepay/pull/55) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.9.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.0) (2018-08-22)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.8.0...0.9.0)
 
@@ -9,6 +17,7 @@
 
 **Merged pull requests:**
 
+- Version bump 0.9.0 [\#53](https://github.com/ItinerisLtd/gf-sagepay/pull/53) ([TangRufus](https://github.com/TangRufus))
 - :bike:Bikeshedding for open sourcing [\#52](https://github.com/ItinerisLtd/gf-sagepay/pull/52) ([TangRufus](https://github.com/TangRufus))
 - Create LICENSE [\#51](https://github.com/ItinerisLtd/gf-sagepay/pull/51) ([TangRufus](https://github.com/TangRufus))
 - Rename: `Entry::{make --\> mark}AsProcessing` [\#50](https://github.com/ItinerisLtd/gf-sagepay/pull/50) ([TangRufus](https://github.com/TangRufus))
