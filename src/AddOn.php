@@ -11,7 +11,8 @@ use GFPaymentAddOn;
  *
  * @see https://docs.gravityforms.com/gfpaymentaddon/
  */
-class AddOn extends GFPaymentAddOn
+class AddOn
+  extends GFPaymentAddOn
 {
     private static $_instance = null;
     protected $_version = GFSagePay::VERSION;
