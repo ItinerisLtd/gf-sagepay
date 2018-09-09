@@ -1,10 +1,23 @@
 # Change Log
 
-## [0.9.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.1) (2018-09-06)
+## [0.9.2](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.2) (2018-09-09)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.1...0.9.2)
+
+**Closed issues:**
+
+- Payments failing [\#54](https://github.com/ItinerisLtd/gf-sagepay/issues/54)
+-  Use new packagist.org auto-update mechanism [\#49](https://github.com/ItinerisLtd/gf-sagepay/issues/49)
+
+**Merged pull requests:**
+
+- CallbackHandler: Remove useless validation [\#59](https://github.com/ItinerisLtd/gf-sagepay/pull/59) ([TangRufus](https://github.com/TangRufus))
+
+## [0.9.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.1) (2018-09-05)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.0...0.9.1)
 
 **Merged pull requests:**
 
+- Version bump 0.9.1 [\#57](https://github.com/ItinerisLtd/gf-sagepay/pull/57) ([TangRufus](https://github.com/TangRufus))
 - Update code standards; Add PrettryCI config [\#56](https://github.com/ItinerisLtd/gf-sagepay/pull/56) ([TangRufus](https://github.com/TangRufus))
 - Better logging [\#55](https://github.com/ItinerisLtd/gf-sagepay/pull/55) ([TangRufus](https://github.com/TangRufus))
 
