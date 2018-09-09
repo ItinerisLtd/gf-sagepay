@@ -48,26 +48,17 @@ class CallbackHandler
 
         $addOn->log_debug(__METHOD__ . '(): Final transaction reference saved');
 
-        $feed = self::getFeedByEntry($entry, $response, $addOn);
-
-        // Start validation.
         if (! $request->isValid()) {
-            self::invalid($response, 'Signature not valid', $entry, $addOn);
+            $message = 'Signature not valid';
+
+            $addOn->log_error(__METHOD__ . '(): ' . $message);
+            $entry->markAsFailed($addOn, $message);
+            $response->invalid(
+                self::getNextUrl($entry),
+                $message
+            );
         }
 
-        if (! $feed->isActive()) {
-            self::invalid($response, 'Feed inactive', $entry, $addOn);
-        }
-
-        if ($feed->isTest() !== (bool) rgget('isTest')) {
-            self::invalid($response, 'Feed environment changed', $entry, $addOn);
-        }
-
-        if ($feed->getVendor() !== rgget('vendor')) {
-            self::invalid($response, 'Feed vendor code changed', $entry, $addOn);
-        }
-
-        // Validation passed.
         switch ($request->getTransactionStatus()) {
             case $request::STATUS_COMPLETED:
                 $entry->markAsPaid($addOn);
@@ -142,38 +133,6 @@ class CallbackHandler
     private static function getFallbackNextUrl(): string
     {
         return home_url();
-    }
-
-    private static function getFeedByEntry(Entry $entry, ServerNotifyResponse $response, GFPaymentAddOn $addOn): Feed
-    {
-        $rawFeed = $addOn->get_payment_feed($entry->toArray());
-
-        if (empty($rawFeed)) {
-            $message = 'Unable to locate feed';
-
-            $addOn->log_error(__METHOD__ . '(): ' . $message);
-            $entry->markAsFailed($addOn, $message);
-            $response->error(
-                self::getFallbackNextUrl(),
-                $message
-            );
-        }
-
-        return new Feed($rawFeed);
-    }
-
-    private static function invalid(
-        ServerNotifyResponse $response,
-        string $message,
-        Entry $entry,
-        GFPaymentAddOn $addOn
-    ): void {
-        $addOn->log_error(__METHOD__ . '(): ' . $message);
-        $entry->markAsFailed($addOn, $message);
-        $response->invalid(
-            self::getNextUrl($entry),
-            $message
-        );
     }
 
     private static function getNextUrl(Entry $entry): string
