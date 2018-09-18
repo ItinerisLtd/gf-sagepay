@@ -23,7 +23,7 @@ class GatewayFactory
         $gateway = Omnipay::create('SagePay\Server');
 
         $gateway->setVendor($vendor);
-        $gateway->setTestMode($isTest);
+        $gateway->setTestMode(false);
 
         return $gateway;
     }
