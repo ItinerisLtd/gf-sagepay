@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.9.3](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.3) (2018-10-11)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.2...0.9.3)
+
+**Merged pull requests:**
+
+- Extra check for timeout payment [\#64](https://github.com/ItinerisLtd/gf-sagepay/pull/64) ([TangRufus](https://github.com/TangRufus))
+- Update `wp-coding-standards/wpcs` to v1.1.0 [\#61](https://github.com/ItinerisLtd/gf-sagepay/pull/61) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.9.2](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.2) (2018-09-09)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.1...0.9.2)
 
@@ -10,6 +18,7 @@
 
 **Merged pull requests:**
 
+- Version bump 0.9.2 [\#60](https://github.com/ItinerisLtd/gf-sagepay/pull/60) ([TangRufus](https://github.com/TangRufus))
 - CallbackHandler: Remove useless validation [\#59](https://github.com/ItinerisLtd/gf-sagepay/pull/59) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.1) (2018-09-05)
