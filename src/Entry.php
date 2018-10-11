@@ -191,4 +191,15 @@ class Entry
             true
         );
     }
+
+    public function isTimeout(): bool
+    {
+        $dateCreated = strtotime($this->getProperty('date_created'));
+
+        if (! is_int($dateCreated)) {
+            return false;
+        }
+
+        return time() - $dateCreated > 1800; // 30 minutes.
+    }
 }
