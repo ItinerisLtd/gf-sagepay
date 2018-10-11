@@ -49,7 +49,7 @@ class ConfirmationHandler
         // Token validation passed. Make it invalid after first use.
         $entry->expireConfirmationTokenNow();
 
-        if (! $entry->isPaidOrPending()) {
+        if (! $entry->isPaidOrPending() || $entry->isTimeout()) {
             self::handleFailedPayment($entry);
         }
 
@@ -83,9 +83,7 @@ class ConfirmationHandler
             return;
         }
 
-        wp_redirect( // phpcs:ignore
-            $feed->getCancelUrl()
-        );
+        wp_redirect($cancelUrl); // phpcs:ignore
         exit;
     }
 
