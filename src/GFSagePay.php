@@ -10,7 +10,7 @@ use Itineris\SagePay\Preflight\ProductionMode;
 
 class GFSagePay
 {
-    public const VERSION = '0.9.3';
+    public const VERSION = '0.9.4';
 
     public function run(): void
     {

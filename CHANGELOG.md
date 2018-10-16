@@ -1,10 +1,18 @@
 # Change Log
 
+## [0.9.4](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.4) (2018-10-16)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.3...0.9.4)
+
+**Merged pull requests:**
+
+- Add extra query param to confirmation URL [\#66](https://github.com/ItinerisLtd/gf-sagepay/pull/66) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.9.3](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.3) (2018-10-11)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.2...0.9.3)
 
 **Merged pull requests:**
 
+- Version bump 0.9.3 [\#65](https://github.com/ItinerisLtd/gf-sagepay/pull/65) ([TangRufus](https://github.com/TangRufus))
 - Extra check for timeout payment [\#64](https://github.com/ItinerisLtd/gf-sagepay/pull/64) ([TangRufus](https://github.com/TangRufus))
 - Update `wp-coding-standards/wpcs` to v1.1.0 [\#61](https://github.com/ItinerisLtd/gf-sagepay/pull/61) ([TangRufus](https://github.com/TangRufus))
 
