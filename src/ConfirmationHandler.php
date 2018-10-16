@@ -127,6 +127,7 @@ class ConfirmationHandler
                 [
                     'entry' => $entry->getId(),
                     'gf-sagepay-token' => $confirmationToken,
+                    'extra' => 'protection',
                 ],
                 $entry->getProperty('source_url')
             )
