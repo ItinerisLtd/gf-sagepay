@@ -1,10 +1,18 @@
 # Change Log
 
+## [0.9.6](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.6) (2018-10-18)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.5...0.9.6)
+
+**Merged pull requests:**
+
+- Restore original `$\_FILES` after symfony/http-foundation is initialized [\#70](https://github.com/ItinerisLtd/gf-sagepay/pull/70) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.9.5](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.5) (2018-10-18)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.4...0.9.5)
 
 **Merged pull requests:**
 
+- Version bump 0.9.5 [\#69](https://github.com/ItinerisLtd/gf-sagepay/pull/69) ([TangRufus](https://github.com/TangRufus))
 - Empty `$\_FILES` to prevent conflicts with `symfony/http-foundation` [\#68](https://github.com/ItinerisLtd/gf-sagepay/pull/68) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.4](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.4) (2018-10-16)
