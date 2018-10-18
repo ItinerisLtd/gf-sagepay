@@ -18,6 +18,9 @@ class RedirectUrlFactory
             $amount
         );
 
+        // Reset $_FILES to prevent conflicts with symfony/http-foundation.
+        $_FILES = [];
+
         $gateway = GatewayFactory::buildFromFeed($feed);
 
         /* @var ServerPurchaseRequest $request */ // phpcs:ignore
