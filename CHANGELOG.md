@@ -1,10 +1,18 @@
 # Change Log
 
+## [0.9.5](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.5) (2018-10-18)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.4...0.9.5)
+
+**Merged pull requests:**
+
+- Empty `$\_FILES` to prevent conflicts with `symfony/http-foundation` [\#68](https://github.com/ItinerisLtd/gf-sagepay/pull/68) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.9.4](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.4) (2018-10-16)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.3...0.9.4)
 
 **Merged pull requests:**
 
+- Version bump 0.9.4 [\#67](https://github.com/ItinerisLtd/gf-sagepay/pull/67) ([TangRufus](https://github.com/TangRufus))
 - Add extra query param to confirmation URL [\#66](https://github.com/ItinerisLtd/gf-sagepay/pull/66) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.3](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.3) (2018-10-11)
