@@ -28,6 +28,7 @@ class FeedSettingsFields
             esc_html__('Payment Amount', 'gf-sagepay') .
             '</h6>' .
             esc_html__(
+                // phpcs:ignore Generic.Files.LineLength.TooLong
                 "Select which field determines the payment amount, or select 'Form Total' to use the total of all pricing fields as the payment amount.",
                 'gf-sagepay'
             );
@@ -37,6 +38,7 @@ class FeedSettingsFields
             esc_html__('Conditional Logic', 'gf-sagepay') .
             '</h6>' .
             esc_html__(
+                // phpcs:ignore Generic.Files.LineLength.TooLong
                 'When conditions are enabled, form submissions will only be sent to the payment gateway when the conditions are met. When disabled, all form submissions will be sent to the payment gateway.',
                 'gf-sagepay'
             );
@@ -146,12 +148,14 @@ class FeedSettingsFields
     {
         $venforTooltip =
             esc_html__(
+                // phpcs:ignore Generic.Files.LineLength.TooLong
                 'Used to authenticate your site. This should contain the Sage Pay Vendor Name supplied by Sage Pay when your account was created.',
                 'gf-sagepay'
             );
 
         $cancelUrlTooltip =
             esc_html__(
+                // phpcs:ignore Generic.Files.LineLength.TooLong
                 'Enter the URL the user should be sent to if they cancelled the SagePay checkout form or payment failed.',
                 'gf-sagepay'
             );
