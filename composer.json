@@ -50,18 +50,38 @@
             "Itineris\\SagePay\\": "src/"
         }
     },
-    "scripts": {
-        "check-style": "phpcs --colors -p",
-        "pretag": [
-            "composer update --no-suggest",
-            "@check-style",
-            "composer normalize",
-            "doctoc README.md",
-            "github_changelog_generator --no-verbose"
+    "archive": {
+        "exclude": [
+            "/.*",
+            "/*",
+            "!*LICENSE*",
+            "!/*.php",
+            "!/README.txt",
+            "!src",
+            "!vendor/*.php",
+            "!vendor/**/*.php"
         ]
     },
+    "prefer-stable": true,
+    "scripts": {
+        "pretag": [
+            "composer update",
+            "@style:check",
+            "composer normalize",
+            "github_changelog_generator --no-verbose",
+            "npx doctoc README.md"
+        ],
+        "release:build": [
+            "rm -fr vendor",
+            "composer install --no-dev --prefer-dist --optimize-autoloader --no-suggest",
+            "rm -fr release wordpress",
+            "composer archive --format=zip --dir=release --file=gf-sagepay"
+        ],
+        "style:check": "phpcs",
+        "style:fix": "phpcbf"
+    },
     "support": {
-        "email": "hello@itineris.co.uk",
+        "email": "dev@itineris.co.uk",
         "issues": "https://github.com/ItinerisLtd/gf-sagepay/issues",
         "source": "https://github.com/ItinerisLtd/gf-sagepay"
     }
