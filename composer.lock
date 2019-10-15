@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "928f9008b1d20183e2c0b1ab55b9cdfb",
+    "content-hash": "601ca908109bbbfb4f2593d479c40fd3",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -1315,68 +1315,22 @@
     ],
     "packages-dev": [
         {
-            "name": "automattic/vipwpcs",
+            "name": "itinerisltd/itineris-wp-coding-standards",
             "version": "0.3.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Automattic/VIP-Coding-Standards.git",
-                "reference": "6ee2440476918f7f8d1419fab41a71a835cd3c0b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/VIP-Coding-Standards/zipball/6ee2440476918f7f8d1419fab41a71a835cd3c0b",
-                "reference": "6ee2440476918f7f8d1419fab41a71a835cd3c0b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6",
-                "squizlabs/php_codesniffer": "^3.2.3",
-                "wp-coding-standards/wpcs": "1.*"
-            },
-            "require-dev": {
-                "phpcompatibility/php-compatibility": "^9",
-                "phpunit/phpunit": "*"
-            },
-            "suggest": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
-            },
-            "type": "phpcodesniffer-standard",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/Automattic/VIP-Coding-Standards/graphs/contributors"
-                }
-            ],
-            "description": "PHP_CodeSniffer rules (sniffs) to enforce WordPress VIP minimum coding conventions",
-            "keywords": [
-                "phpcs",
-                "standards",
-                "wordpress"
-            ],
-            "time": "2018-12-04T18:31:10+00:00"
-        },
-        {
-            "name": "itinerisltd/itineris-wp-coding-standards",
-            "version": "0.1.0",
-            "source": {
-                "type": "git",
                 "url": "https://github.com/ItinerisLtd/itineris-wp-coding-standards.git",
-                "reference": "36b4df8bde555ae84c80b2724a972e9245d1177e"
+                "reference": "dccff3adb9c5fedf43d8be9bb4336df23a445d3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ItinerisLtd/itineris-wp-coding-standards/zipball/36b4df8bde555ae84c80b2724a972e9245d1177e",
-                "reference": "36b4df8bde555ae84c80b2724a972e9245d1177e",
+                "url": "https://api.github.com/repos/ItinerisLtd/itineris-wp-coding-standards/zipball/dccff3adb9c5fedf43d8be9bb4336df23a445d3a",
+                "reference": "dccff3adb9c5fedf43d8be9bb4336df23a445d3a",
                 "shasum": ""
             },
             "require": {
-                "automattic/vipwpcs": "^0.3.0",
-                "php": "^7.1",
-                "wp-coding-standards/wpcs": "^1.1"
+                "php": "^7.2",
+                "wp-coding-standards/wpcs": "^2.1"
             },
             "require-dev": {
                 "roave/security-advisories": "dev-master"
@@ -1384,25 +1338,32 @@
             "type": "phpcodesniffer-standard",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.1.x-dev"
+                    "dev-master": "0.3.x-dev"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "pretag": [
+                    "composer update",
+                    "composer normalize",
+                    "npx doctoc README.md",
+                    "github_changelog_generator --no-verbose"
+                ]
+            },
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Tang Rufus",
-                    "email": "tangrufus@gmail.com",
-                    "homepage": "https://typist.tech/",
-                    "role": "Developer"
-                },
-                {
                     "name": "Itineris Limited",
                     "email": "hello@itineris.co.uk",
                     "homepage": "https://itineris.co.uk/",
                     "role": "Company"
+                },
+                {
+                    "name": "Tang Rufus",
+                    "email": "tangrufus@gmail.com",
+                    "homepage": "https://typist.tech/",
+                    "role": "Developer"
                 }
             ],
             "description": "PHP_CodeSniffer rules for Itineris WordPress projects",
@@ -1413,7 +1374,12 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2018-10-18T11:02:14+00:00"
+            "support": {
+                "email": "dev@itineris.co.uk",
+                "issues": "https://github.com/ItinerisLtd/itineris-wp-coding-standards/issues",
+                "source": "https://github.com/ItinerisLtd/itineris-wp-coding-standards"
+            },
+            "time": "2019-10-15T14:19:34+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -1684,27 +1650,29 @@
         },
         {
             "name": "wp-coding-standards/wpcs",
-            "version": "1.2.1",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress/WordPress-Coding-Standards.git",
-                "reference": "f328bcafd97377e8e5e5d7b244d5ddbf301a3a5c"
+                "reference": "bd9c33152115e6741e3510ff7189605b35167908"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/f328bcafd97377e8e5e5d7b244d5ddbf301a3a5c",
-                "reference": "f328bcafd97377e8e5e5d7b244d5ddbf301a3a5c",
+                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/bd9c33152115e6741e3510ff7189605b35167908",
+                "reference": "bd9c33152115e6741e3510ff7189605b35167908",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3",
-                "squizlabs/php_codesniffer": "^2.9.0 || ^3.0.2"
+                "php": ">=5.4",
+                "squizlabs/php_codesniffer": "^3.3.1"
             },
             "require-dev": {
-                "phpcompatibility/php-compatibility": "^9.0"
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+                "phpcompatibility/php-compatibility": "^9.0",
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
             "suggest": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
             },
             "type": "phpcodesniffer-standard",
             "notification-url": "https://packagist.org/downloads/",
@@ -1723,7 +1691,7 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2018-12-18T09:43:51+00:00"
+            "time": "2019-05-21T02:50:00+00:00"
         }
     ],
     "aliases": [],

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name:     GF SagePay
  * Plugin URI:      https://www.itineris.co.uk/
@@ -22,15 +23,4 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-/**
- * Begins execution of the plugin.
- *
- * @return void
- */
-function run(): void
-{
-    $plugin = new GFSagePay();
-    $plugin->run();
-}
-
-run();
+GFSagePay::run();
