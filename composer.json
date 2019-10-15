@@ -34,7 +34,6 @@
     },
     "require-dev": {
         "itinerisltd/itineris-wp-coding-standards": "^0.1.0",
-        "itinerisltd/preflight-command": "^0.6.1",
         "roave/security-advisories": "dev-master"
     },
     "config": {
@@ -42,7 +41,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.9.x-dev"
+            "dev-master": "0.10.x-dev"
         }
     },
     "autoload": {
