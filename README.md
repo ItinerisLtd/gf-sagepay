@@ -1,60 +1,28 @@
-# gf-sagepay
+# GF SagePay
 
-[![Packagist Version](https://img.shields.io/packagist/v/itinerisltd/gf-sagepay.svg)](https://packagist.org/packages/itinerisltd/gf-sagepay)
-[![PHP from Packagist](https://img.shields.io/packagist/php-v/itinerisltd/gf-sagepay.svg)](https://packagist.org/packages/itinerisltd/gf-sagepay)
-[![Packagist Downloads](https://img.shields.io/packagist/dt/itinerisltd/gf-sagepay.svg)](https://packagist.org/packages/itinerisltd/gf-sagepay)
-[![GitHub License](https://img.shields.io/github/license/itinerisltd/gf-sagepay.svg)](https://github.com/ItinerisLtd/gf-sagepay/blob/master/LICENSE)
-[![Hire Itineris](https://img.shields.io/badge/Hire-Itineris-ff69b4.svg)](https://www.itineris.co.uk/contact/)
+[![CircleCI](https://circleci.com/gh/ItinerisLtd/gf-sagepay.svg?style=svg)](https://circleci.com/gh/ItinerisLtd/gf-sagepay)
+[![Packagist Version](https://img.shields.io/packagist/v/itinerisltd/gf-sagepay.svg?label=release&style=flat-square)](https://packagist.org/packages/itinerisltd/gf-sagepay)
+[![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/rating/gf-sagepay?style=flat-square)](https://wordpress.org/plugins/gf-sagepay)
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/itinerisltd/gf-sagepay.svg?style=flat-square)](https://packagist.org/packages/itinerisltd/gf-sagepay)
+[![WordPress Plugin: Tested WP Version](https://img.shields.io/wordpress/plugin/tested/gf-sagepay?style=flat-square)](https://wordpress.org/plugins/gf-sagepay)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/itinerisltd/gf-sagepay.svg?label=packagist%20downloads&style=flat-square)](https://packagist.org/packages/itinerisltd/gf-sagepay/stats)
+[![WordPress Plugin Downloads](https://img.shields.io/wordpress/plugin/dt/gf-sagepay?label=wp.org%20downloads&style=flat-square)](https://wordpress.org/plugins/gf-sagepay/advanced/)
+[![GitHub License](https://img.shields.io/github/license/itinerisltd/gf-sagepay.svg?style=flat-square)](https://github.com/ItinerisLtd/gf-sagepay/blob/master/LICENSE)
+[![Hire Itineris](https://img.shields.io/badge/Hire-Itineris-ff69b4.svg?style=flat-square)](https://www.itineris.co.uk/contact/)
+[![Twitter Follow](https://img.shields.io/twitter/follow/itineris_ltd?style=flat-square)](https://twitter.com/itineris_ltd)
+[![Twitter Follow](https://img.shields.io/twitter/follow/TangRufus?style=flat-square)](https://twitter.com/tangrufus)
 
-
-Gravity forms add-on for SagePay.
+SagePay payment gateway for GravityForms.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Minimum Requirements](#minimum-requirements)
-- [Installation](#installation)
-- [Features](#features)
-- [Not Supported / Not Implemented](#not-supported--not-implemented)
-- [Best Practices](#best-practices)
-  - [HTTPS Everywhere](#https-everywhere)
-  - [Payment Status](#payment-status)
-  - [Fraud Protection](#fraud-protection)
-- [Test Sandbox](#test-sandbox)
-- [FAQ](#faq)
-  - [Missing Gift Aid Acceptance Box](#missing-gift-aid-acceptance-box)
-  - [GF SagePay is Missing on Form Settings](#gf-sagepay-is-missing-on-form-settings)
-- [Shipping Address](#shipping-address)
-  - [Use case: Not delivering any physical goods](#use-case-not-delivering-any-physical-goods)
-  - [Use case: Allow ship to billing address](#use-case-allow-ship-to-billing-address)
-- [Public API](#public-api)
-  - [Build URL for continuing confirmation](#build-url-for-continuing-confirmation)
-  - [Redirect URL Retrieval Failure Handling](#redirect-url-retrieval-failure-handling)
-- [Preflight](#preflight)
-- [Coding](#coding)
-  - [Required Reading List](#required-reading-list)
-  - [Gravity Forms](#gravity-forms)
-  - [Code Style](#code-style)
-- [Author Information](#author-information)
-- [Feedback](#feedback)
-- [Change log](#change-log)
-- [License](#license)
-
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Minimum Requirements
+## Goal
 
-- PHP v7.2
-- php-curl
-- WordPress v4.9.5
-- Gravity Forms v2.4.14.4
-
-## Installation
-
-```bash
-$ composer require itinerisltd/gf-sagepay
-```
+Allow Gravity Forms accepts SagePay one-off payments via [SagePay Server](https://www.sagepay.co.uk/support/15/36/sage-pay-server-understanding-the-process). 
 
 ## Features
 
@@ -82,6 +50,52 @@ Although these features are not supported by this plugin, but you might able to 
 - Account Type M – for telephone (MOTO) transactions
 - Account Type C – for repeat transactions
 
+Pull requests are welcomed.
+
+## Minimum Requirements
+
+- PHP v7.2
+- PHP cURL Extension
+- WordPress v4.9.10
+- [Gravity Forms](https://www.gravityforms.com/) v2.4.14.4
+
+## Installation
+
+### Composer (Recommended)
+
+```bash
+composer require itinerisltd/gf-sagepay
+```
+
+### wordpress.org (WP CLI)
+
+```bash
+wp plugin install gf-sagepay
+```
+
+### wordpress.org
+
+Download from https://wordpress.org/plugins/gf-sagepay 
+Then, install `gf-sagepay.zip` [as usual](https://codex.wordpress.org/Managing_Plugins#Installing_Plugins).
+
+### Build from Source (Not Recommended)
+
+```bash
+# Make sure you use the same PHP version as remote servers.
+# Building inside docker images is recommanded.
+php -v
+
+# Checkout source code
+git clone https://github.com/ItinerisLtd/gf-sagepay.git
+cd gf-sagepay
+git checkout <the-tag-or-the-branch-or-the-commit>
+
+# Build the zip file
+composer release:build
+```
+
+Then, install `release/gf-sagepay.zip` [as usual](https://codex.wordpress.org/Managing_Plugins#Installing_Plugins).
+
 ## Best Practices
 
 ### HTTPS Everywhere
@@ -100,16 +114,13 @@ To prevent chargebacks, enforce [3D Secure](https://www.sagepay.co.uk/support/12
 
 Always test the plugin and your fraud protection rules in test sandbox before going live.
 
-
 If you can't whitelist test server IPs, use `protxross` as `Vendor Code`.
-
 
 Use [ngrok](https://ngrok.com/) to make local notification URLs publicly accessible.
 
-
 Use one of the [test credit cards](https://www.sagepay.co.uk/support/12/36/test-card-details-for-your-test-transactions).
 
-## FAQ
+## Common Issues
 
 ### Missing Gift Aid Acceptance Box
 
@@ -118,13 +129,11 @@ The gift aid acceptance box only appears if your vendor account is Gift Aid enab
 
 ### GF SagePay is Missing on Form Settings
 
-Gravity Forms capabilities behave differently on multi-user sites and its documents are incomplete.
-If GF SagePay is missing on form settings, grant yourself `gf_sagepay` and `gf_sagepay_uninstall` capabilities.
-See: [https://docs.gravityforms.com/role-management-guide/](https://docs.gravityforms.com/role-management-guide/)   
+Make sure you meet the [minimum requirements](#minimum-requirements). Check your environment details at the [System Status Page](https://docs.gravityforms.com/checking-environment-details/).
 
 ## Shipping Address
 
-OmniPay requires both billing address and shipping address.
+[OmniPay](https://omnipay.thephpleague.com/) requires both billing address and shipping address.
 
 ### Use case: Not delivering any physical goods
 
@@ -134,17 +143,46 @@ Map the shipping address fields to the billing ones.
 
 This is similar to the the WooCommerce way.
 
-Use Gravity Forms' built-in feature: [Display option to use the values submitted in different field](https://docs.gravityforms.com/address-field/#advanced)
+Use Gravity Forms' built-in feature: [Display option to use the values submitted in different field](https://docs.gravityforms.com/address-field/#advanced-settings)
 
-## Public API
+## FAQ
 
-### Build URL for continuing confirmation
+### Will you add support for older PHP versions?
+
+Never! This plugin will only work on [actively supported PHP versions](https://secure.php.net/supported-versions.php).
+
+Don't use it on **end of life** or **security fixes only** PHP versions.
+
+### It looks awesome. Where can I find more goodies like this?
+
+- Articles on [Itineris' blog](https://www.itineris.co.uk/blog/)
+- More projects on [Itineris' GitHub profile](https://github.com/itinerisltd)
+- More plugins on [Itineris](https://profiles.wordpress.org/itinerisltd/#content-plugins) and [TangRufus](https://profiles.wordpress.org/tangrufus/#content-plugins) wp.org profiles
+- Follow [@itineris_ltd](https://twitter.com/itineris_ltd) and [@TangRufus](https://twitter.com/tangrufus) on Twitter
+- Hire [Itineris](https://www.itineris.co.uk/services/) to build your next awesome site
+
+### Where can I give :star::star::star::star::star: reviews?
+
+Thanks! Glad you like it. It's important to let my boss knows somebody is using this project. Please consider:
+
+- leave a 5-star review on [wordpress.org](https://wordpress.org/support/plugin/gf-sagepay/reviews/)
+- tweet something good with mentioning [@itineris_ltd](https://twitter.com/itineris_ltd) and [@TangRufus](https://twitter.com/tangrufus)
+- :star: star this [Github repo](https://github.com/ItinerisLtd/gf-sagepay)
+- :eyes: watch this [Github repo](https://github.com/ItinerisLtd/gf-sagepay)
+- write blog posts
+- submit [pull requests](https://github.com/ItinerisLtd/gf-sagepay)
+- [hire Itineris](https://www.itineris.co.uk/services/)
+
+## Developing
+
+### Public API
+
+#### Build URL for continuing confirmation
 
 `ConfirmationHandler::buildUrlFor(Entry $entry, int $ttlInSeconds = 3600): string`
 
 Usage:
 ```php
-<?php
 $entryId = 123;
 $rawEntry = GFAPI::get_entry($entryId);
 if (is_wp_error($rawEntry)) {
@@ -176,7 +214,7 @@ Note:
 - The confirmation will use latest field values from database which could have changed
 - No payment status checking
 
-### Redirect URL Retrieval Failure Handling
+#### Redirect URL Retrieval Failure Handling
 
 After form submit, this plugin sends order information to SagePay in exchange for a redirect URL(the SagePay hosted checkout form URL).
 
@@ -212,19 +250,6 @@ add_filter('gf_sagepay_redirect_url_failure_wp_die', function(bool $shouldWpDie,
 }, 10, 4);
 ```
 
-## Preflight
-
-This plugin provides built-in support for [preflight-command](https://github.com/itinerisltd/preflight-command).
-No extra setup steps required.
-
-
-Checker ID: `gf-sagepay-production-mode`
-- ensure all gf-sagepay feeds are in live mode (i.e: not in test mode)
-- can't be disabled
-- no config options available
-
-## Coding
-
 ### Required Reading List
 
 Read the followings before developing:
@@ -240,16 +265,13 @@ Read the followings before developing:
 
 Gravity Forms has undocumented hidden magics, read its source code.
 
-### Code Style
+### Testing
 
-Check your code style with `$ composer check-style`. It's a mix of PSR-1, PSR-2, PSR-4 and [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards).
-Change [ruleset.xml](./ruleset.xml) when necessary.
+```bash
+composer style:check
+```
 
-## Author Information
-
-[gf-sagepay](https://github.com/ItinerisLtd/gf-sagepay) is a [Itineris Limited](https://www.itineris.co.uk/) project created by [Tang Rufus](https://typist.tech).
-
-Full list of contributors can be found [here](https://github.com/ItinerisLtd/gf-sagepay/graphs/contributors).
+Pull requests without tests will not be accepted!
 
 ## Feedback
 
@@ -257,10 +279,20 @@ Full list of contributors can be found [here](https://github.com/ItinerisLtd/gf-
 Please submit an [issue](https://github.com/ItinerisLtd/gf-sagepay/issues/new) and point out what you do and don't like, or fork the project and make suggestions.
 **No issue is too small.**
 
-## Change log
+## Change Log
 
 Please see [CHANGELOG](./CHANGELOG.md) for more information on what has changed recently.
 
+## Security
+
+If you discover any security related issues, please email [dev@itineris.co.uk](mailto:dev@itineris.co.uk) instead of using the issue tracker.
+
+## Credits
+
+[GF SagePay](https://github.com/ItinerisLtd/gf-sagepay) is a [Itineris Limited](https://www.itineris.co.uk/) project created by [Tang Rufus](https://typist.tech).
+
+Full list of contributors can be found [here](https://github.com/ItinerisLtd/gf-sagepay/graphs/contributors).
+
 ## License
 
-[gf-sagepay](https://github.com/ItinerisLtd/gf-sagepay) is released under the [MIT License](https://opensource.org/licenses/MIT).
+[GF SagePay](https://github.com/ItinerisLtd/gf-sagepay) is released under the [MIT License](https://opensource.org/licenses/MIT).
