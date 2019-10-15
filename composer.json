@@ -4,6 +4,7 @@
     "description": "Gravity Forms Add-on for SagePay",
     "keywords": [
         "gravityforms",
+        "gravity-forms",
         "payment",
         "sagepay",
         "wordpress",
@@ -26,7 +27,7 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "ext-curl": "*",
         "league/omnipay": "^3.0",
         "omnipay/sagepay": "^3.0"

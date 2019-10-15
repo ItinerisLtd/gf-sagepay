@@ -45,10 +45,10 @@ Gravity forms add-on for SagePay.
 
 ## Minimum Requirements
 
-- PHP v7.1
+- PHP v7.2
 - php-curl
 - WordPress v4.9.5
-- Gravity Forms v2.3.0
+- Gravity Forms v2.4.14.4
 
 ## Installation
 
