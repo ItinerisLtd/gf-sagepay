@@ -260,6 +260,17 @@ class FeedSettingsFields
                 'after_input' => esc_html__('Leave blank to use Gravity Forms confirmations', 'gf-sagepay'),
                 'tooltip' => $cancelUrlTooltip,
             ],
+            [
+                'name' => 'other',
+                'label' => esc_html__('other', 'gf-sagepay'),
+                'type' => 'field_map',
+                'field_map' => [
+                    [
+                        'name' => 'vendorData',
+                        'label' => esc_html__('Vendor Data (Reference)', 'gf-sagepay'),
+                    ],
+                ],
+            ],
         ];
     }
 

@@ -27,6 +27,10 @@ class RedirectUrlFactory
         // Restore original $_FILES so that GravityForms saves it.
         $_FILES = $originalFiles;
 
+        $vendorData = $entry->getProperty(
+            $feed->getMeta('other_vendorData')
+        );
+
         /* @var ServerPurchaseRequest $request */ // phpcs:ignore
         $request = $gateway->purchase([
             'amount' => $entry->getProperty('payment_amount'),
@@ -38,6 +42,7 @@ class RedirectUrlFactory
             'apply3DSecure' => $feed->getMeta('3dSecure'),
             'applyAVSCV2' => $feed->getMeta('avscv2'),
             'allowGiftAid' => $feed->isAllowGiftAid(),
+            'vendorData' => $vendorData,
         ]);
 
         /* @var ServerAuthorizeResponse $response */ // phpcs:ignore
