@@ -51,14 +51,12 @@
     },
     "archive": {
         "exclude": [
-            "/.*",
-            "/*",
+            "*",
             "!*LICENSE*",
-            "!/*.php",
+            "!*.php",
             "!/README.txt",
             "!src",
-            "!vendor/*.php",
-            "!vendor/**/*.php"
+            "test"
         ]
     },
     "prefer-stable": true,
