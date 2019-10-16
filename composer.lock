@@ -1341,14 +1341,7 @@
                     "dev-master": "0.3.x-dev"
                 }
             },
-            "scripts": {
-                "pretag": [
-                    "composer update",
-                    "composer normalize",
-                    "npx doctoc README.md",
-                    "github_changelog_generator --no-verbose"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1374,11 +1367,6 @@
                 "standards",
                 "wordpress"
             ],
-            "support": {
-                "email": "dev@itineris.co.uk",
-                "issues": "https://github.com/ItinerisLtd/itineris-wp-coding-standards/issues",
-                "source": "https://github.com/ItinerisLtd/itineris-wp-coding-standards"
-            },
             "time": "2019-10-15T14:19:34+00:00"
         },
         {
