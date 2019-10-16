@@ -18,6 +18,43 @@ SagePay payment gateway for GravityForms.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Goal](#goal)
+- [Features](#features)
+- [Not Supported / Not Implemented](#not-supported--not-implemented)
+- [Minimum Requirements](#minimum-requirements)
+- [Installation](#installation)
+  - [Composer (Recommended)](#composer-recommended)
+  - [wordpress.org (WP CLI)](#wordpressorg-wp-cli)
+  - [wordpress.org](#wordpressorg)
+  - [Build from Source (Not Recommended)](#build-from-source-not-recommended)
+- [Best Practices](#best-practices)
+  - [HTTPS Everywhere](#https-everywhere)
+  - [Payment Status](#payment-status)
+  - [Fraud Protection](#fraud-protection)
+- [Test Sandbox](#test-sandbox)
+- [Common Issues](#common-issues)
+  - [Missing Gift Aid Acceptance Box](#missing-gift-aid-acceptance-box)
+  - [GF SagePay is Missing on Form Settings](#gf-sagepay-is-missing-on-form-settings)
+- [Shipping Address](#shipping-address)
+  - [Use case: Not delivering any physical goods](#use-case-not-delivering-any-physical-goods)
+  - [Use case: Allow ship to billing address](#use-case-allow-ship-to-billing-address)
+- [FAQ](#faq)
+  - [Will you add support for older PHP versions?](#will-you-add-support-for-older-php-versions)
+  - [It looks awesome. Where can I find more goodies like this?](#it-looks-awesome-where-can-i-find-more-goodies-like-this)
+  - [Where can I give :star::star::star::star::star: reviews?](#where-can-i-give-starstarstarstarstar-reviews)
+- [Developing](#developing)
+  - [Public API](#public-api)
+    - [Build URL for continuing confirmation](#build-url-for-continuing-confirmation)
+    - [Redirect URL Retrieval Failure Handling](#redirect-url-retrieval-failure-handling)
+  - [Required Reading List](#required-reading-list)
+  - [Gravity Forms](#gravity-forms)
+  - [Testing](#testing)
+- [Feedback](#feedback)
+- [Change Log](#change-log)
+- [Security](#security)
+- [Credits](#credits)
+- [License](#license)
+
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Goal
