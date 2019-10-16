@@ -1,10 +1,25 @@
 # Change Log
 
+## [0.10.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.10.0) (2019-10-16)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.6...0.10.0)
+
+**Merged pull requests:**
+
+- Update code standards [\#79](https://github.com/ItinerisLtd/gf-sagepay/pull/79) ([TangRufus](https://github.com/TangRufus))
+- Remove Preflight [\#78](https://github.com/ItinerisLtd/gf-sagepay/pull/78) ([TangRufus](https://github.com/TangRufus))
+- Update readme [\#77](https://github.com/ItinerisLtd/gf-sagepay/pull/77) ([TangRufus](https://github.com/TangRufus))
+- remove `.prettyci.composer.json` [\#76](https://github.com/ItinerisLtd/gf-sagepay/pull/76) ([TangRufus](https://github.com/TangRufus))
+- Git: Track `composer.json` [\#75](https://github.com/ItinerisLtd/gf-sagepay/pull/75) ([TangRufus](https://github.com/TangRufus))
+- Replace PrettyCI with CircleCI [\#74](https://github.com/ItinerisLtd/gf-sagepay/pull/74) ([TangRufus](https://github.com/TangRufus))
+- Bump minimum gravity forms version to 2.4.14.4; Bump minimum PHP version to 7.2 [\#73](https://github.com/ItinerisLtd/gf-sagepay/pull/73) ([TangRufus](https://github.com/TangRufus))
+- Use Itineris WP Coding Standards [\#72](https://github.com/ItinerisLtd/gf-sagepay/pull/72) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.9.6](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.6) (2018-10-18)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.5...0.9.6)
 
 **Merged pull requests:**
 
+- Version bump 0.9.6 [\#71](https://github.com/ItinerisLtd/gf-sagepay/pull/71) ([TangRufus](https://github.com/TangRufus))
 - Restore original `$\_FILES` after symfony/http-foundation is initialized [\#70](https://github.com/ItinerisLtd/gf-sagepay/pull/70) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.5](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.5) (2018-10-18)
