@@ -1,10 +1,19 @@
 # Change Log
 
+## [0.10.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.10.1) (2019-10-16)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.10.0...0.10.1)
+
+**Merged pull requests:**
+
+- Composer: Fix `release:build` [\#82](https://github.com/ItinerisLtd/gf-sagepay/pull/82) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.10.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.10.0) (2019-10-16)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.6...0.10.0)
 
 **Merged pull requests:**
 
+- Version bump 0.10.0 [\#81](https://github.com/ItinerisLtd/gf-sagepay/pull/81) ([TangRufus](https://github.com/TangRufus))
+- Add support for `vendorData` \(reference\) field [\#80](https://github.com/ItinerisLtd/gf-sagepay/pull/80) ([TangRufus](https://github.com/TangRufus))
 - Update code standards [\#79](https://github.com/ItinerisLtd/gf-sagepay/pull/79) ([TangRufus](https://github.com/TangRufus))
 - Remove Preflight [\#78](https://github.com/ItinerisLtd/gf-sagepay/pull/78) ([TangRufus](https://github.com/TangRufus))
 - Update readme [\#77](https://github.com/ItinerisLtd/gf-sagepay/pull/77) ([TangRufus](https://github.com/TangRufus))
@@ -145,7 +154,6 @@
 - Version bump 0.5.0 [\#32](https://github.com/ItinerisLtd/gf-sagepay/pull/32) ([TangRufus](https://github.com/TangRufus))
 - Fix: `AddOn::$\_path` should point to `gf-sagepay.php` [\#31](https://github.com/ItinerisLtd/gf-sagepay/pull/31) ([TangRufus](https://github.com/TangRufus))
 - New feature: Cancel url [\#30](https://github.com/ItinerisLtd/gf-sagepay/pull/30) ([TangRufus](https://github.com/TangRufus))
-- Lower PHP requirement to ^7.1; Bump GF requirement to v2.3.0.4 [\#29](https://github.com/ItinerisLtd/gf-sagepay/pull/29) ([TangRufus](https://github.com/TangRufus))
 - Add capabilities [\#28](https://github.com/ItinerisLtd/gf-sagepay/pull/28) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.4.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.4.1) (2018-04-28)
@@ -164,6 +172,7 @@
 
 **Merged pull requests:**
 
+- Lower PHP requirement to ^7.1; Bump GF requirement to v2.3.0.4 [\#29](https://github.com/ItinerisLtd/gf-sagepay/pull/29) ([TangRufus](https://github.com/TangRufus))
 - Version bump 0.4.0 [\#26](https://github.com/ItinerisLtd/gf-sagepay/pull/26) ([TangRufus](https://github.com/TangRufus))
 - Expose `ConfirmationHandler::buildUrlFor` as a public api [\#25](https://github.com/ItinerisLtd/gf-sagepay/pull/25) ([TangRufus](https://github.com/TangRufus))
 - Feed Settings Form: Use `select\_custom` as vendor code field type [\#24](https://github.com/ItinerisLtd/gf-sagepay/pull/24) ([TangRufus](https://github.com/TangRufus))
