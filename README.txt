@@ -96,7 +96,8 @@ Use Gravity Forms' built-in feature: [Display option to use the values submitted
 
 ### For Developers
 
-Fork the plugin on [GitHub](https://github.com/ItinerisLtd/gf-sagepay).
+- Check the public API and customization on [GitHub](https://github.com/ItinerisLtd/gf-sagepay#developing)
+- Fork the plugin on [GitHub](https://github.com/ItinerisLtd/gf-sagepay).
 
 == Frequently Asked Questions ==
 
