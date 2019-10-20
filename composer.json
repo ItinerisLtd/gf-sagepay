@@ -56,7 +56,8 @@
             "!*.php",
             "!/README.txt",
             "!src",
-            "test"
+            "test",
+            "tests"
         ]
     },
     "prefer-stable": true,
