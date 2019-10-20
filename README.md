@@ -93,7 +93,7 @@ Although these features are not supported by this plugin, but you might able to 
 
 - PHP v7.2
 - PHP cURL Extension
-- WordPress v4.9.10
+- WordPress v4.9.5
 - [Gravity Forms](https://www.gravityforms.com/) v2.4.14.4
 
 ## Installation
