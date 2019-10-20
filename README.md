@@ -9,8 +9,8 @@
 [![WordPress Plugin Downloads](https://img.shields.io/wordpress/plugin/dt/gf-sagepay?label=wp.org%20downloads&style=flat-square)](https://wordpress.org/plugins/gf-sagepay/advanced/)
 [![GitHub License](https://img.shields.io/github/license/itinerisltd/gf-sagepay.svg?style=flat-square)](https://github.com/ItinerisLtd/gf-sagepay/blob/master/LICENSE)
 [![Hire Itineris](https://img.shields.io/badge/Hire-Itineris-ff69b4.svg?style=flat-square)](https://www.itineris.co.uk/contact/)
-[![Twitter Follow](https://img.shields.io/twitter/follow/itineris_ltd?style=flat-square)](https://twitter.com/itineris_ltd)
-[![Twitter Follow](https://img.shields.io/twitter/follow/TangRufus?style=flat-square)](https://twitter.com/tangrufus)
+[![Twitter Follow @itineris_ltd](https://img.shields.io/twitter/follow/itineris_ltd?style=flat-square&color=1da1f2)](https://twitter.com/itineris_ltd)
+[![Twitter Follow @TangRufus](https://img.shields.io/twitter/follow/TangRufus?style=flat-square&color=1da1f2)](https://twitter.com/tangrufus)
 
 SagePay payment gateway for GravityForms.
 
@@ -87,7 +87,7 @@ Although these features are not supported by this plugin, but you might able to 
 - Account Type M – for telephone (MOTO) transactions
 - Account Type C – for repeat transactions
 
-Pull requests are welcomed.
+[Pull requests](https://github.com/ItinerisLtd/gf-sagepay) are welcomed.
 
 ## Minimum Requirements
 

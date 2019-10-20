@@ -15,7 +15,7 @@ class MinimumRequirements
                 'version' => '4.9.5',
             ],
             'php' => [
-                'version' => '7.1',
+                'version' => '7.2',
                 'extensions' => [
                     'curl',
                 ],
