@@ -13,6 +13,18 @@ orbs:
           - image: 'cibuilds/github:latest'
 
     jobs:
+      lint-wp-org:
+        parameters:
+          zip:
+            type: string
+            description: path to plugin zip file
+          executor:
+            type: executor
+            default: composer/php-72
+        executor: << parameters.executor >>
+        steps:
+          - run: unzip << parameters.zip >> -d /tmp/plugin-source-code
+          - run: find /tmp/plugin-source-code -name "*.php" -print0 | xargs -n 1 -0 php -l
       publish-to-github-releases:
         parameters:
           github_token:
@@ -73,10 +85,21 @@ workflows:
           filters:
             tags:
               only: /.*/
-
+      - itinerisltd/lint-wp-org:
+          name: lint-wp-org
+          requires:
+            - build
+          zip: release/gf-sagepay.zip
+          pre-steps:
+            - attach_workspace:
+                at: ~/project
+          filters:
+            tags:
+              only: /.*/
       - itinerisltd/publish-to-github-releases:
           requires:
             - build
+            - lint-wp-org
           artifact_dir: release
           pre-steps:
             - attach_workspace:
