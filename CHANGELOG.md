@@ -1,10 +1,18 @@
 # Change Log
 
+## [0.10.4](https://github.com/ItinerisLtd/gf-sagepay/tree/0.10.4) (2019-10-20)
+[Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.10.3...0.10.4)
+
+**Merged pull requests:**
+
+- Update `Plugin URI` to GitHub repo URL [\#89](https://github.com/ItinerisLtd/gf-sagepay/pull/89) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.10.3](https://github.com/ItinerisLtd/gf-sagepay/tree/0.10.3) (2019-10-20)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.10.2...0.10.3)
 
 **Merged pull requests:**
 
+- Version bump 0.10.3 [\#88](https://github.com/ItinerisLtd/gf-sagepay/pull/88) ([TangRufus](https://github.com/TangRufus))
 - Composer: Do not archive `tests` [\#87](https://github.com/ItinerisLtd/gf-sagepay/pull/87) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.10.2](https://github.com/ItinerisLtd/gf-sagepay/tree/0.10.2) (2019-10-20)
@@ -42,7 +50,6 @@
 - Replace PrettyCI with CircleCI [\#74](https://github.com/ItinerisLtd/gf-sagepay/pull/74) ([TangRufus](https://github.com/TangRufus))
 - Bump minimum gravity forms version to 2.4.14.4; Bump minimum PHP version to 7.2 [\#73](https://github.com/ItinerisLtd/gf-sagepay/pull/73) ([TangRufus](https://github.com/TangRufus))
 - Use Itineris WP Coding Standards [\#72](https://github.com/ItinerisLtd/gf-sagepay/pull/72) ([TangRufus](https://github.com/TangRufus))
-- Restore original `$\_FILES` after symfony/http-foundation is initialized [\#70](https://github.com/ItinerisLtd/gf-sagepay/pull/70) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.6](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.6) (2018-10-18)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.5...0.9.6)
@@ -50,6 +57,7 @@
 **Merged pull requests:**
 
 - Version bump 0.9.6 [\#71](https://github.com/ItinerisLtd/gf-sagepay/pull/71) ([TangRufus](https://github.com/TangRufus))
+- Restore original `$\_FILES` after symfony/http-foundation is initialized [\#70](https://github.com/ItinerisLtd/gf-sagepay/pull/70) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.5](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.5) (2018-10-18)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.9.4...0.9.5)
@@ -86,6 +94,7 @@
 
 **Merged pull requests:**
 
+- Version bump 0.9.2 [\#60](https://github.com/ItinerisLtd/gf-sagepay/pull/60) ([TangRufus](https://github.com/TangRufus))
 - CallbackHandler: Remove useless validation [\#59](https://github.com/ItinerisLtd/gf-sagepay/pull/59) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.1) (2018-09-05)
@@ -96,7 +105,6 @@
 - Version bump 0.9.1 [\#57](https://github.com/ItinerisLtd/gf-sagepay/pull/57) ([TangRufus](https://github.com/TangRufus))
 - Update code standards; Add PrettryCI config [\#56](https://github.com/ItinerisLtd/gf-sagepay/pull/56) ([TangRufus](https://github.com/TangRufus))
 - Better logging [\#55](https://github.com/ItinerisLtd/gf-sagepay/pull/55) ([TangRufus](https://github.com/TangRufus))
-- Revert "New Feature: Copy billing address to shipping address" [\#43](https://github.com/ItinerisLtd/gf-sagepay/pull/43) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.9.0) (2018-08-22)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.8.0...0.9.0)
@@ -127,6 +135,7 @@
 **Merged pull requests:**
 
 - Version bump 0.7.0 [\#44](https://github.com/ItinerisLtd/gf-sagepay/pull/44) ([TangRufus](https://github.com/TangRufus))
+- Revert "New Feature: Copy billing address to shipping address" [\#43](https://github.com/ItinerisLtd/gf-sagepay/pull/43) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.6.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.6.0) (2018-05-28)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.5.3...0.6.0)
@@ -137,7 +146,6 @@
 
 **Merged pull requests:**
 
-- Version bump 0.9.2 [\#60](https://github.com/ItinerisLtd/gf-sagepay/pull/60) ([TangRufus](https://github.com/TangRufus))
 - Version bump 0.6.0 [\#42](https://github.com/ItinerisLtd/gf-sagepay/pull/42) ([TangRufus](https://github.com/TangRufus))
 - New Feature: Copy billing address to shipping address [\#41](https://github.com/ItinerisLtd/gf-sagepay/pull/41) ([TangRufus](https://github.com/TangRufus))
 
@@ -225,7 +233,6 @@
 
 - Version bump 0.2.0 [\#15](https://github.com/ItinerisLtd/gf-sagepay/pull/15) ([TangRufus](https://github.com/TangRufus))
 - Add gift aid support [\#14](https://github.com/ItinerisLtd/gf-sagepay/pull/14) ([TangRufus](https://github.com/TangRufus))
-- Composer: Add type `wordpress-plugin` [\#10](https://github.com/ItinerisLtd/gf-sagepay/pull/10) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.1.1](https://github.com/ItinerisLtd/gf-sagepay/tree/0.1.1) (2018-04-16)
 [Full Changelog](https://github.com/ItinerisLtd/gf-sagepay/compare/0.1.0...0.1.1)
@@ -233,6 +240,7 @@
 **Merged pull requests:**
 
 - Version bump 0.1.1 [\#11](https://github.com/ItinerisLtd/gf-sagepay/pull/11) ([TangRufus](https://github.com/TangRufus))
+- Composer: Add type `wordpress-plugin` [\#10](https://github.com/ItinerisLtd/gf-sagepay/pull/10) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.1.0](https://github.com/ItinerisLtd/gf-sagepay/tree/0.1.0) (2018-04-16)
 **Merged pull requests:**
