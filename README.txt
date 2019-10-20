@@ -5,7 +5,7 @@ Tags: gravity forms, gravityforms, payment-gateway, payment gateway, sagepay, sa
 Requires at least: 4.9.5
 Tested up to: 5.3
 Requires PHP: 7.2
-Stable tag: 0.10.1
+Stable tag: 0.10.2
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -96,7 +96,8 @@ Use Gravity Forms' built-in feature: [Display option to use the values submitted
 
 ### For Developers
 
-Fork the plugin on [GitHub](https://github.com/ItinerisLtd/gf-sagepay).
+- Check the public API and customization on [GitHub](https://github.com/ItinerisLtd/gf-sagepay#developing)
+- Fork the plugin on [GitHub](https://github.com/ItinerisLtd/gf-sagepay).
 
 == Frequently Asked Questions ==
 
