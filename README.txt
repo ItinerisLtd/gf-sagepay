@@ -5,7 +5,7 @@ Tags: gravity forms, gravityforms, payment-gateway, payment gateway, sagepay, sa
 Requires at least: 4.9.5
 Tested up to: 5.3
 Requires PHP: 7.2
-Stable tag: 0.10.4
+Stable tag: 0.10.5
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -15,7 +15,7 @@ SagePay payment gateway for GravityForms.
 
 ### Goal
 
-Allow Gravity Forms accepts SagePay one-off payments via [SagePay Server](https://www.sagepay.co.uk/support/15/36/sage-pay-server-understanding-the-process). 
+Allow Gravity Forms accepts SagePay one-off payments via [SagePay Server](https://www.sagepay.co.uk/support/15/36/sage-pay-server-understanding-the-process).
 
 ### Features
 
