@@ -5,7 +5,7 @@ Tags: gravity forms, gravityforms, payment-gateway, payment gateway, sagepay, sa
 Requires at least: 4.9.5
 Tested up to: 5.3
 Requires PHP: 7.2
-Stable tag: 0.10.5
+Stable tag: 0.10.6
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
