@@ -109,9 +109,25 @@ class CallbackHandler
 
     private static function getEntryByRequest(ServerNotifyRequest $request, GFPaymentAddOn $addOn): Entry
     {
-        $entryId = $addOn->get_entry_by_transaction_id(
-            $request->getTransactionId()
+        $wpdb = $GLOBALS['wpdb'];
+        $entryMetaTableName = $addOn->get_entry_meta_table_name();
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                // See:  https://github.com/WordPress/WordPress-Coding-Standards/issues/1589.
+                // phpcs:ignore Generic.Files.LineLength.TooLong,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                "SELECT `entry_id` FROM `$entryMetaTableName` WHERE `meta_key` = 'transaction_reference' AND `meta_value` LIKE %s LIMIT 1",
+                '%"VendorTxCode":"' . $request->getTransactionId() . '"%'
+            ),
+            ARRAY_A
         );
+
+        $entryId = null;
+        if (is_array($results)) {
+            $firstResult = $results[0] ?? [];
+            $entryId = $firstResult['entry_id'];
+        }
 
         $rawEntry = GFAPI::get_entry($entryId);
         if (is_wp_error($rawEntry)) {
