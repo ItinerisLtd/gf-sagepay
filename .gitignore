@@ -3,9 +3,3 @@
 
 ### Composer ###
 /vendor/
-
-### PhpStorm ###
-/.idea/
-
-### i18n ###
-/languages/
