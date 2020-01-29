@@ -7,7 +7,6 @@ namespace Itineris\SagePay;
 use GFAPI;
 use GFPaymentAddOn;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
-use Omnipay\SagePay\Message\ServerNotifyResponse;
 use Omnipay\SagePay\ServerGateway;
 use WP_Error;
 
@@ -22,7 +21,7 @@ class CallbackHandler
         /* @var ServerNotifyRequest $request */ // phpcs:ignore
         $request = $gateway->acceptNotification();
 
-        self::logDebug($request, $addOn);
+        self::logDebug(__METHOD__, $request, $addOn);
 
         $entry = self::getEntryByRequest($request, $addOn);
 
@@ -30,13 +29,12 @@ class CallbackHandler
             $entry->getMeta('transaction_reference')
         );
 
-        $addOn->log_debug(__METHOD__ . '(): After accepting notification');
-
         // Get the response message ready for returning.
-        /* @var ServerNotifyResponse $response */ // phpcs:ignore
+        /* @var ServerNotifyRequest $response */ // phpcs:ignore
         $response = $request->send();
 
-        self::logDebug($response, $addOn);
+        $addOn->log_debug(__METHOD__ . '(): After accepting notification');
+        self::logDebug(__METHOD__, $response, $addOn);
 
         // Save the final transactionReference against the transaction in the database. It will
         // be needed if you want to capture the payment (for an authorize) or void or refund or
@@ -76,6 +74,7 @@ class CallbackHandler
         $response->confirm(
             self::getNextUrl($entry)
         );
+        exit;
     }
 
     private static function buildGatewayBySuperglobals(GFPaymentAddOn $addOn): ServerGateway
@@ -97,50 +96,39 @@ class CallbackHandler
     /**
      * Log SagePay api object via Gravity Forms logger.
      *
-     * @param ServerNotifyRequest|ServerNotifyResponse $request SagePay api object.
-     * @param GFPaymentAddOn                           $addOn   Add-on instance.
+     * @param string              $methodName The caller method name.
+     * @param ServerNotifyRequest $request    SagePay api object.
+     * @param GFPaymentAddOn      $addOn      Add-on instance.
      */
-    private static function logDebug($request, GFPaymentAddOn $addOn): void
+    private static function logDebug(string $methodName, ServerNotifyRequest $request, GFPaymentAddOn $addOn): void
     {
-        $addOn->log_debug(__METHOD__ . '(): Status - ' . $request->getTransactionStatus());
-        $addOn->log_debug(__METHOD__ . '(): Message - ' . $request->getMessage());
-        $addOn->log_debug(__METHOD__ . '(): Data - ' . wp_json_encode($request->getData()));
+        $addOn->log_debug($methodName . '(): Status - ' . $request->getTransactionStatus());
+        $addOn->log_debug($methodName . '(): Message - ' . $request->getMessage());
+        $addOn->log_debug($methodName . '(): Data - ' . wp_json_encode($request->getData()));
+        $addOn->log_debug($methodName . '(): TransactionId (VendorTxCode) - ' . $request->getTransactionId());
+        // phpcs:ignore Generic.Files.LineLength.TooLong
+        $addOn->log_debug($methodName . '(): TransactionReference (final_transaction_reference) - ' . wp_json_encode($request->getTransactionReference()));
     }
 
     private static function getEntryByRequest(ServerNotifyRequest $request, GFPaymentAddOn $addOn): Entry
     {
-        $wpdb = $GLOBALS['wpdb'];
-        $entryMetaTableName = $addOn->get_entry_meta_table_name();
-
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-        $results = $wpdb->get_results(
-            $wpdb->prepare(
-                // See:  https://github.com/WordPress/WordPress-Coding-Standards/issues/1589.
-                // phpcs:ignore Generic.Files.LineLength.TooLong,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                "SELECT `entry_id` FROM `$entryMetaTableName` WHERE `meta_key` = 'transaction_reference' AND `meta_value` LIKE %s LIMIT 1",
-                '%"VendorTxCode":"' . $request->getTransactionId() . '"%'
-            ),
-            ARRAY_A
+        $entryId = $addOn->get_entry_by_transaction_id(
+            $request->getTransactionId()
         );
-
-        $entryId = null;
-        if (is_array($results)) {
-            $firstResult = $results[0] ?? [];
-            $entryId = $firstResult['entry_id'];
-        }
 
         $rawEntry = GFAPI::get_entry($entryId);
         if (is_wp_error($rawEntry)) {
-            /* @var WP_Error $rawEntry */ // phpcs:ignore
-            $message = $rawEntry->get_error_message();
-            $addOn->log_error(__METHOD__ . '(): ' . $message);
+            /* @var WP_Error $rawEntry */ // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+            $message = __METHOD__ . '(): Unable to find entry by transaction id (VendorTxCode)' . $rawEntry->get_error_message(); // phpcs:ignore Generic.Files.LineLength.TooLong
+            $addOn->log_error($message);
 
-            /* @var ServerNotifyResponse $response */ // phpcs:ignore
+            /* @var ServerNotifyRequest $response */ // phpcs:ignore
             $response = $request->send();
             $response->error(
                 self::getFallbackNextUrl(),
                 $message
             );
+            exit;
         }
 
         return new Entry($rawEntry);
