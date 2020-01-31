@@ -1,11 +1,20 @@
 # Changelog
 
+## [0.10.8](https://github.com/itinerisltd/gf-sagepay/tree/0.10.8) (2020-01-31)
+
+[Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.10.7...0.10.8)
+
+**Merged pull requests:**
+
+- Fix entry not found in callback [\#119](https://github.com/ItinerisLtd/gf-sagepay/pull/119) ([TangRufus](https://github.com/TangRufus))
+
 ## [0.10.7](https://github.com/itinerisltd/gf-sagepay/tree/0.10.7) (2020-01-31)
 
 [Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.10.6...0.10.7)
 
 **Merged pull requests:**
 
+- Version bump 0.10.7 [\#118](https://github.com/ItinerisLtd/gf-sagepay/pull/118) ([TangRufus](https://github.com/TangRufus))
 - Bump squizlabs/php\_codesniffer from 3.5.3 to 3.5.4 [\#117](https://github.com/ItinerisLtd/gf-sagepay/pull/117) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Add more logging; Speed improvment; Ensure `exit` after confirmation [\#116](https://github.com/ItinerisLtd/gf-sagepay/pull/116) ([TangRufus](https://github.com/TangRufus))
 - Composer: Lock platform to PHP v7.2; Cleanup `.gitignore` [\#115](https://github.com/ItinerisLtd/gf-sagepay/pull/115) ([TangRufus](https://github.com/TangRufus))
@@ -24,7 +33,6 @@
 - Bump php-http/discovery from 1.7.1 to 1.7.3 [\#108](https://github.com/ItinerisLtd/gf-sagepay/pull/108) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump php-http/httplug from 2.0.0 to 2.1.0 [\#106](https://github.com/ItinerisLtd/gf-sagepay/pull/106) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump php-http/discovery from 1.7.0 to 1.7.1 [\#105](https://github.com/ItinerisLtd/gf-sagepay/pull/105) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump guzzlehttp/guzzle from 6.5.1 to 6.5.2 [\#104](https://github.com/ItinerisLtd/gf-sagepay/pull/104) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump guzzlehttp/guzzle from 6.5.0 to 6.5.1 [\#103](https://github.com/ItinerisLtd/gf-sagepay/pull/103) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump symfony/http-foundation from 4.4.1 to 4.4.2 [\#102](https://github.com/ItinerisLtd/gf-sagepay/pull/102) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump itinerisltd/itineris-wp-coding-standards from 0.3.2 to 0.3.5 [\#101](https://github.com/ItinerisLtd/gf-sagepay/pull/101) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
@@ -37,6 +45,7 @@
 
 **Merged pull requests:**
 
+- Bump guzzlehttp/guzzle from 6.5.1 to 6.5.2 [\#104](https://github.com/ItinerisLtd/gf-sagepay/pull/104) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - composer require omnipay/sagepay && composer require --dev itinerisltd/itineris-wp-coding-standards [\#97](https://github.com/ItinerisLtd/gf-sagepay/pull/97) ([TangRufus](https://github.com/TangRufus))
 - Version bump 0.10.5 [\#96](https://github.com/ItinerisLtd/gf-sagepay/pull/96) ([TangRufus](https://github.com/TangRufus))
 - Add dependabot [\#94](https://github.com/ItinerisLtd/gf-sagepay/pull/94) ([TangRufus](https://github.com/TangRufus))
@@ -109,7 +118,6 @@
 
 - Version bump 0.9.6 [\#71](https://github.com/ItinerisLtd/gf-sagepay/pull/71) ([TangRufus](https://github.com/TangRufus))
 - Restore original `$\_FILES` after symfony/http-foundation is initialized [\#70](https://github.com/ItinerisLtd/gf-sagepay/pull/70) ([TangRufus](https://github.com/TangRufus))
-- Version bump 0.9.5 [\#69](https://github.com/ItinerisLtd/gf-sagepay/pull/69) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.5](https://github.com/itinerisltd/gf-sagepay/tree/0.9.5) (2018-10-18)
 
@@ -117,6 +125,7 @@
 
 **Merged pull requests:**
 
+- Version bump 0.9.5 [\#69](https://github.com/ItinerisLtd/gf-sagepay/pull/69) ([TangRufus](https://github.com/TangRufus))
 - Empty `$\_FILES` to prevent conflicts with `symfony/http-foundation` [\#68](https://github.com/ItinerisLtd/gf-sagepay/pull/68) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.4](https://github.com/itinerisltd/gf-sagepay/tree/0.9.4) (2018-10-16)
@@ -158,6 +167,7 @@
 
 **Merged pull requests:**
 
+- Version bump 0.9.1 [\#57](https://github.com/ItinerisLtd/gf-sagepay/pull/57) ([TangRufus](https://github.com/TangRufus))
 - Update code standards; Add PrettryCI config [\#56](https://github.com/ItinerisLtd/gf-sagepay/pull/56) ([TangRufus](https://github.com/TangRufus))
 - Better logging [\#55](https://github.com/ItinerisLtd/gf-sagepay/pull/55) ([TangRufus](https://github.com/TangRufus))
 
@@ -171,7 +181,6 @@
 
 **Merged pull requests:**
 
-- Version bump 0.9.1 [\#57](https://github.com/ItinerisLtd/gf-sagepay/pull/57) ([TangRufus](https://github.com/TangRufus))
 - Version bump 0.9.0 [\#53](https://github.com/ItinerisLtd/gf-sagepay/pull/53) ([TangRufus](https://github.com/TangRufus))
 - :bike:Bikeshedding for open sourcing [\#52](https://github.com/ItinerisLtd/gf-sagepay/pull/52) ([TangRufus](https://github.com/TangRufus))
 - Create LICENSE [\#51](https://github.com/ItinerisLtd/gf-sagepay/pull/51) ([TangRufus](https://github.com/TangRufus))
