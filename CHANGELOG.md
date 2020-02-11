@@ -1,11 +1,21 @@
 # Changelog
 
+## [0.10.9](https://github.com/itinerisltd/gf-sagepay/tree/0.10.9) (2020-02-11)
+
+[Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.10.8...0.10.9)
+
+**Merged pull requests:**
+
+- Defer setting transcation id and payment amount [\#122](https://github.com/ItinerisLtd/gf-sagepay/pull/122) ([TangRufus](https://github.com/TangRufus))
+- Bump wp-coding-standards/wpcs from 2.2.0 to 2.2.1 [\#121](https://github.com/ItinerisLtd/gf-sagepay/pull/121) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
 ## [0.10.8](https://github.com/itinerisltd/gf-sagepay/tree/0.10.8) (2020-01-31)
 
 [Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.10.7...0.10.8)
 
 **Merged pull requests:**
 
+- Version bump 0.10.8 [\#120](https://github.com/ItinerisLtd/gf-sagepay/pull/120) ([TangRufus](https://github.com/TangRufus))
 - Fix entry not found in callback [\#119](https://github.com/ItinerisLtd/gf-sagepay/pull/119) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.10.7](https://github.com/itinerisltd/gf-sagepay/tree/0.10.7) (2020-01-31)
@@ -33,6 +43,7 @@
 - Bump php-http/discovery from 1.7.1 to 1.7.3 [\#108](https://github.com/ItinerisLtd/gf-sagepay/pull/108) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump php-http/httplug from 2.0.0 to 2.1.0 [\#106](https://github.com/ItinerisLtd/gf-sagepay/pull/106) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump php-http/discovery from 1.7.0 to 1.7.1 [\#105](https://github.com/ItinerisLtd/gf-sagepay/pull/105) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump guzzlehttp/guzzle from 6.5.1 to 6.5.2 [\#104](https://github.com/ItinerisLtd/gf-sagepay/pull/104) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump guzzlehttp/guzzle from 6.5.0 to 6.5.1 [\#103](https://github.com/ItinerisLtd/gf-sagepay/pull/103) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump symfony/http-foundation from 4.4.1 to 4.4.2 [\#102](https://github.com/ItinerisLtd/gf-sagepay/pull/102) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump itinerisltd/itineris-wp-coding-standards from 0.3.2 to 0.3.5 [\#101](https://github.com/ItinerisLtd/gf-sagepay/pull/101) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
@@ -45,7 +56,6 @@
 
 **Merged pull requests:**
 
-- Bump guzzlehttp/guzzle from 6.5.1 to 6.5.2 [\#104](https://github.com/ItinerisLtd/gf-sagepay/pull/104) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - composer require omnipay/sagepay && composer require --dev itinerisltd/itineris-wp-coding-standards [\#97](https://github.com/ItinerisLtd/gf-sagepay/pull/97) ([TangRufus](https://github.com/TangRufus))
 - Version bump 0.10.5 [\#96](https://github.com/ItinerisLtd/gf-sagepay/pull/96) ([TangRufus](https://github.com/TangRufus))
 - Add dependabot [\#94](https://github.com/ItinerisLtd/gf-sagepay/pull/94) ([TangRufus](https://github.com/TangRufus))
