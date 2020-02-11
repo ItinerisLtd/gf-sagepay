@@ -13,10 +13,15 @@ class RedirectUrlFactory
 {
     public static function build(GFPaymentAddOn $addOn, Feed $feed, Entry $entry, float $amount): string
     {
-        $entry->markAsProcessing(
-            GFFormsModel::get_uuid('-'),
-            $amount
-        );
+        $transactionId = GFFormsModel::get_uuid('-');
+        $addOn->log_debug(__METHOD__ . '():  Generated $transactionId - ' . $transactionId);
+
+        $entry->markAsProcessing($transactionId, $amount);
+        // phpcs:ignore Generic.Files.LineLength.TooLong
+        $addOn->log_debug(__METHOD__ . '():  Saved transactionId (' . $entry->getMeta('transaction_id') . ') as entry property on entry id: ' . $entry->getId() . ')');
+        // Workaround for Gravity Forms Encrypted Fields.
+        // phpcs:ignore Generic.Files.LineLength.TooLong
+        $addOn->log_debug(__METHOD__ . '():  Saved transactionId (' . $entry->getMeta('transaction_id') . ') as entry meta on entry id: ' . $entry->getId() . ')');
 
         // Temporarily reset $_FILES to prevent conflicts with symfony/http-foundation.
         $originalFiles = $_FILES; // phpcs:ignore
@@ -65,7 +70,7 @@ class RedirectUrlFactory
         return $response->getRedirectUrl();
     }
 
-    private static function getNotifyUrl(GFPaymentAddOn $addOn, Feed $feed): string
+    protected static function getNotifyUrl(GFPaymentAddOn $addOn, Feed $feed): string
     {
         $callback = $addOn->get_slug();
         $vendor = $feed->getVendor();
@@ -85,7 +90,7 @@ class RedirectUrlFactory
         );
     }
 
-    private static function handleFailure(ServerAuthorizeResponse $response, Entry $entry, GFPaymentAddOn $addOn): void
+    protected static function handleFailure(ServerAuthorizeResponse $response, Entry $entry, GFPaymentAddOn $addOn): void // phpcs:ignore Generic.Files.LineLength.TooLong
     {
         $entry->markAsFailed(
             $addOn,

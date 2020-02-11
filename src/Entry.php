@@ -9,14 +9,14 @@ use GFPaymentAddOn;
 
 class Entry
 {
-    private const NOT_FULFILLED = 0;
+    protected const NOT_FULFILLED = 0;
 
     /**
      * Gravity Forms entry object array
      *
      * @var array
      */
-    private $data;
+    protected $data;
 
     /**
      * Entry constructor.
@@ -30,10 +30,13 @@ class Entry
 
     public function markAsProcessing(string $uuid, float $amount): void
     {
-        $this->setProperty('transaction_id', $uuid);
-        $this->setProperty('payment_amount', $amount);
-        $this->setProperty('payment_status', 'Processing');
-        $this->setProperty('is_fulfilled', self::NOT_FULFILLED);
+        $this->setPropertyWithoutReload('transaction_id', $uuid);
+        $this->setPropertyWithoutReload('payment_amount', $amount);
+        $this->setPropertyWithoutReload('payment_status', 'Processing');
+        $this->setPropertyWithoutReload('is_fulfilled', self::NOT_FULFILLED);
+        // Workaround for Gravity Forms Encrypted Fields.
+        $this->setMetaWithoutReload('transaction_id', $uuid);
+        $this->setMetaWithoutReload('payment_amount', $amount);
 
         $this->reload();
     }
@@ -48,10 +51,15 @@ class Entry
      */
     public function setProperty($property, $value): bool
     {
-        $result = (bool) GFAPI::update_entry_property($this->getId(), $property, $value);
+        $result = $this->setPropertyWithoutReload($property, $value);
         $this->reload();
 
         return $result;
+    }
+
+    protected function setPropertyWithoutReload($property, $value): bool
+    {
+        return (bool) GFAPI::update_entry_property($this->getId(), $property, $value);
     }
 
     public function getId(): int
@@ -59,7 +67,7 @@ class Entry
         return (int) $this->data['id'];
     }
 
-    private function reload(): void
+    protected function reload(): void
     {
         $this->data = GFAPI::get_entry($this->getId());
     }
@@ -72,10 +80,11 @@ class Entry
             $asArray,
             [
                 'type' => 'complete_payment',
-                'amount' => $this->getProperty('payment_amount'),
-                'transaction_id' => $this->getProperty('transaction_id'),
+                'amount' => $this->getMeta('payment_amount'),
+                'transaction_id' => $this->getMeta('transaction_id'),
                 'entry_id' => $this->getId(),
                 'note' => $note,
+                'payment_method' => 'SagePay',
             ]
         );
 
@@ -106,14 +115,25 @@ class Entry
     {
         $asArray = $this->toArray();
 
+        $this->setPropertyWithoutReload(
+            'transaction_id',
+            $this->getMeta('transaction_id')
+        );
+        $this->setPropertyWithoutReload(
+            'payment_amount',
+            $this->getMeta('payment_amount')
+        );
+        $this->reload();
+
         $addOn->add_pending_payment(
             $asArray,
             [
                 'type' => 'add_pending_payment',
-                'amount' => $this->getProperty('payment_amount'),
-                'transaction_id' => $this->getProperty('transaction_id'),
+                'amount' => $this->getMeta('payment_amount'),
+                'transaction_id' => $this->getMeta('transaction_id'),
                 'entry_id' => $this->getId(),
                 'note' => $note,
+                'payment_method' => 'SagePay',
             ]
         );
 
@@ -124,14 +144,25 @@ class Entry
     {
         $asArray = $this->toArray();
 
+        $this->setPropertyWithoutReload(
+            'transaction_id',
+            $this->getMeta('transaction_id')
+        );
+        $this->setPropertyWithoutReload(
+            'payment_amount',
+            $this->getMeta('payment_amount')
+        );
+        $this->reload();
+
         $addOn->fail_payment(
             $asArray,
             [
                 'type' => 'fail_payment',
-                'amount' => $this->getProperty('payment_amount'),
-                'transaction_id' => $this->getProperty('transaction_id'),
+                'amount' => $this->getMeta('payment_amount'),
+                'transaction_id' => $this->getMeta('transaction_id'),
                 'entry_id' => $this->getId(),
                 'note' => $note,
+                'payment_method' => 'SagePay',
             ]
         );
 
@@ -168,9 +199,13 @@ class Entry
      */
     public function setMeta($key, $value): void
     {
-        gform_update_meta($this->getId(), $key, $value);
-
+        $this->setMetaWithoutReload($key, $value);
         $this->reload();
+    }
+
+    protected function setMetaWithoutReload($key, $value): void
+    {
+        gform_update_meta($this->getId(), $key, $value);
     }
 
     public function expireConfirmationTokenNow(): void
