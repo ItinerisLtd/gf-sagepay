@@ -72,6 +72,13 @@ Allow Gravity Forms accepts SagePay one-off payments via [SagePay Server](https:
 - [Gravity Forms Confirmation](https://docs.gravityforms.com/configuring-confirmations-in-gravity-forms/)
 - [Gravity Forms Conditional Logic](https://docs.gravityforms.com/enable-conditional-logic/)
 
+## Supported / Implemented
+
+- Payment Status
+  - Payment complete
+  - Pending payment
+  - Failed payment
+
 ## Not Supported / Not Implemented
 
 Although these features are not supported by this plugin, but you might able to do so via [MySagePay](https://live.sagepay.com/mysagepay/login.msp):
