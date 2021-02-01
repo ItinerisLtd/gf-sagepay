@@ -2,11 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/ItinerisLtd/gf-sagepay.svg?style=svg)](https://circleci.com/gh/ItinerisLtd/gf-sagepay)
 [![Packagist Version](https://img.shields.io/packagist/v/itinerisltd/gf-sagepay.svg?label=release&style=flat-square)](https://packagist.org/packages/itinerisltd/gf-sagepay)
-[![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/rating/gf-sagepay?style=flat-square)](https://wordpress.org/plugins/gf-sagepay)
 [![PHP from Packagist](https://img.shields.io/packagist/php-v/itinerisltd/gf-sagepay.svg?style=flat-square)](https://packagist.org/packages/itinerisltd/gf-sagepay)
-[![WordPress Plugin: Tested WP Version](https://img.shields.io/wordpress/plugin/tested/gf-sagepay?style=flat-square)](https://wordpress.org/plugins/gf-sagepay)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/itinerisltd/gf-sagepay.svg?label=packagist%20downloads&style=flat-square)](https://packagist.org/packages/itinerisltd/gf-sagepay/stats)
-[![WordPress Plugin Downloads](https://img.shields.io/wordpress/plugin/dt/gf-sagepay?label=wp.org%20downloads&style=flat-square)](https://wordpress.org/plugins/gf-sagepay/advanced/)
 [![GitHub License](https://img.shields.io/github/license/itinerisltd/gf-sagepay.svg?style=flat-square)](https://github.com/ItinerisLtd/gf-sagepay/blob/master/LICENSE)
 [![Hire Itineris](https://img.shields.io/badge/Hire-Itineris-ff69b4.svg?style=flat-square)](https://www.itineris.co.uk/contact/)
 [![Twitter Follow @itineris_ltd](https://img.shields.io/twitter/follow/itineris_ltd?style=flat-square&color=1da1f2)](https://twitter.com/itineris_ltd)
@@ -24,8 +21,6 @@ SagePay payment gateway for GravityForms.
 - [Minimum Requirements](#minimum-requirements)
 - [Installation](#installation)
   - [Composer (Recommended)](#composer-recommended)
-  - [wordpress.org (WP CLI)](#wordpressorg-wp-cli)
-  - [wordpress.org](#wordpressorg)
   - [Build from Source (Not Recommended)](#build-from-source-not-recommended)
 - [Best Practices](#best-practices)
   - [HTTPS Everywhere](#https-everywhere)
@@ -59,7 +54,7 @@ SagePay payment gateway for GravityForms.
 
 ## Goal
 
-Allow Gravity Forms accepts SagePay one-off payments via [SagePay Server](https://www.sagepay.co.uk/support/15/36/sage-pay-server-understanding-the-process). 
+Allow Gravity Forms accepts SagePay one-off payments via [SagePay Server](https://www.sagepay.co.uk/support/15/36/sage-pay-server-understanding-the-process).
 
 ## Features
 
@@ -103,17 +98,6 @@ Although these features are not supported by this plugin, but you might able to 
 ```bash
 composer require itinerisltd/gf-sagepay
 ```
-
-### wordpress.org (WP CLI)
-
-```bash
-wp plugin install gf-sagepay
-```
-
-### wordpress.org
-
-Download from https://wordpress.org/plugins/gf-sagepay 
-Then, install `gf-sagepay.zip` [as usual](https://codex.wordpress.org/Managing_Plugins#Installing_Plugins).
 
 ### Build from Source (Not Recommended)
 
@@ -257,7 +241,7 @@ After form submit, this plugin sends order information to SagePay in exchange fo
 
 By default, when redirect URL retrieval fails:
 1. Mark entry payment status as `Failed`
-1. [Log](https://docs.gravityforms.com/logging-and-debugging/) the error     
+1. [Log](https://docs.gravityforms.com/logging-and-debugging/) the error
 1. `wp_die` **immediately**
 
 Common failure reasons:
