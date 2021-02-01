@@ -1,81 +1,60 @@
 version: 2.1
 
 orbs:
-  composer: itinerisltd/composer@0.3
+  php: circleci/php@1
 
-  itinerisltd:
-    orbs:
-      composer: itinerisltd/composer@0.3
+executors:
+  default:
+    docker:
+      - image: 'cibuilds/github:latest'
 
-    executors:
-      default:
-        docker:
-          - image: 'cibuilds/github:latest'
-
-    jobs:
-      lint-wp-org:
-        parameters:
-          zip:
-            type: string
-            description: path to plugin zip file
-          executor:
-            type: executor
-            default: composer/php-72
-        executor: << parameters.executor >>
-        steps:
-          - run: unzip << parameters.zip >> -d /tmp/plugin-source-code
-          - run: find /tmp/plugin-source-code -name "*.php" -print0 | xargs -n 1 -0 php -l
-      publish-to-github-releases:
-        parameters:
-          github_token:
-            type: string
-            description: GitHub personal access token. For a private repository you need `repo` scope and for a public repository you need `public_repo` scope
-            default: ${GITHUB_TOKEN}
-          artifact_dir:
-            type: string
-            description: directory path of the artifacts to be uploaded
-            default: .
-          executor:
-            type: executor
-            default: default
-        executor: << parameters.executor >>
-        steps:
-          - run: ghr -t << parameters.github_token >> -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -soft ${CIRCLE_TAG} << parameters.artifact_dir >>
+jobs:
+  lint-wp-org:
+    parameters:
+      zip:
+        type: string
+        description: path to plugin zip file
+    executor:
+      name: php/default
+      tag: '7.2'
+    steps:
+      - run: unzip << parameters.zip >> -d /tmp/plugin-source-code
+      - run: find /tmp/plugin-source-code -name "*.php" -print0 | xargs -n 1 -0 php -l
+  publish-to-github-releases:
+    parameters:
+      github_token:
+        type: string
+        description: GitHub personal access token. For a private repository you need `repo` scope and for a public repository you need `public_repo` scope
+        default: ${GITHUB_TOKEN}
+      artifact_dir:
+        type: string
+        description: directory path of the artifacts to be uploaded
+        default: .
+      executor:
+        type: executor
+        default: default
+    executor: << parameters.executor >>
+    steps:
+      - run: ghr -t << parameters.github_token >> -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -soft ${CIRCLE_TAG} << parameters.artifact_dir >>
 
 workflows:
   test:
     jobs:
-      - composer/install:
-          name: style-check-latest
-          executor: composer/latest
-          post-steps:
-            - composer/exec:
-                command: style:check
-      - composer/install:
-          name: style-check-php-73
-          executor: composer/php-73
-          post-steps:
-            - composer/exec:
-                command: style:check
-      - composer/install:
-          name: style-check-php-72
-          executor: composer/php-72
-          post-steps:
-            - composer/exec:
-                command: style:check
+      - php/test:
+          name: style-check
+          test-command: style:check
 
   # TODO: Extract orbs
   # TODO: Commit wo.org svn
   build_release:
     jobs:
-      - composer/install:
+      - php/test:
           name: build
           # Build with lowest support PHP version
           # wp.org svn pre-commit hook rejects PHP 7.3+ syntax
-          executor: composer/php-72
+          version: '7.2'
+          test-command: release:build
           post-steps:
-            - composer/exec:
-                command: release:build
             - store_artifacts:
                 path: release
             - persist_to_workspace:
@@ -85,7 +64,7 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - itinerisltd/lint-wp-org:
+      - lint-wp-org:
           name: lint-wp-org
           requires:
             - build
@@ -96,7 +75,7 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - itinerisltd/publish-to-github-releases:
+      - publish-to-github-releases:
           requires:
             - build
             - lint-wp-org
