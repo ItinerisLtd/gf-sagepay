@@ -100,9 +100,9 @@ class Entry
      * Get a specific property of an array without needing to check if that property exists.
      * Provide a default value if you want to return a specific value if the property is not set.
      *
-     * @param string|int $prop  Name of the property to be retrieved.
-     * @param string $default   Optional. Value that should be returned if the property is not set or empty. Defaults to
-     *                          null.
+     * @param string|int $prop Name of the property to be retrieved.
+     * @param string     $default Optional. Value that should be returned if the property is not set or empty. Defaults
+     *                   to null.
      *
      * @return null|string|mixed The value
      */
