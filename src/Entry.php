@@ -100,15 +100,15 @@ class Entry
      * Get a specific property of an array without needing to check if that property exists.
      * Provide a default value if you want to return a specific value if the property is not set.
      *
-     * @param string $prop    Name of the property to be retrieved.
-     * @param string $default Optional. Value that should be returned if the property is not set or empty. Defaults to
-     *                        null.
+     * @param string|int $prop Name of the property to be retrieved.
+     * @param string     $default Optional. Value that should be returned if the property is not set or empty. Defaults
+     *                   to null.
      *
      * @return null|string|mixed The value
      */
-    public function getProperty(string $prop, $default = null)
+    public function getProperty($prop, $default = null)
     {
-        return rgar($this->data, $prop, $default);
+        return rgar($this->data, (string) $prop, $default);
     }
 
     public function markAsPending(GFPaymentAddOn $addOn, ?string $note = null): void
