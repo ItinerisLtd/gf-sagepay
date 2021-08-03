@@ -1,11 +1,87 @@
 # Changelog
 
+## [0.10.10](https://github.com/itinerisltd/gf-sagepay/tree/0.10.10) (2021-08-03)
+
+[Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.10.9...0.10.10)
+
+**Security fixes:**
+
+- \[Security\] Bump symfony/http-foundation from 4.4.6 to 4.4.7 [\#135](https://github.com/ItinerisLtd/gf-sagepay/pull/135) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
+**Closed issues:**
+
+- Rename for wp.org [\#114](https://github.com/ItinerisLtd/gf-sagepay/issues/114)
+
+**Merged pull requests:**
+
+- Fix getProperty cast [\#219](https://github.com/ItinerisLtd/gf-sagepay/pull/219) ([danlapteacru](https://github.com/danlapteacru))
+- Update CircleCI config [\#206](https://github.com/ItinerisLtd/gf-sagepay/pull/206) ([TangRufus](https://github.com/TangRufus))
+- Give up publishing to wp.org [\#205](https://github.com/ItinerisLtd/gf-sagepay/pull/205) ([TangRufus](https://github.com/TangRufus))
+- Bump symfony/http-foundation from 4.4.16 to 4.4.17 [\#196](https://github.com/ItinerisLtd/gf-sagepay/pull/196) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/discovery from 1.12.0 to 1.13.0 [\#195](https://github.com/ItinerisLtd/gf-sagepay/pull/195) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/message from 1.9.1 to 1.10.0 [\#194](https://github.com/ItinerisLtd/gf-sagepay/pull/194) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump omnipay/common from 3.0.4 to 3.0.5 [\#193](https://github.com/ItinerisLtd/gf-sagepay/pull/193) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/http-foundation from 4.4.15 to 4.4.16 [\#191](https://github.com/ItinerisLtd/gf-sagepay/pull/191) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-php72 from 1.18.1 to 1.20.0 [\#190](https://github.com/ItinerisLtd/gf-sagepay/pull/190) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-mbstring from 1.18.1 to 1.20.0 [\#189](https://github.com/ItinerisLtd/gf-sagepay/pull/189) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump squizlabs/php\_codesniffer from 3.5.6 to 3.5.8 [\#186](https://github.com/ItinerisLtd/gf-sagepay/pull/186) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/message from 1.9.0 to 1.9.1 [\#185](https://github.com/ItinerisLtd/gf-sagepay/pull/185) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/http-foundation from 4.4.14 to 4.4.15 [\#183](https://github.com/ItinerisLtd/gf-sagepay/pull/183) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump clue/stream-filter from 1.4.1 to 1.5.0 [\#182](https://github.com/ItinerisLtd/gf-sagepay/pull/182) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump guzzlehttp/psr7 from 1.6.1 to 1.7.0 [\#181](https://github.com/ItinerisLtd/gf-sagepay/pull/181) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump guzzlehttp/promises from 1.3.1 to 1.4.0 [\#180](https://github.com/ItinerisLtd/gf-sagepay/pull/180) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/http-foundation from 4.4.13 to 4.4.14 [\#179](https://github.com/ItinerisLtd/gf-sagepay/pull/179) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/discovery from 1.11.0 to 1.12.0 [\#177](https://github.com/ItinerisLtd/gf-sagepay/pull/177) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/discovery from 1.10.0 to 1.11.0 [\#176](https://github.com/ItinerisLtd/gf-sagepay/pull/176) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump itinerisltd/itineris-wp-coding-standards from 0.3.5 to 0.4.0 [\#175](https://github.com/ItinerisLtd/gf-sagepay/pull/175) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/discovery from 1.9.1 to 1.10.0 [\#174](https://github.com/ItinerisLtd/gf-sagepay/pull/174) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/http-foundation from 4.4.12 to 4.4.13 [\#173](https://github.com/ItinerisLtd/gf-sagepay/pull/173) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/mime from 4.4.12 to 4.4.13 [\#172](https://github.com/ItinerisLtd/gf-sagepay/pull/172) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/http-foundation from 4.4.11 to 4.4.12 [\#171](https://github.com/ItinerisLtd/gf-sagepay/pull/171) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/message from 1.8.0 to 1.9.0 [\#169](https://github.com/ItinerisLtd/gf-sagepay/pull/169) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump squizlabs/php\_codesniffer from 3.5.5 to 3.5.6 [\#168](https://github.com/ItinerisLtd/gf-sagepay/pull/168) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-mbstring from 1.18.0 to 1.18.1 [\#167](https://github.com/ItinerisLtd/gf-sagepay/pull/167) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-php72 from 1.18.0 to 1.18.1 [\#166](https://github.com/ItinerisLtd/gf-sagepay/pull/166) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/http-foundation from 4.4.10 to 4.4.11 [\#165](https://github.com/ItinerisLtd/gf-sagepay/pull/165) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/mime from 4.4.10 to 4.4.11 [\#164](https://github.com/ItinerisLtd/gf-sagepay/pull/164) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-mbstring from 1.17.1 to 1.18.0 [\#163](https://github.com/ItinerisLtd/gf-sagepay/pull/163) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-php72 from 1.17.1 to 1.18.0 [\#162](https://github.com/ItinerisLtd/gf-sagepay/pull/162) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-php72 from 1.17.0 to 1.17.1 [\#161](https://github.com/ItinerisLtd/gf-sagepay/pull/161) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/httplug from 2.1.0 to 2.2.0 [\#160](https://github.com/ItinerisLtd/gf-sagepay/pull/160) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/discovery from 1.9.0 to 1.9.1 [\#159](https://github.com/ItinerisLtd/gf-sagepay/pull/159) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/promise from 1.0.0 to 1.1.0 [\#158](https://github.com/ItinerisLtd/gf-sagepay/pull/158) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/discovery from 1.8.0 to 1.9.0 [\#157](https://github.com/ItinerisLtd/gf-sagepay/pull/157) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump psr/http-client from 1.0.0 to 1.0.1 [\#156](https://github.com/ItinerisLtd/gf-sagepay/pull/156) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-mbstring from 1.17.0 to 1.17.1 [\#155](https://github.com/ItinerisLtd/gf-sagepay/pull/155) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/http-foundation from 4.4.9 to 4.4.10 [\#153](https://github.com/ItinerisLtd/gf-sagepay/pull/153) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump php-http/discovery from 1.7.4 to 1.8.0 [\#152](https://github.com/ItinerisLtd/gf-sagepay/pull/152) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump omnipay/common from 3.0.3 to 3.0.4 [\#151](https://github.com/ItinerisLtd/gf-sagepay/pull/151) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/http-foundation from 4.4.8 to 4.4.9 [\#149](https://github.com/ItinerisLtd/gf-sagepay/pull/149) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump wp-coding-standards/wpcs from 2.2.1 to 2.3.0 [\#147](https://github.com/ItinerisLtd/gf-sagepay/pull/147) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-intl-idn from 1.16.0 to 1.17.0 [\#145](https://github.com/ItinerisLtd/gf-sagepay/pull/145) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-intl-idn from 1.15.0 to 1.16.0 [\#143](https://github.com/ItinerisLtd/gf-sagepay/pull/143) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/http-foundation from 4.4.7 to 4.4.8 [\#140](https://github.com/ItinerisLtd/gf-sagepay/pull/140) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/mime from 4.4.7 to 4.4.8 [\#139](https://github.com/ItinerisLtd/gf-sagepay/pull/139) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump omnipay/common from 3.0.2 to 3.0.3 [\#138](https://github.com/ItinerisLtd/gf-sagepay/pull/138) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump guzzlehttp/guzzle from 6.5.2 to 6.5.3 [\#137](https://github.com/ItinerisLtd/gf-sagepay/pull/137) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump squizlabs/php\_codesniffer from 3.5.4 to 3.5.5 [\#136](https://github.com/ItinerisLtd/gf-sagepay/pull/136) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/http-foundation from 4.4.5 to 4.4.6 [\#134](https://github.com/ItinerisLtd/gf-sagepay/pull/134) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/mime from 4.4.5 to 4.4.6 [\#133](https://github.com/ItinerisLtd/gf-sagepay/pull/133) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-intl-idn from 1.14.0 to 1.15.0 [\#131](https://github.com/ItinerisLtd/gf-sagepay/pull/131) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-php72 from 1.14.0 to 1.15.0 [\#130](https://github.com/ItinerisLtd/gf-sagepay/pull/130) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump moneyphp/money from 3.3.0 to 3.3.1 [\#129](https://github.com/ItinerisLtd/gf-sagepay/pull/129) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/http-foundation from 4.4.4 to 4.4.5 [\#128](https://github.com/ItinerisLtd/gf-sagepay/pull/128) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/mime from 4.4.4 to 4.4.5 [\#127](https://github.com/ItinerisLtd/gf-sagepay/pull/127) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-intl-idn from 1.13.1 to 1.14.0 [\#125](https://github.com/ItinerisLtd/gf-sagepay/pull/125) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump symfony/polyfill-php72 from 1.13.1 to 1.14.0 [\#124](https://github.com/ItinerisLtd/gf-sagepay/pull/124) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
 ## [0.10.9](https://github.com/itinerisltd/gf-sagepay/tree/0.10.9) (2020-02-11)
 
 [Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.10.8...0.10.9)
 
 **Merged pull requests:**
 
+- Version bump 0.10.9 [\#123](https://github.com/ItinerisLtd/gf-sagepay/pull/123) ([TangRufus](https://github.com/TangRufus))
 - Defer setting transcation id and payment amount [\#122](https://github.com/ItinerisLtd/gf-sagepay/pull/122) ([TangRufus](https://github.com/TangRufus))
 - Bump wp-coding-standards/wpcs from 2.2.0 to 2.2.1 [\#121](https://github.com/ItinerisLtd/gf-sagepay/pull/121) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
@@ -76,6 +152,10 @@
 
 [Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.10.2...0.10.3)
 
+**Closed issues:**
+
+- fix circleci publish-to-github-releases [\#84](https://github.com/ItinerisLtd/gf-sagepay/issues/84)
+
 **Merged pull requests:**
 
 - Version bump 0.10.3 [\#88](https://github.com/ItinerisLtd/gf-sagepay/pull/88) ([TangRufus](https://github.com/TangRufus))
@@ -127,7 +207,7 @@
 **Merged pull requests:**
 
 - Version bump 0.9.6 [\#71](https://github.com/ItinerisLtd/gf-sagepay/pull/71) ([TangRufus](https://github.com/TangRufus))
-- Restore original `$\_FILES` after symfony/http-foundation is initialized [\#70](https://github.com/ItinerisLtd/gf-sagepay/pull/70) ([TangRufus](https://github.com/TangRufus))
+- Restore original `$_FILES` after symfony/http-foundation is initialized [\#70](https://github.com/ItinerisLtd/gf-sagepay/pull/70) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.5](https://github.com/itinerisltd/gf-sagepay/tree/0.9.5) (2018-10-18)
 
@@ -136,7 +216,7 @@
 **Merged pull requests:**
 
 - Version bump 0.9.5 [\#69](https://github.com/ItinerisLtd/gf-sagepay/pull/69) ([TangRufus](https://github.com/TangRufus))
-- Empty `$\_FILES` to prevent conflicts with `symfony/http-foundation` [\#68](https://github.com/ItinerisLtd/gf-sagepay/pull/68) ([TangRufus](https://github.com/TangRufus))
+- Empty `$_FILES` to prevent conflicts with `symfony/http-foundation` [\#68](https://github.com/ItinerisLtd/gf-sagepay/pull/68) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.9.4](https://github.com/itinerisltd/gf-sagepay/tree/0.9.4) (2018-10-16)
 
@@ -194,7 +274,7 @@
 - Version bump 0.9.0 [\#53](https://github.com/ItinerisLtd/gf-sagepay/pull/53) ([TangRufus](https://github.com/TangRufus))
 - :bike:Bikeshedding for open sourcing [\#52](https://github.com/ItinerisLtd/gf-sagepay/pull/52) ([TangRufus](https://github.com/TangRufus))
 - Create LICENSE [\#51](https://github.com/ItinerisLtd/gf-sagepay/pull/51) ([TangRufus](https://github.com/TangRufus))
-- Rename: `Entry::{make --\> mark}AsProcessing` [\#50](https://github.com/ItinerisLtd/gf-sagepay/pull/50) ([TangRufus](https://github.com/TangRufus))
+- Rename: `Entry::{make --> mark}AsProcessing` [\#50](https://github.com/ItinerisLtd/gf-sagepay/pull/50) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.8.0](https://github.com/itinerisltd/gf-sagepay/tree/0.8.0) (2018-08-20)
 
@@ -244,7 +324,7 @@
 **Merged pull requests:**
 
 - Version bump 0.5.2 [\#37](https://github.com/ItinerisLtd/gf-sagepay/pull/37) ([TangRufus](https://github.com/TangRufus))
-- `wp\_die` when redirect URL retrievals fail [\#36](https://github.com/ItinerisLtd/gf-sagepay/pull/36) ([TangRufus](https://github.com/TangRufus))
+- `wp_die` when redirect URL retrievals fail [\#36](https://github.com/ItinerisLtd/gf-sagepay/pull/36) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.5.1](https://github.com/itinerisltd/gf-sagepay/tree/0.5.1) (2018-04-30)
 
@@ -263,7 +343,7 @@
 **Merged pull requests:**
 
 - Version bump 0.5.0 [\#32](https://github.com/ItinerisLtd/gf-sagepay/pull/32) ([TangRufus](https://github.com/TangRufus))
-- Fix: `AddOn::$\_path` should point to `gf-sagepay.php` [\#31](https://github.com/ItinerisLtd/gf-sagepay/pull/31) ([TangRufus](https://github.com/TangRufus))
+- Fix: `AddOn::$_path` should point to `gf-sagepay.php` [\#31](https://github.com/ItinerisLtd/gf-sagepay/pull/31) ([TangRufus](https://github.com/TangRufus))
 - New feature: Cancel url [\#30](https://github.com/ItinerisLtd/gf-sagepay/pull/30) ([TangRufus](https://github.com/TangRufus))
 - Lower PHP requirement to ^7.1; Bump GF requirement to v2.3.0.4 [\#29](https://github.com/ItinerisLtd/gf-sagepay/pull/29) ([TangRufus](https://github.com/TangRufus))
 - Add capabilities [\#28](https://github.com/ItinerisLtd/gf-sagepay/pull/28) ([TangRufus](https://github.com/TangRufus))
@@ -288,7 +368,7 @@
 
 - Version bump 0.4.0 [\#26](https://github.com/ItinerisLtd/gf-sagepay/pull/26) ([TangRufus](https://github.com/TangRufus))
 - Expose `ConfirmationHandler::buildUrlFor` as a public api [\#25](https://github.com/ItinerisLtd/gf-sagepay/pull/25) ([TangRufus](https://github.com/TangRufus))
-- Feed Settings Form: Use `select\_custom` as vendor code field type [\#24](https://github.com/ItinerisLtd/gf-sagepay/pull/24) ([TangRufus](https://github.com/TangRufus))
+- Feed Settings Form: Use `select_custom` as vendor code field type [\#24](https://github.com/ItinerisLtd/gf-sagepay/pull/24) ([TangRufus](https://github.com/TangRufus))
 - Verify token from query string before passing onto confirmation [\#23](https://github.com/ItinerisLtd/gf-sagepay/pull/23) ([TangRufus](https://github.com/TangRufus))
 - Readme: Clarify page confirmation is supported [\#22](https://github.com/ItinerisLtd/gf-sagepay/pull/22) ([TangRufus](https://github.com/TangRufus))
 
@@ -298,6 +378,7 @@
 
 **Closed issues:**
 
+- \(feature\) Gift Aid functionality [\#13](https://github.com/ItinerisLtd/gf-sagepay/issues/13)
 - \(feature\) "Next URL" needs to make use of Gravity Forms Confirmations [\#12](https://github.com/ItinerisLtd/gf-sagepay/issues/12)
 
 **Merged pull requests:**
@@ -305,7 +386,7 @@
 - Version bump 0.3.0 [\#21](https://github.com/ItinerisLtd/gf-sagepay/pull/21) ([TangRufus](https://github.com/TangRufus))
 - Use Gravity Forms redirection confirmation as `nextUrl` [\#20](https://github.com/ItinerisLtd/gf-sagepay/pull/20) ([TangRufus](https://github.com/TangRufus))
 - Refactor: Make `CallbackHandler` more like `omnipay-sagepay` readme example [\#19](https://github.com/ItinerisLtd/gf-sagepay/pull/19) ([TangRufus](https://github.com/TangRufus))
-- Use `GFFormsModel::get\_uuid` instead of ramsey/uuid package [\#18](https://github.com/ItinerisLtd/gf-sagepay/pull/18) ([TangRufus](https://github.com/TangRufus))
+- Use `GFFormsModel::get_uuid` instead of ramsey/uuid package [\#18](https://github.com/ItinerisLtd/gf-sagepay/pull/18) ([TangRufus](https://github.com/TangRufus))
 - Readme: Fix install instruction [\#16](https://github.com/ItinerisLtd/gf-sagepay/pull/16) ([TangRufus](https://github.com/TangRufus))
 
 ## [0.2.0](https://github.com/itinerisltd/gf-sagepay/tree/0.2.0) (2018-04-16)
