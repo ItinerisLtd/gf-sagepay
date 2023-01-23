@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.11.0](https://github.com/itinerisltd/gf-sagepay/tree/0.11.0) (2023-01-23)
+
+[Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.10.10...0.11.0)
+
+**Merged pull requests:**
+
+- php 8.1 [\#230](https://github.com/ItinerisLtd/gf-sagepay/pull/230) ([codepuncher](https://github.com/codepuncher))
+- Upgrade to GitHub-native Dependabot [\#211](https://github.com/ItinerisLtd/gf-sagepay/pull/211) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
 ## [0.10.10](https://github.com/itinerisltd/gf-sagepay/tree/0.10.10) (2021-08-03)
 
 [Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.10.9...0.10.10)
