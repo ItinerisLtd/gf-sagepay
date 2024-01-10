@@ -1,6 +1,6 @@
 # GF SagePay
 
-[![CircleCI](https://circleci.com/gh/ItinerisLtd/gf-sagepay.svg?style=svg)](https://circleci.com/gh/ItinerisLtd/gf-sagepay)
+[![GitHub Actions](https://github.com/ItinerisLtd/gf-sagepay/actions/workflows/test.yml/badge.svg)](https://github.com/ItinerisLtd/gf-sagepay)
 [![Packagist Version](https://img.shields.io/packagist/v/itinerisltd/gf-sagepay.svg?label=release&style=flat-square)](https://packagist.org/packages/itinerisltd/gf-sagepay)
 [![PHP from Packagist](https://img.shields.io/packagist/php-v/itinerisltd/gf-sagepay.svg?style=flat-square)](https://packagist.org/packages/itinerisltd/gf-sagepay)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/itinerisltd/gf-sagepay.svg?label=packagist%20downloads&style=flat-square)](https://packagist.org/packages/itinerisltd/gf-sagepay/stats)
