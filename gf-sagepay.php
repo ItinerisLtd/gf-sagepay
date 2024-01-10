@@ -4,7 +4,7 @@
  * Plugin Name:       GF SagePay
  * Plugin URI:        https://github.com/ItinerisLtd/gf-sagepay
  * Description:       SagePay payment gateway for Gravity Forms
- * Version:           0.11.0
+ * Version:           0.12.0
  * Requires at least: 4.9.5
  * Requires PHP:      7.2
  * Author:            Itineris Limited
