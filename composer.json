@@ -33,7 +33,7 @@
         "omnipay/sagepay": "^4.1"
     },
     "require-dev": {
-        "itinerisltd/itineris-wp-coding-standards": "^0.4.0",
+        "itinerisltd/itineris-wp-coding-standards": "^1.0.0",
         "roave/security-advisories": "dev-master"
     },
     "config": {
