@@ -51,14 +51,42 @@ class ConfirmationHandler
             return;
         }
 
-        // Token validation passed. Make it invalid after first use.
-        $entry->expireConfirmationTokenNow();
+        $addOn = AddOn::get_instance();
+        $isFailedPayment = ! $entry->isPaidOrPending() || $entry->isTimeout();
+        $cancelUrl = $isFailedPayment ? self::getCancelUrl($addOn, $entry) : '';
 
-        if (! $entry->isPaidOrPending() || $entry->isTimeout()) {
-            self::handleFailedPayment($entry);
+        if ('' !== $cancelUrl) {
+            self::consumeToken($addOn, $entry);
+            // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+            wp_redirect($cancelUrl);
+            exit;
         }
 
-        self::handle($entry);
+        // Successful payments, and failed payments without a cancel URL, show the normal Gravity Forms confirmation.
+        $form = self::getForm($addOn, $entry);
+        self::consumeToken($addOn, $entry);
+        self::handle($entry, $form);
+    }
+
+    /**
+     * Consumes the token only after everything the response needs has loaded, so a missing feed or form
+     * leaves the token valid for a retry.
+     */
+    private static function consumeToken(AddOn $addOn, Entry $entry): void
+    {
+        $deleted = $entry->deleteConfirmationTokenHash();
+
+        if (is_int($deleted) && $deleted > 0) {
+            return;
+        }
+
+        if (0 === $deleted) {
+            wp_die('This confirmation link has already been used.', '', ['response' => 200]);
+        }
+
+        // Database error, or Gravity Forms is blocking submissions during an upgrade. The token is still valid.
+        $addOn->log_error(__METHOD__ . '(): Unable to delete confirmation token hash for entry ' . $entry->getId());
+        wp_die('Unable to confirm your payment right now. Please try again shortly.', '', ['response' => 503]);
     }
 
     private static function hash(string $confirmationToken): string
@@ -70,49 +98,50 @@ class ConfirmationHandler
         );
     }
 
-    private static function handleFailedPayment(Entry $entry): void
+    private static function getCancelUrl(AddOn $addOn, Entry $entry): string
     {
-        $addon = AddOn::get_instance();
-        $rawFeed = $addon->get_payment_feed($entry->toArray());
+        $rawFeed = $addOn->get_payment_feed($entry->toArray());
 
         if (empty($rawFeed)) {
             wp_die('Unable to locate feed');
         }
 
-        $feed = new Feed($rawFeed);
-
-        $cancelUrl = $feed->getCancelUrl();
-
-        if (empty($cancelUrl)) {
-            // Continue normal Gravity Forms confirmation.
-            return;
-        }
-
-        wp_redirect($cancelUrl); // phpcs:ignore
-        exit;
+        return (new Feed($rawFeed))->getCancelUrl();
     }
 
-    private static function handle(Entry $entry): void
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
+     */
+    private static function getForm(AddOn $addOn, Entry $entry)
     {
-        if (! class_exists('GFFormDisplay')) {
-            require_once GFCommon::get_base_path() . '/form_display.php';
-        }
-
         $form = GFAPI::get_form(
             $entry->getFormId(),
         );
 
         if (! is_array($form)) {
-            AddOn::get_instance()->log_error(
+            $addOn->log_error(
                 __METHOD__ . '(): Unable to locate form ' . $entry->getFormId() . ' for entry ' . $entry->getId(),
             );
             wp_die('Unable to locate form');
         }
 
+        return $form;
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint $form
+     */
+    private static function handle(Entry $entry, $form): void
+    {
+        if (! class_exists('GFFormDisplay')) {
+            require_once GFCommon::get_base_path() . '/form_display.php';
+        }
+
         $confirmation = GFFormDisplay::handle_confirmation($form, $entry->toArray(), false);
 
         if (is_array($confirmation) && isset($confirmation['redirect'])) {
-            wp_redirect($confirmation['redirect']); // phpcs:ignore
+            // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+            wp_redirect($confirmation['redirect']);
             exit;
         }
 
