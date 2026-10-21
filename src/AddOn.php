@@ -13,7 +13,7 @@ use GFPaymentAddOn;
  */
 class AddOn extends GFPaymentAddOn
 {
-    private static $_instance = null;
+    private static ?self $_instance = null;
     protected $_version = GFSagePay::VERSION;
     protected $_min_gravityforms_version = MinimumRequirements::GRAVITY_FORMS_VERSION;
     protected $_slug = 'gf-sagepay';
@@ -36,7 +36,7 @@ class AddOn extends GFPaymentAddOn
      */
     public static function get_instance(): self
     {
-        if (null === self::$_instance) {
+        if (! self::$_instance instanceof self) {
             self::$_instance = new self();
         }
 
@@ -79,7 +79,7 @@ class AddOn extends GFPaymentAddOn
             $this,
             new Feed($feed),
             new Entry($entry),
-            (float) rgar($submission_data, 'payment_amount')
+            (float) rgar($submission_data, 'payment_amount'),
         );
     }
 

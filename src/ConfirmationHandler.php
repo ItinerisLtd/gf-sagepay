@@ -61,11 +61,11 @@ class ConfirmationHandler
         return hash_hmac(
             self::HASH_HMAC_ALGO,
             $confirmationToken,
-            wp_salt('auth')
+            wp_salt('auth'),
         );
     }
 
-    private static function handleFailedPayment($entry): void
+    private static function handleFailedPayment(Entry $entry): void
     {
         $addon = AddOn::get_instance();
         $rawFeed = $addon->get_payment_feed($entry->toArray());
@@ -90,12 +90,11 @@ class ConfirmationHandler
     private static function handle(Entry $entry): void
     {
         if (! class_exists('GFFormDisplay')) {
-            // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile
             require_once GFCommon::get_base_path() . '/form_display.php';
         }
 
         $form = GFAPI::get_form(
-            $entry->getFormId()
+            $entry->getFormId(),
         );
 
         $confirmation = GFFormDisplay::handle_confirmation($form, $entry->toArray(), false);
@@ -119,7 +118,7 @@ class ConfirmationHandler
 
         $entry->setConfirmationTokenHash(
             self::hash($confirmationToken),
-            time() + $ttlInSeconds
+            time() + $ttlInSeconds,
         );
 
         return esc_url_raw(
@@ -129,8 +128,8 @@ class ConfirmationHandler
                     'gf-sagepay-token' => $confirmationToken,
                     'extra' => 'protection',
                 ],
-                $entry->getProperty('source_url')
-            )
+                $entry->getProperty('source_url'),
+            ),
         );
     }
 }

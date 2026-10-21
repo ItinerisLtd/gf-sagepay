@@ -24,6 +24,7 @@ There is no test suite. CI (`.github/workflows/test.yml`) runs `style:check` on 
 
 - `phpcs.xml` applies the `Itineris` ruleset with text domain `gf-sagepay`.
 - `src/AddOn.php` is exempt from camelCase method names and underscore property rules because it must match Gravity Forms' `GFPaymentAddOn` API (`_slug`, `redirect_url()`, `feed_settings_fields()`). Everywhere else uses camelCase.
+- Never add types to values that come from Gravity Forms (entry and feed arrays, meta values, `rgar()`/`rgars()` results). `AddOn` is also exempt from the Slevomat property and parameter type-hint sniffs, because its parents are untyped and adding types would be a fatal signature error. Elsewhere, suppress those sniffs per parameter with `@phpcsSuppress` in the docblock. The Slevomat type-hint sniffs are `phpcs-only` in `phpcs.xml`, so `composer style:fix` never adds native types.
 - Keep logic out of `AddOn`; it delegates each Gravity Forms hook to a dedicated class.
 
 ## Architecture

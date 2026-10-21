@@ -10,6 +10,7 @@ class Feed
      * Gravity Forms feed object array
      *
      * @var array
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
     private $data;
 
@@ -40,13 +41,11 @@ class Feed
 
     /**
      * Get a specific property of an array without needing to check if that property exists.
-     * Provide a default value if you want to return a specific value if the property is not set.
+     * Provide a default value if you want to return a specific value if the property is not set or empty.
      *
-     * @param string $prop    Name of the property to be retrieved.
-     * @param string $default Optional. Value that should be returned if the property is not set or empty. Defaults to
-     *                        null.
-     *
-     * @return null|string|mixed The value
+     * @param string $prop Name of the property to be retrieved.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint $default
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
      */
     public function getMeta(string $prop, $default = null)
     {
@@ -72,7 +71,7 @@ class Feed
     public function getCancelUrl(): string
     {
         return esc_url_raw(
-            (string) $this->getMeta('cancelUrl')
+            (string) $this->getMeta('cancelUrl'),
         );
     }
 
