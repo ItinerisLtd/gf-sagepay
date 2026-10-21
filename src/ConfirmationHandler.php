@@ -102,6 +102,13 @@ class ConfirmationHandler
             $entry->getFormId(),
         );
 
+        if (! is_array($form)) {
+            AddOn::get_instance()->log_error(
+                __METHOD__ . '(): Unable to locate form ' . $entry->getFormId() . ' for entry ' . $entry->getId(),
+            );
+            wp_die('Unable to locate form');
+        }
+
         $confirmation = GFFormDisplay::handle_confirmation($form, $entry->toArray(), false);
 
         if (is_array($confirmation) && isset($confirmation['redirect'])) {
