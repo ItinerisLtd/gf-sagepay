@@ -16,9 +16,9 @@ composer release:build # wipes vendor, installs --no-dev, zips to release/gf-sag
                        # leaves vendor without phpcs; run composer install again afterwards
 ```
 
-There is no test suite. CI (`.github/workflows/test.yml`) runs `style:check` on PHP 8.1 for pull requests only; branch pushes, including to `master`, do not trigger it. Tag pushes (`*.*.*`) trigger `release.yml`, which builds the zip, runs `php -l` on every file and creates a GitHub release.
+There is no test suite. CI (`.github/workflows/test.yml`) runs `style:check` on PHP 8.4 for pull requests only; branch pushes, including to `master`, do not trigger it. Tag pushes (`*.*.*`) trigger `release.yml`, which builds the zip, runs `php -l` on every file and creates a GitHub release.
 
-`composer.json` pins `config.platform.php` to 8.1, so only use PHP 8.1-compatible syntax.
+`composer.json` pins `config.platform.php` to 8.4, so only use PHP 8.4-compatible syntax.
 
 ## Coding standards
 
@@ -48,7 +48,7 @@ Feed configuration UI is defined in `FeedSettingsFields`; the `isTest` meta valu
 
 ## Version strings
 
-The version appears in several places that are not kept in sync: the `gf-sagepay.php` header, `GFSagePay::VERSION`, `composer.json` `extra.branch-alias`, and minimum requirements in `MinimumRequirements` and the plugin header (which still say PHP 7.2 while Composer requires 8.1). Check all of them when bumping versions.
+The version appears in several places that are not kept in sync: the `gf-sagepay.php` header, `GFSagePay::VERSION`, `composer.json` `extra.branch-alias`, and minimum requirements in `MinimumRequirements` and the plugin header. Check all of them when bumping versions.
 
 ## Reference
 
