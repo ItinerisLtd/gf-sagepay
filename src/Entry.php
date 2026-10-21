@@ -222,6 +222,17 @@ class Entry
         $this->setMeta('gf_sagepay_token_expired_at', 0);
     }
 
+    /**
+     * Deletes the confirmation token hash in a single query, so only one request can consume a token.
+     * Returns the number of rows deleted, or false/null when Gravity Forms could not run the query.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
+     */
+    public function deleteConfirmationTokenHash()
+    {
+        return gform_delete_meta($this->getId(), 'gf_sagepay_token_hash');
+    }
+
     public function getConfirmationTokenExpiredAt(): int
     {
         return (int) $this->getMeta('gf_sagepay_token_expired_at');
