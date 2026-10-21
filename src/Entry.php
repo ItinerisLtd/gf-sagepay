@@ -222,6 +222,9 @@ class Entry
         gform_update_meta($this->getId(), $key, $value);
     }
 
+    /**
+     * @deprecated The confirmation flow consumes the token with deleteConfirmationTokenHash().
+     */
     public function expireConfirmationTokenNow(): void
     {
         $this->setMeta('gf_sagepay_token_expired_at', 0);
@@ -252,6 +255,9 @@ class Entry
         );
     }
 
+    /**
+     * @deprecated The confirmation flow trusts the payment status SagePay reported, whatever the entry's age.
+     */
     public function isTimeout(): bool
     {
         $dateCreated = strtotime($this->getProperty('date_created'));

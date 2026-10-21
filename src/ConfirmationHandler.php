@@ -61,7 +61,7 @@ class ConfirmationHandler
         }
 
         $addOn = AddOn::get_instance();
-        $isFailedPayment = ! $entry->isPaidOrPending() || $entry->isTimeout();
+        $isFailedPayment = ! $entry->isPaidOrPending();
         $cancelUrl = $isFailedPayment ? self::getCancelUrl($addOn, $entry) : '';
 
         if ('' !== $cancelUrl) {
@@ -112,6 +112,7 @@ class ConfirmationHandler
         $rawFeed = $addOn->get_payment_feed($entry->toArray());
 
         if (empty($rawFeed)) {
+            $addOn->log_error(__METHOD__ . '(): Unable to locate feed for entry ' . $entry->getId());
             wp_die('Unable to locate feed');
         }
 
