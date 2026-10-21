@@ -187,6 +187,21 @@ class Entry
         return (string) $this->getMeta('gf_sagepay_token_hash');
     }
 
+    public function getUsedConfirmationTokenHash(): string
+    {
+        return (string) $this->getMeta('gf_sagepay_token_used_hash');
+    }
+
+    /**
+     * Records the hash of the consumed token, so a refresh of the same link can be recognised.
+     */
+    public function setUsedConfirmationTokenHash(string $hash): bool
+    {
+        $result = gform_update_meta($this->getId(), 'gf_sagepay_token_used_hash', $hash);
+
+        return false !== $result && null !== $result;
+    }
+
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
      */

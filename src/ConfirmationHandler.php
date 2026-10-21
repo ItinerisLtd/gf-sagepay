@@ -50,13 +50,15 @@ class ConfirmationHandler
         }
         $entry = new Entry($rawEntry);
 
-        if (time() > $entry->getConfirmationTokenExpiredAt()) {
-            return;
+        $hash = self::hash($token);
+        $isCurrentToken = hash_equals($entry->getConfirmationTokenHash(), $hash);
+
+        // A used token is recognised whatever its expiry, so a refresh never falls back to the empty form.
+        if (! $isCurrentToken && hash_equals($entry->getUsedConfirmationTokenHash(), $hash)) {
+            self::dieAlreadyUsed();
         }
 
-        $correctHash = $entry->getConfirmationTokenHash();
-        $hash = self::hash($token);
-        if (! hash_equals($correctHash, $hash)) {
+        if (! $isCurrentToken || time() > $entry->getConfirmationTokenExpiredAt()) {
             return;
         }
 
@@ -65,7 +67,7 @@ class ConfirmationHandler
         $cancelUrl = $isFailedPayment ? self::getCancelUrl($addOn, $entry) : '';
 
         if ('' !== $cancelUrl) {
-            self::consumeToken($addOn, $entry);
+            self::consumeToken($addOn, $entry, $hash);
             // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
             wp_redirect($cancelUrl);
             exit;
@@ -73,7 +75,7 @@ class ConfirmationHandler
 
         // Successful payments, and failed payments without a cancel URL, show the normal Gravity Forms confirmation.
         $form = self::getForm($addOn, $entry);
-        self::consumeToken($addOn, $entry);
+        self::consumeToken($addOn, $entry, $hash);
         self::handle($entry, $form);
     }
 
@@ -81,8 +83,13 @@ class ConfirmationHandler
      * Consumes the token only after everything the response needs has loaded, so a missing feed or form
      * leaves the token valid for a retry.
      */
-    private static function consumeToken(AddOn $addOn, Entry $entry): void
+    private static function consumeToken(AddOn $addOn, Entry $entry, string $hash): void
     {
+        // Record the used hash before deleting, so a duplicate request arriving in between sees "already used".
+        if (! $entry->setUsedConfirmationTokenHash($hash)) {
+            $addOn->log_error(__METHOD__ . '(): Unable to record used confirmation token for entry ' . $entry->getId());
+        }
+
         $deleted = $entry->deleteConfirmationTokenHash();
 
         if (is_int($deleted) && $deleted > 0) {
@@ -90,12 +97,19 @@ class ConfirmationHandler
         }
 
         if (0 === $deleted) {
-            wp_die('This confirmation link has already been used.', '', ['response' => 200]);
+            self::dieAlreadyUsed();
         }
 
         // Database error, or Gravity Forms is blocking submissions during an upgrade. The token is still valid.
         $addOn->log_error(__METHOD__ . '(): Unable to delete confirmation token hash for entry ' . $entry->getId());
         wp_die('Unable to confirm your payment right now. Please try again shortly.', '', ['response' => 503]);
+        exit;
+    }
+
+    private static function dieAlreadyUsed(): never
+    {
+        wp_die('This confirmation link has already been used.', '', ['response' => 200]);
+        exit;
     }
 
     private static function hash(string $confirmationToken): string
@@ -114,6 +128,7 @@ class ConfirmationHandler
         if (empty($rawFeed)) {
             $addOn->log_error(__METHOD__ . '(): Unable to locate feed for entry ' . $entry->getId());
             wp_die('Unable to locate feed');
+            exit;
         }
 
         return (new Feed($rawFeed))->getCancelUrl();
@@ -133,6 +148,7 @@ class ConfirmationHandler
                 __METHOD__ . '(): Unable to locate form ' . $entry->getFormId() . ' for entry ' . $entry->getId(),
             );
             wp_die('Unable to locate form');
+            exit;
         }
 
         return $form;
