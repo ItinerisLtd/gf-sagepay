@@ -86,9 +86,9 @@ Although these features are not supported by this plugin, but you might able to 
 
 ## Minimum Requirements
 
-- PHP v7.2
+- PHP v8.4
 - PHP cURL Extension
-- WordPress v4.9.5
+- WordPress v6.7
 - [Gravity Forms](https://www.gravityforms.com/) v2.4.14.4
 
 ## Installation
