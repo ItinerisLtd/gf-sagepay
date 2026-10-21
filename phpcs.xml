@@ -15,17 +15,16 @@
     <!-- Scan only PHP files -->
     <arg name="extensions" value="php"/>
 
-    <!-- Install custom rulesets -->
-    <config name="installed_paths" value="vendor/wp-coding-standards/wpcs,vendor/automattic/vipwpcs,vendor/itinerisltd/itineris-wp-coding-standards"/>
-
     <!-- Use Itineris WP Coding Standards -->
     <rule ref="Itineris"/>
 
-    <config name="minimum_supported_wp_version" value="4.9"/>
+    <config name="minimum_supported_wp_version" value="6.7"/>
 
     <rule ref="WordPress.WP.I18n">
         <properties>
-            <property name="text_domain" type="array" value="gf-sagepay"/>
+            <property name="text_domain" type="array">
+                <element value="gf-sagepay"/>
+            </property>
         </properties>
     </rule>
 
@@ -39,5 +38,33 @@
 
     <rule ref="Squiz.Commenting.VariableComment.Missing">
         <exclude-pattern>/src/AddOn.php</exclude-pattern>
+    </rule>
+
+    <!-- Count classes referenced only in @var annotations as used -->
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+        <properties>
+            <property name="searchAnnotations" value="true"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <exclude-pattern>/src/AddOn.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+        <exclude-pattern>/src/AddOn.php</exclude-pattern>
+    </rule>
+
+    <!-- Gravity Forms values stay untyped, so phpcbf must never add native types -->
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint" phpcbf-only="true">
+        <severity>0</severity>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint" phpcbf-only="true">
+        <severity>0</severity>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint" phpcbf-only="true">
+        <severity>0</severity>
     </rule>
 </ruleset>

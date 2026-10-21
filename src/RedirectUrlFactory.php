@@ -33,10 +33,10 @@ class RedirectUrlFactory
         $_FILES = $originalFiles;
 
         $vendorData = $entry->getProperty(
-            $feed->getMeta('other_vendorData')
+            $feed->getMeta('other_vendorData'),
         );
 
-        /* @var ServerPurchaseRequest $request */ // phpcs:ignore
+        /** @var ServerPurchaseRequest $request */
         $request = $gateway->purchase([
             'amount' => $entry->getProperty('payment_amount'),
             'currency' => $entry->getProperty('currency'),
@@ -50,7 +50,7 @@ class RedirectUrlFactory
             'vendorData' => $vendorData,
         ]);
 
-        /* @var ServerAuthorizeResponse $response */ // phpcs:ignore
+        /** @var ServerAuthorizeResponse $response */
         $response = $request->send();
         $addOn->log_debug(__METHOD__ . '():  ServerAuthorizeResponse - ' . $response->getMessage());
 
@@ -85,8 +85,8 @@ class RedirectUrlFactory
                     'vendor' => $vendor,
                     'isTest' => $isTest,
                 ],
-                home_url()
-            )
+                home_url(),
+            ),
         );
     }
 
@@ -94,7 +94,7 @@ class RedirectUrlFactory
     {
         $entry->markAsFailed(
             $addOn,
-            __METHOD__ . '(): Unable to retrieve SagePay redirect url - ' . $response->getMessage()
+            __METHOD__ . '(): Unable to retrieve SagePay redirect url - ' . $response->getMessage(),
         );
 
         $shouldWpDie = (bool) apply_filters('gf_sagepay_redirect_url_failure_wp_die', true, $response, $entry, $addOn);
@@ -106,8 +106,8 @@ class RedirectUrlFactory
         wp_die(
             esc_html__(
                 'Error: Failed to retrieve SagePay checkout form URL. Please contact site administrators.',
-                'gf-sagepay'
-            )
+                'gf-sagepay',
+            ),
         );
     }
 }

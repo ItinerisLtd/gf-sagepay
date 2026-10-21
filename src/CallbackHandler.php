@@ -18,7 +18,7 @@ class CallbackHandler
 
         $addOn->log_debug(__METHOD__ . '(): Before accepting notification');
 
-        /* @var ServerNotifyRequest $request */ // phpcs:ignore
+        /** @var ServerNotifyRequest $request */
         $request = $gateway->acceptNotification();
 
         static::logDebug(__METHOD__, $request, $addOn);
@@ -26,11 +26,11 @@ class CallbackHandler
         $entry = static::getEntryByRequest($request, $addOn);
 
         $request->setTransactionReference(
-            $entry->getMeta('transaction_reference')
+            $entry->getMeta('transaction_reference'),
         );
 
         // Get the response message ready for returning.
-        /* @var ServerNotifyRequest $response */ // phpcs:ignore
+        /** @var ServerNotifyRequest $response */
         $response = $request->send();
 
         $addOn->log_debug(__METHOD__ . '(): After accepting notification');
@@ -41,7 +41,7 @@ class CallbackHandler
         // repeat the payment later.
         $entry->setMeta(
             'final_transaction_reference',
-            $response->getTransactionReference()
+            $response->getTransactionReference(),
         );
 
         $addOn->log_debug(__METHOD__ . '(): Final transaction reference saved');
@@ -53,7 +53,7 @@ class CallbackHandler
             $entry->markAsFailed($addOn, $message);
             $response->invalid(
                 static::getNextUrl($entry),
-                $message
+                $message,
             );
         }
 
@@ -72,7 +72,7 @@ class CallbackHandler
         $addOn->log_debug(__METHOD__ . '(): ' . static::getNextUrl($entry));
         $addOn->log_debug(__METHOD__ . '(): Confirm!');
         $response->confirm(
-            static::getNextUrl($entry)
+            static::getNextUrl($entry),
         );
         exit;
     }
@@ -119,15 +119,15 @@ class CallbackHandler
         }
 
         if (is_wp_error($rawEntry)) {
-            /* @var WP_Error $rawEntry */ // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+            /** @var WP_Error $rawEntry */
             $message = __METHOD__ . '(): Unable to find entry by transaction id (VendorTxCode)' . $rawEntry->get_error_message(); // phpcs:ignore Generic.Files.LineLength.TooLong
             $addOn->log_error($message);
 
-            /* @var ServerNotifyRequest $response */ // phpcs:ignore
+            /** @var ServerNotifyRequest $response */
             $response = $request->send();
             $response->error(
                 static::getFallbackNextUrl(),
-                $message
+                $message,
             );
             exit;
         }
@@ -138,7 +138,7 @@ class CallbackHandler
     protected static function getRawEntryByProperty(ServerNotifyRequest $request, GFPaymentAddOn $addOn): ?array
     {
         $entryId = $addOn->get_entry_by_transaction_id(
-            $request->getTransactionId()
+            $request->getTransactionId(),
         );
 
         $rawEntry = GFAPI::get_entry($entryId);
@@ -156,9 +156,9 @@ class CallbackHandler
             // See:  https://github.com/WordPress/WordPress-Coding-Standards/issues/1589.
             // phpcs:ignore Generic.Files.LineLength.TooLong,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 "SELECT `entry_id` FROM `$entryMetaTableName` WHERE `meta_key` = 'transaction_reference' AND `meta_value` LIKE %s LIMIT 1",
-                '%"VendorTxCode":"' . $request->getTransactionId() . '"%'
+                '%"VendorTxCode":"' . $request->getTransactionId() . '"%',
             ),
-            ARRAY_A
+            ARRAY_A,
         );
 
         if (! is_array($results)) {
