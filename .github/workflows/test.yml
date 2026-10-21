@@ -3,9 +3,14 @@ name: test
 
 # yamllint disable-line rule:truthy
 on:
-  push:
-    branches:
-      - "*"
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   php:
