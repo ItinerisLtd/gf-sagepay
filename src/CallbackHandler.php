@@ -10,6 +10,8 @@ use Omnipay\SagePay\Message\ServerNotifyRequest;
 use Omnipay\SagePay\ServerGateway;
 use WP_Error;
 
+use function is_array;
+
 class CallbackHandler
 {
     public static function run(GFPaymentAddOn $addOn): void

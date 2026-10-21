@@ -9,6 +9,15 @@ use GFCommon;
 use GFFormDisplay;
 use GFFormsModel;
 
+use function class_exists;
+use function ctype_digit;
+use function hash_equals;
+use function hash_hmac;
+use function is_array;
+use function is_int;
+use function is_string;
+use function time;
+
 /**
  * Taken from `GFPayPal::maybe_thankyou_page`.
  */

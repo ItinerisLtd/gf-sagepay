@@ -7,6 +7,11 @@ namespace Itineris\SagePay;
 use GFAPI;
 use GFPaymentAddOn;
 
+use function in_array;
+use function is_int;
+use function strtotime;
+use function time;
+
 class Entry
 {
     protected const NOT_FULFILLED = 0;

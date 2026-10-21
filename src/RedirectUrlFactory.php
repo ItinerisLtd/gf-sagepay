@@ -24,7 +24,7 @@ class RedirectUrlFactory
         $addOn->log_debug(__METHOD__ . '():  Saved transactionId (' . $entry->getMeta('transaction_id') . ') as entry meta on entry id: ' . $entry->getId() . ')');
 
         // Temporarily reset $_FILES to prevent conflicts with symfony/http-foundation.
-        $originalFiles = $_FILES; // phpcs:ignore
+        $originalFiles = $_FILES; // phpcs:ignore WordPress.Security.NonceVerification.Missing
         $_FILES = [];
 
         $gateway = GatewayFactory::buildFromFeed($feed);
