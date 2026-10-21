@@ -16,6 +16,9 @@ declare(strict_types=1);
 
 namespace Itineris\SagePay;
 
+use function defined;
+use function file_exists;
+
 // If this file is called directly, abort.
 if (! defined('WPINC')) {
     die;

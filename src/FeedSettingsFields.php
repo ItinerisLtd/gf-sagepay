@@ -7,6 +7,12 @@ namespace Itineris\SagePay;
 use GFFeedAddOn;
 use Omnipay\SagePay\Message\AbstractRequest;
 
+use function array_filter;
+use function array_map;
+use function array_merge;
+use function array_unique;
+use function sprintf;
+
 class FeedSettingsFields
 {
     public static function toArray(GFFeedAddOn $addOn): array

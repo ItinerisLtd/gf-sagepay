@@ -8,6 +8,8 @@ use GF_Field_Address;
 use GF_Fields;
 use Omnipay\Common\CreditCard;
 
+use function array_filter;
+
 class CreditCardFactory
 {
     public static function build(Feed $feed, Entry $entry): CreditCard
