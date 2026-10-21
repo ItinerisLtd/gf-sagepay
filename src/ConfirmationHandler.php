@@ -23,10 +23,15 @@ class ConfirmationHandler
 
     public static function maybeContinue(): void
     {
-        $entryId = (int) rgget('entry');
+        $entryId = rgget('entry');
         $token = rgget('gf-sagepay-token');
 
-        if (empty($entryId) || empty($token)) {
+        if (! is_string($entryId) || ! ctype_digit($entryId) || ! is_string($token) || '' === $token) {
+            return;
+        }
+
+        $entryId = (int) $entryId;
+        if ($entryId <= 0) {
             return;
         }
 
