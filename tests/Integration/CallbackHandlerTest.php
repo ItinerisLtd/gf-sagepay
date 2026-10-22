@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Itineris\SagePay\Entry;
+use Itineris\SagePay\GatewayFactory;
+use Itineris\SagePay\NotifyRequest;
 
 use function Itineris\SagePay\Tests\captureGravityFormsLog;
 use function Itineris\SagePay\Tests\completedTransactionCount;
@@ -76,12 +78,40 @@ it('finds the entry through the transaction reference when the property lookup m
     expect(paymentStatus($entry))->toBe('Paid');
 });
 
-it('rejects a notification with a bad signature', function (): void {
+it('rejects a notification with a bad signature', function (Closure $tamper): void {
     $entry = createPendingSagePayEntry();
     $fields = signedNotification($entry->getProperty('transaction_id'));
-    $fields['VPSSignature'] = str_repeat('0', 32);
+    $fields['VPSSignature'] = $tamper($fields['VPSSignature']);
 
     expectRejected($this->post(notificationPath(), $fields), $entry);
+})->with([
+    'wrong signature' => [static fn (): string => str_repeat('0', 32)],
+    'truncated signature' => [static fn (string $signature): string => substr($signature, 0, 31)],
+    'empty signature' => [static fn (): string => ''],
+]);
+
+it('rejects a notification without a signature', function (): void {
+    $entry = createPendingSagePayEntry();
+    $fields = signedNotification($entry->getProperty('transaction_id'));
+    unset($fields['VPSSignature']);
+
+    expectRejected($this->post(notificationPath(), $fields), $entry);
+});
+
+it('parses notifications into a request that compares signatures in constant time', function (): void {
+    expect(GatewayFactory::buildForNotification()->acceptNotification())->toBeInstanceOf(NotifyRequest::class)
+        ->and((new ReflectionMethod(NotifyRequest::class, 'isValid'))->getDeclaringClass()->getName())
+        ->toBe(NotifyRequest::class);
+});
+
+it('accepts the signature in either case', function (): void {
+    $entry = createPendingSagePayEntry();
+    $fields = signedNotification($entry->getProperty('transaction_id'));
+    $fields['VPSSignature'] = strtolower($fields['VPSSignature']);
+
+    $this->post(notificationPath(), $fields)->assertSee('Status=OK');
+
+    expect(paymentStatus($entry))->toBe('Paid');
 });
 
 it('rejects a notification signed without the stored security key', function (): void {

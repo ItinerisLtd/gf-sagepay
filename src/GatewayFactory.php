@@ -20,17 +20,15 @@ class GatewayFactory
     /**
      * A gateway for parsing notifications. The vendor code is set on each notification once its entry is known.
      */
-    public static function buildForNotification(): ServerGateway
+    public static function buildForNotification(): NotifyGateway
     {
-        /** @var ServerGateway $gateway */
-        $gateway = Omnipay::create('SagePay\Server');
-
-        return $gateway;
+        return new NotifyGateway();
     }
 
     public static function build(string $vendor, bool $isTest): ServerGateway
     {
-        $gateway = self::buildForNotification();
+        /** @var ServerGateway $gateway */
+        $gateway = Omnipay::create('SagePay\Server');
 
         $gateway->setVendor($vendor);
         $gateway->setTestMode($isTest);
