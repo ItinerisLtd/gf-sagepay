@@ -272,6 +272,14 @@ add_filter('gf_sagepay_redirect_url_failure_wp_die', function(bool $shouldWpDie,
 }, 10, 4);
 ```
 
+When registration ends in an exception instead of a reply from SagePay (for example SagePay cannot be reached, or omnipay cannot build the request), there is no `ServerAuthorizeResponse`. The entry is still marked as `Failed` with the exception in its notes, and the `'gf_sagepay_redirect_url_exception_wp_die'` filter decides whether to `wp_die`. It receives the exception instead of the response, and returning `false` has the same effect as above:
+
+```php
+add_filter('gf_sagepay_redirect_url_exception_wp_die', function(bool $shouldWpDie, Throwable $exception, Entry $entry, GFPaymentAddOn $addOn): bool {
+    return $shouldWpDie;
+}, 10, 4);
+```
+
 ### Required Reading List
 
 Read the followings before developing:
