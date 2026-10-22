@@ -1,0 +1,16 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/wp-env.json",
+	"core": null,
+	"phpVersion": "8.4",
+	"testsEnvironment": false,
+	"plugins": [ "./build/gf-sagepay", "./build/gravityforms" ],
+	"mappings": {
+		"wp-content/mu-plugins": "./build/mu-plugins",
+		"wp-content/gf-sagepay-e2e": "./build/site"
+	},
+	"config": {
+		"WP_DEBUG_DISPLAY": false,
+		"SCRIPT_DEBUG": false,
+		"DISABLE_WP_CRON": true
+	}
+}

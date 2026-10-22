@@ -1,0 +1,19 @@
+{
+  "name": "gf-sagepay-e2e",
+  "description": "End-to-end payment tests against the Opayo sandbox",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test"
+  },
+  "type": "commonjs",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "@types/node": "24.19.1",
+    "@wordpress/env": "11.17.0",
+    "typescript": "7.0.2"
+  }
+}
