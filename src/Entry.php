@@ -182,6 +182,14 @@ class Entry
         return (int) rgar($this->data, 'form_id');
     }
 
+    /**
+     * The vendor code the payment was registered with.
+     */
+    public function getVendor(): string
+    {
+        return (string) $this->getMeta('gf_sagepay_vendor');
+    }
+
     public function getConfirmationTokenHash(): string
     {
         return (string) $this->getMeta('gf_sagepay_token_hash');

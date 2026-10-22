@@ -46,7 +46,7 @@ it('registers the payment with SagePay and returns its checkout URL', function (
         ]);
 });
 
-it('registers with the environment the feed selects', function (string $environment, string $endpoint, string $isTest): void {
+it('registers with the environment the feed selects', function (string $environment, string $endpoint): void {
     $http = fakeSagePayHttp();
     $http->addResponse(registrationResponse());
 
@@ -55,21 +55,22 @@ it('registers with the environment the feed selects', function (string $environm
 
     expect((string) $http->getLastRequest()->getUri())->toStartWith($endpoint)
         ->and($sent['NotificationURL'])->toStartWith(home_url())
-        ->and($notificationQuery)->toBe(['callback' => 'gf-sagepay', 'vendor' => TEST_VENDOR, 'isTest' => $isTest]);
+        ->and($notificationQuery)->toBe(['callback' => 'gf-sagepay']);
 })->with([
-    'test' => ['test', 'https://sandbox.opayo.eu.elavon.com/', 'true'],
-    'production' => ['production', 'https://live.opayo.eu.elavon.com/', 'false'],
+    'test' => ['test', 'https://sandbox.opayo.eu.elavon.com/'],
+    'production' => ['production', 'https://live.opayo.eu.elavon.com/'],
 ]);
 
 it('registers with a custom vendor code', function (): void {
     $http = fakeSagePayHttp();
     $http->addResponse(registrationResponse());
 
-    registerPayment(createUnpaidSagePayEntry(['vendor' => 'gf_custom', 'vendor_custom' => 'customvendor']));
-    [$sent, $notificationQuery] = sentRegistration($http);
+    $entry = createUnpaidSagePayEntry(['vendor' => 'gf_custom', 'vendor_custom' => 'customvendor']);
+    registerPayment($entry);
+    [$sent] = sentRegistration($http);
 
     expect($sent['Vendor'])->toBe('customvendor')
-        ->and($notificationQuery['vendor'])->toBe('customvendor');
+        ->and(freshEntryMeta($entry, 'gf_sagepay_vendor'))->toBe('customvendor');
 });
 
 it('marks the entry failed and stops when SagePay rejects the registration', function (): void {

@@ -2,20 +2,22 @@
 
 declare(strict_types=1);
 
-use Mantle\Testing\Exceptions\WP_Die_Exception;
+use Itineris\SagePay\Entry;
 
 use function Itineris\SagePay\Tests\captureGravityFormsLog;
-use function Itineris\SagePay\Tests\captureWpDieResponseCode;
 use function Itineris\SagePay\Tests\completedTransactionCount;
 use function Itineris\SagePay\Tests\createPendingSagePayEntry;
 use function Itineris\SagePay\Tests\expectRedirectUrl;
 use function Itineris\SagePay\Tests\expectRejected;
+use function Itineris\SagePay\Tests\feedIdOf;
 use function Itineris\SagePay\Tests\freshEntryMeta;
+use function Itineris\SagePay\Tests\legacyNotificationPath;
 use function Itineris\SagePay\Tests\notificationPath;
 use function Itineris\SagePay\Tests\paymentStatus;
 use function Itineris\SagePay\Tests\signedNotification;
 
 use const Itineris\SagePay\Tests\TEST_SECURITY_KEY;
+use const Itineris\SagePay\Tests\TEST_VENDOR;
 
 it('marks the entry paid and replies with the confirmation URL', function (): void {
     $entry = createPendingSagePayEntry();
@@ -117,13 +119,71 @@ it('rejects a notification with non-string fields', function (): void {
     expectRejected($this->post(notificationPath(), $fields), $entry);
 });
 
-it('rejects a notification with an unexpected environment', function (): void {
-    $response = captureWpDieResponseCode();
+it('ignores the vendor and environment in the notification URL', function (): void {
+    $entry = createPendingSagePayEntry();
 
-    expect(fn () => $this->post(notificationPath('1'), []))
-        ->toThrow(WP_Die_Exception::class, 'Unable to get vendor code and/or environment from superglobals')
-        ->and($response['response'])->toBe(400);
+    $this->post(legacyNotificationPath('othervendor', 'nonsense'), signedNotification($entry->getProperty('transaction_id')))
+        ->assertSee('Status=OK');
+
+    expect(paymentStatus($entry))->toBe('Paid');
 });
+
+it('rejects a notification signed for another vendor', function (): void {
+    $entry = createPendingSagePayEntry();
+    $fields = signedNotification($entry->getProperty('transaction_id'), vendor: 'othervendor');
+
+    expectRejected($this->post(legacyNotificationPath('othervendor', 'true'), $fields), $entry);
+});
+
+it('verifies with the vendor code stored at registration whatever happens to the feed', function (Closure $changeFeed): void {
+    $entry = createPendingSagePayEntry();
+    $changeFeed($entry);
+
+    $this->post(notificationPath(), signedNotification($entry->getProperty('transaction_id')))->assertSee('Status=OK');
+
+    expect(paymentStatus($entry))->toBe('Paid');
+})->with([
+    'vendor code changed' => [static fn (Entry $entry) => GFAPI::update_feed(
+        feedIdOf($entry),
+        ['feedName' => 'SagePay', 'vendor' => 'newvendor', 'isTest' => 'test'],
+    )],
+    'feed deleted' => [static fn (Entry $entry) => GFAPI::delete_feed(feedIdOf($entry))],
+    'no processed feeds' => [static fn (Entry $entry) => gform_delete_meta($entry->getId(), 'processed_feeds')],
+]);
+
+it('verifies an entry without a stored vendor code against its feed', function (array $feedMeta, string $vendor, bool $deactivate): void {
+    $entry = createPendingSagePayEntry(feedMeta: $feedMeta);
+    gform_delete_meta($entry->getId(), 'gf_sagepay_vendor');
+    if ($deactivate) {
+        GFAPI::update_feed_property(feedIdOf($entry), 'is_active', 0);
+    }
+
+    $this->post(notificationPath(), signedNotification($entry->getProperty('transaction_id'), vendor: $vendor))
+        ->assertSee('Status=OK');
+
+    expect(paymentStatus($entry))->toBe('Paid');
+})->with([
+    'feed vendor code' => [[], TEST_VENDOR, false],
+    'custom vendor code' => [['vendor' => 'gf_custom', 'vendor_custom' => 'customvendor'], 'customvendor', false],
+    'inactive feed' => [[], TEST_VENDOR, true],
+]);
+
+it('rejects a notification when no vendor code is known for the entry', function (Closure $removeVendor): void {
+    $entry = createPendingSagePayEntry();
+    gform_delete_meta($entry->getId(), 'gf_sagepay_vendor');
+    $removeVendor($entry);
+    $log = captureGravityFormsLog();
+
+    expectRejected($this->post(notificationPath(), signedNotification($entry->getProperty('transaction_id'))), $entry);
+    expect(implode("\n", $log->getArrayCopy()))->toContain('No vendor code for entry ' . $entry->getId());
+})->with([
+    'feed deleted' => [static fn (Entry $entry) => GFAPI::delete_feed(feedIdOf($entry))],
+    'no processed feeds' => [static fn (Entry $entry) => gform_delete_meta($entry->getId(), 'processed_feeds')],
+    'empty custom vendor code' => [static fn (Entry $entry) => GFAPI::update_feed(
+        feedIdOf($entry),
+        ['feedName' => 'SagePay', 'vendor' => 'gf_custom', 'vendor_custom' => '', 'isTest' => 'test'],
+    )],
+]);
 
 it('confirms a genuine payment even if a later step fails', function (): void {
     $entry = createPendingSagePayEntry();

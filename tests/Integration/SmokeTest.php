@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Itineris\SagePay\AddOn;
 use Itineris\SagePay\Terminator;
 use Mantle\Testing\Exceptions\Exit_Simulation_Exception;
-use Mantle\Testing\Exceptions\WP_Die_Exception;
 
 it('loads Gravity Forms and creates its tables', function (): void {
     /** @var wpdb $wpdb */
@@ -21,9 +20,8 @@ it('registers the SagePay add-on with Gravity Forms', function (): void {
         ->and(AddOn::get_instance())->toBeInstanceOf(GFPaymentAddOn::class);
 });
 
-it('rejects a notification without vendor and environment', function (): void {
-    expect(fn () => $this->post('/?callback=gf-sagepay'))
-        ->toThrow(WP_Die_Exception::class, 'Unable to get vendor code and/or environment from superglobals');
+it('rejects an empty notification', function (): void {
+    $this->post('/?callback=gf-sagepay', [])->assertSee('Status=INVALID');
 });
 
 it('ends requests by throwing instead of exiting under test', function (): void {

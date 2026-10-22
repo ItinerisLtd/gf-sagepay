@@ -123,15 +123,15 @@ class ConfirmationHandler
 
     private static function getCancelUrl(AddOn $addOn, Entry $entry): string
     {
-        $rawFeed = $addOn->get_payment_feed($entry->toArray());
+        $feed = Feed::forEntry($addOn, $entry);
 
-        if (empty($rawFeed)) {
+        if (! $feed instanceof Feed) {
             $addOn->log_error(__METHOD__ . '(): Unable to locate feed for entry ' . $entry->getId());
             wp_die('Unable to locate feed');
             exit;
         }
 
-        return (new Feed($rawFeed))->getCancelUrl();
+        return $feed->getCancelUrl();
     }
 
     /**

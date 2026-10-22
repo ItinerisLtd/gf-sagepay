@@ -8,12 +8,10 @@ use GFAPI;
 use GFPaymentAddOn;
 use Omnipay\Common\Message\NotificationInterface;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
-use Omnipay\SagePay\ServerGateway;
 use Throwable;
 use wpdb;
 
 use function hash_equals;
-use function in_array;
 use function is_array;
 use function is_string;
 use function json_decode;
@@ -22,10 +20,8 @@ class CallbackHandler
 {
     public static function run(GFPaymentAddOn $addOn): never
     {
-        $gateway = static::buildGatewayBySuperglobals($addOn);
-
         /** @var ServerNotifyRequest $request */
-        $request = $gateway->acceptNotification();
+        $request = GatewayFactory::buildForNotification()->acceptNotification();
 
         // Nothing that terminates may run inside these try blocks: a throwing terminate listener would be
         // caught and a second reply sent.
@@ -80,6 +76,13 @@ class CallbackHandler
             return 'Unusable transaction reference for entry ' . $entry->getId();
         }
 
+        $vendor = static::getVendor($entry, $addOn);
+        if ('' === $vendor) {
+            return 'No vendor code for entry ' . $entry->getId();
+        }
+
+        $addOn->log_debug(__METHOD__ . '(): Verifying entry ' . $entry->getId() . ' with vendor - ' . $vendor);
+        $request->setVendor($vendor);
         $request->setTransactionReference($reference);
 
         if (! $request->isValid()) {
@@ -101,21 +104,19 @@ class CallbackHandler
         Terminator::terminate();
     }
 
-    protected static function buildGatewayBySuperglobals(GFPaymentAddOn $addOn): ServerGateway
+    /**
+     * The vendor code the payment was registered with, or the feed's for entries registered without one stored.
+     */
+    protected static function getVendor(Entry $entry, GFPaymentAddOn $addOn): string
     {
-        $vendor = rgget('vendor');
-        $isTest = rgget('isTest');
-
-        if (! is_string($vendor) || '' === $vendor || ! in_array($isTest, ['true', 'false'], true)) {
-            $message = 'Unable to get vendor code and/or environment from superglobals';
-            $addOn->log_error(__METHOD__ . '(): ' . $message);
-            wp_die(esc_html($message), 'Bad Request', 400);
-            exit;
+        $vendor = $entry->getVendor();
+        if ('' !== $vendor) {
+            return $vendor;
         }
 
-        $addOn->log_debug(__METHOD__ . '(): Vendor - ' . $vendor . ' isTest - ' . $isTest);
+        $feed = Feed::forEntry($addOn, $entry);
 
-        return GatewayFactory::build($vendor, 'true' === $isTest);
+        return $feed instanceof Feed ? $feed->getVendor() : '';
     }
 
     protected static function hasOnlyStringFields(ServerNotifyRequest $request): bool

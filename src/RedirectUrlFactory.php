@@ -24,6 +24,13 @@ class RedirectUrlFactory
         // phpcs:ignore Generic.Files.LineLength.TooLong
         $addOn->log_debug(__METHOD__ . '():  Saved transactionId (' . $entry->getMeta('transaction_id') . ') as entry meta on entry id: ' . $entry->getId() . ')');
 
+        // Notifications are verified against the vendor code the payment was registered with.
+        $entry->setMeta('gf_sagepay_vendor', $feed->getVendor());
+        $addOn->log_debug(
+            __METHOD__ . '(): Registering with vendor - ' . $feed->getVendor()
+            . ' isTest - ' . ($feed->isTest() ? 'true' : 'false'),
+        );
+
         try {
             $response = self::register($addOn, $feed, $entry);
         } catch (Throwable $exception) {
@@ -75,7 +82,7 @@ class RedirectUrlFactory
             'amount' => $entry->getProperty('payment_amount'),
             'currency' => $entry->getProperty('currency'),
             'card' => CreditCardFactory::build($feed, $entry),
-            'notifyUrl' => self::getNotifyUrl($addOn, $feed),
+            'notifyUrl' => self::getNotifyUrl($addOn),
             'transactionId' => $entry->getProperty('transaction_id'),
             'description' => $feed->getMeta('description'),
             'apply3DSecure' => $feed->getMeta('3dSecure'),
@@ -90,21 +97,11 @@ class RedirectUrlFactory
         return $response;
     }
 
-    protected static function getNotifyUrl(GFPaymentAddOn $addOn, Feed $feed): string
+    protected static function getNotifyUrl(GFPaymentAddOn $addOn): string
     {
-        $callback = $addOn->get_slug();
-        $vendor = $feed->getVendor();
-        $isTest = $feed->isTest() ? 'true' : 'false';
-
-        $addOn->log_debug(__METHOD__ . '(): Callback - ' . $callback . ' Vendor - ' . $vendor . ' isTest - ' . $isTest);
-
         return esc_url_raw(
             add_query_arg(
-                [
-                    'callback' => $callback,
-                    'vendor' => $vendor,
-                    'isTest' => $isTest,
-                ],
+                ['callback' => $addOn->get_slug()],
                 home_url(),
             ),
         );
