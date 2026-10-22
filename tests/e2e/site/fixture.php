@@ -14,7 +14,7 @@ use function range;
 
 /**
  * Builds the e2e site: a SagePay payment form, its feed, and the pages the customer moves through.
- * Load it with `require` from `wp eval`; it prints the form ID and payment page path as JSON.
+ * Load it with `require` from `wp eval`; it prints the form ID and page paths as JSON.
  */
 
 gf_upgrade()->maybe_upgrade();
@@ -104,4 +104,5 @@ $payPageId = createPage([
 echo json_encode([
     'formId' => $formId,
     'payPath' => wp_make_link_relative(get_permalink($payPageId)),
+    'cancelPath' => wp_make_link_relative(get_permalink($cancelPageId)),
 ]);

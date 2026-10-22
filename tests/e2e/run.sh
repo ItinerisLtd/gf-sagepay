@@ -21,9 +21,10 @@ fail() {
 
 command -v cloudflared >/dev/null || fail 'cloudflared is required on PATH (https://github.com/cloudflare/cloudflared/releases)'
 command -v docker >/dev/null || fail 'docker is required for wp-env'
+command -v rsync >/dev/null || fail 'rsync is required'
+command -v composer >/dev/null || fail 'composer is required'
 [[ -f ../gravityforms/vendor/gravity/gravityforms/gravityforms.php ]] ||
 	fail 'Gravity Forms is missing; run: composer install --working-dir=tests/gravityforms'
-[[ -f ../../vendor/autoload.php ]] || fail 'the plugin has no vendor directory; run: composer install'
 
 tunnel_log="$(mktemp)"
 
@@ -40,32 +41,52 @@ cleanup() {
 }
 trap cleanup EXIT
 
-rm -rf build
-mkdir -p build/gf-sagepay
-cp -R ../../src ../../vendor ../../gf-sagepay.php ../../composer.json build/gf-sagepay/
-cp -R ../gravityforms/vendor/gravity/gravityforms build/gravityforms
-cp -R mu-plugins site build/
+# Synced in place rather than recreated, so containers kept from an earlier run keep valid mounts.
+# The plugin copy gets its own production-only vendor/, so no dev packages are served through the tunnel.
+mkdir -p build/gf-sagepay build/gravityforms build/mu-plugins build/site
+rsync -a --delete --include='/src/***' --include='/gf-sagepay.php' --include='/composer.json' \
+	--include='/composer.lock' --exclude='*' ../../ build/gf-sagepay/
+composer install --working-dir=build/gf-sagepay --no-dev --no-progress --prefer-dist --optimize-autoloader
+rsync -a --delete ../gravityforms/vendor/gravity/gravityforms/ build/gravityforms/
+rsync -a --delete mu-plugins/ build/mu-plugins/
+rsync -a --delete site/ build/site/
 
 # wp-env starts slowly, so the tunnel only opens once the site is up.
 npx wp-env start
 if [[ -z "${CI:-}" ]]; then
 	npx wp-env reset development
 fi
-npx wp-env run cli wp user update admin --user_pass="$(openssl rand -hex 24)" --skip-email
+# Generated inside the container, so the password never appears in a command line or the (public) CI log.
+# shellcheck disable=SC2016 # PHP variables for wp eval, not shell ones.
+npx wp-env run cli wp eval '$admin = get_user_by("login", "admin"); if (! $admin instanceof WP_User) { exit(1); } wp_set_password(wp_generate_password(32), $admin->ID);'
 
+# Starts a quick tunnel and waits for its connection; succeeds only once the tunnel is registered.
 # HTTP/2 over TCP, as QUIC (UDP 7844) is often blocked.
-cloudflared tunnel --no-autoupdate --protocol http2 --url "http://localhost:${WP_ENV_PORT}" >"${tunnel_log}" 2>&1 &
-tunnel_pid=$!
+open_tunnel() {
+	cloudflared tunnel --no-autoupdate --protocol http2 --url "http://localhost:${WP_ENV_PORT}" >"${tunnel_log}" 2>&1 &
+	tunnel_pid=$!
 
-for _ in $(seq 1 60); do
-	grep -q 'Registered tunnel connection' "${tunnel_log}" && break
-	kill -0 "${tunnel_pid}" 2>/dev/null || break
-	sleep 1
+	for _ in $(seq 1 60); do
+		grep -q 'Registered tunnel connection' "${tunnel_log}" && return 0
+		kill -0 "${tunnel_pid}" 2>/dev/null || return 1
+		sleep 1
+	done
+
+	return 1
+}
+
+# Quick tunnel provisioning occasionally fails on Cloudflare's side, so it gets three attempts.
+for attempt in 1 2 3; do
+	open_tunnel && break
+	kill "${tunnel_pid}" 2>/dev/null || true
+	cat "${tunnel_log}" >&2
+	[[ "${attempt}" -lt 3 ]] || fail 'cloudflared did not open a tunnel'
+	sleep $((attempt * 10))
 done
 tunnel_url="$(grep -oE 'https://[a-z0-9-]+\.trycloudflare\.com' "${tunnel_log}" | head -n 1 || true)"
-if [[ -z "${tunnel_url}" ]] || ! grep -q 'Registered tunnel connection' "${tunnel_log}"; then
+if [[ -z "${tunnel_url}" ]]; then
 	cat "${tunnel_log}" >&2
-	fail 'cloudflared did not open a tunnel'
+	fail 'cloudflared did not report a tunnel URL'
 fi
 
 # SagePay's notifications reach a quick tunnel over plain HTTP only, so the site (and its notification URL) uses http://.

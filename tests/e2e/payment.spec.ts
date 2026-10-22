@@ -4,6 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 type Fixture = {
 	formId: number;
 	payPath: string;
+	cancelPath: string;
 };
 
 type Entry = {
@@ -18,7 +19,12 @@ type Card = {
 
 const fixture: Fixture = JSON.parse( process.env.E2E_FIXTURE ?? '{}' );
 
+const cardSelectionUrl = /sandbox\.opayo\.eu\.elavon\.com\/gateway\/service\/cardselection/;
+
 const visa: Card = { number: '4929000000006', securityCode: '123' };
+
+// Opayo's sandbox card that simulates a "Declined by the bank" response.
+const declinedVisa: Card = { number: '4929602110085639', securityCode: '123' };
 
 /**
  * Fills in and submits the payment form with fake customer details.
@@ -33,7 +39,7 @@ async function submitPaymentForm( page: Page ): Promise< void > {
 	await page.locator( '[name="input_3.5"]' ).fill( '412' );
 	await page.locator( '[name="input_3.6"]' ).selectOption( 'United Kingdom' );
 	await page.locator( `#gform_submit_button_${ fixture.formId }` ).click();
-	await page.waitForURL( /sandbox\.opayo\.eu\.elavon\.com\/gateway\/service\/cardselection/ );
+	await page.waitForURL( cardSelectionUrl );
 }
 
 /**
@@ -81,4 +87,47 @@ test( 'a successful card payment marks the entry paid and shows the confirmation
 	const entry = latestEntry();
 	expect( entry.paymentStatus ).toBe( 'Paid' );
 	expect( entry.transactionId ).not.toBe( '' );
+} );
+
+test( 'a declined card can be retried with another card, and the retry is paid', async ( { page } ) => {
+	await submitPaymentForm( page );
+	await payWithCard( page, declinedVisa );
+
+	await expect( page.getByText( 'The Authorisation has been declined by the bank.' ) ).toBeVisible();
+	expect( latestEntry().paymentStatus ).toBe( 'Processing' );
+
+	await payWithCard( page, visa );
+
+	await expect( page.getByText( 'Thank you, your payment was received.' ) ).toBeVisible();
+	expect( page.url() ).toContain( fixture.payPath );
+	const entry = latestEntry();
+	expect( entry.paymentStatus ).toBe( 'Paid' );
+	expect( entry.transactionId ).not.toBe( '' );
+} );
+
+test( 'three declined attempts mark the entry failed and send the customer to the cancel page', async ( { page } ) => {
+	// Three full card flows on Opayo's pages.
+	test.setTimeout( 360_000 );
+	await submitPaymentForm( page );
+
+	for ( let attempt = 1; attempt <= 3; attempt++ ) {
+		await payWithCard( page, declinedVisa );
+		if ( attempt < 3 ) {
+			await page.waitForURL( cardSelectionUrl );
+		}
+	}
+
+	await expect( page.getByText( 'Your payment was cancelled.' ) ).toBeVisible();
+	expect( page.url() ).toContain( fixture.cancelPath );
+	expect( latestEntry().paymentStatus ).toBe( 'Failed' );
+} );
+
+test( 'cancelling on the card page marks the entry failed and sends the customer to the cancel page', async ( { page } ) => {
+	await submitPaymentForm( page );
+	page.once( 'dialog', ( dialog ) => dialog.accept() );
+	await page.getByRole( 'img', { name: 'Cancel' } ).click();
+
+	await expect( page.getByText( 'Your payment was cancelled.' ) ).toBeVisible();
+	expect( page.url() ).toContain( fixture.cancelPath );
+	expect( latestEntry().paymentStatus ).toBe( 'Failed' );
 } );
