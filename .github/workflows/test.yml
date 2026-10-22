@@ -39,10 +39,77 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
           restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer-
 
       - name: Install Composer dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
       - run: composer run-script style:check
+
+  integration:
+    name: integration-wp-${{ matrix.wp }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        wp: ['6.7', 'latest']
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_unit_tests
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      WP_VERSION: ${{ matrix.wp }}
+      WP_CORE_DIR: /tmp/wordpress
+      WP_DB_HOST: 127.0.0.1:3306
+      WP_DB_USER: root
+      WP_DB_PASSWORD: root
+      WP_DB_NAME: wordpress_unit_tests
+      WP_SKIP_DB_CREATE: 'true'
+      MANTLE_CI_BRANCH: 5fd59131c942c192b2c7652de15a95f814ba2776
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: 8.4
+          extensions: bcmath, curl, mysqli
+          coverage: none
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "${GITHUB_OUTPUT}"
+
+      - name: Cache dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-8.4-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: ${{ runner.os }}-8.4-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Install Gravity Forms
+        run: composer install --working-dir=tests/gravityforms --no-progress --prefer-dist
+        env:
+          COMPOSER_CACHE_DIR: ${{ runner.temp }}/gravityforms-composer-cache
+          COMPOSER_AUTH: >-
+            {"http-basic": {"repo.packagist.com": {"username": "itineris",
+            "password": "${{ secrets.PRIVATE_PACKAGIST_TOKEN }}"}}}
+
+      - run: composer test

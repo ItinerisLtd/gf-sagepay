@@ -34,7 +34,9 @@
         "omnipay/sagepay": "^4.1"
     },
     "require-dev": {
+        "alleyinteractive/pest-plugin-wordpress": "^1.1",
         "itinerisltd/itineris-wp-coding-standards": "^2.0",
+        "pestphp/pest": "^5.3",
         "roave/security-advisories": "dev-master"
     },
     "config": {
@@ -44,7 +46,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "php-http/discovery": false
+            "php-http/discovery": false,
+            "pestphp/pest-plugin": true
         }
     },
     "extra": {
@@ -84,7 +87,8 @@
             "composer archive --format=zip --dir=release --file=gf-sagepay"
         ],
         "style:check": "phpcs",
-        "style:fix": "phpcbf"
+        "style:fix": "phpcbf",
+        "test": ["Composer\\Config::disableProcessTimeout", "pest"]
     },
     "support": {
         "email": "dev@itineris.co.uk",
