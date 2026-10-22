@@ -52,3 +52,8 @@ it('sends US states as their two-letter code', function (): void {
         'DeliveryState' => 'CA',
     ]);
 });
+
+// Must stay after the submissions above: it checks TestCase::tearDown() cleared the payment state they left on the add-on.
+it('leaves no checkout redirect behind for the next test', function (): void {
+    expect(apply_filters('gform_confirmation', 'Thanks', ['id' => 0], [], false))->toBe('Thanks');
+});
