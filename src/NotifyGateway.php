@@ -8,6 +8,8 @@ use Omnipay\SagePay\ServerGateway;
 
 /**
  * Parses notifications into NotifyRequest, so every signature check on them is constant time.
+ *
+ * @internal
  */
 final class NotifyGateway extends ServerGateway
 {

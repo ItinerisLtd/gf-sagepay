@@ -199,9 +199,19 @@ Thanks! Glad you like it. It's important to let my boss knows somebody is using 
 
 ### Public API
 
+These are covered by semantic versioning, so they only change in a major release:
+- the `gf_sagepay_redirect_url_failure_wp_die` and `gf_sagepay_redirect_url_exception_wp_die` filters
+- `ConfirmationHandler::buildUrlFor()`
+- `Itineris\SagePay\Entry`: the constructor and `getId()`, `getFormId()`, `getProperty()`, `getMeta()`, `toArray()` and `isPaidOrPending()`
+
+Everything else may change in any release.
+That includes every other class and method (all classes are `final`, and internals are marked `@internal`), the `gf_sagepay_terminate` action, `GFSagePay::VERSION` (read the version from the plugin header instead) and the entry meta keys the plugin writes (`gf_sagepay_*` and `transaction_reference`).
+
+The failure filter passes omnipay's `Omnipay\SagePay\Message\ServerAuthorizeResponse`, so a major upgrade of `omnipay/sagepay` would be a breaking change for this plugin.
+
 #### Build URL for continuing confirmation
 
-`ConfirmationHandler::buildUrlFor(Entry $entry, int $ttlInSeconds = 3600): string`
+`Itineris\SagePay\ConfirmationHandler::buildUrlFor(Itineris\SagePay\Entry $entry, int $ttlInSeconds = 3600): string`
 
 Usage:
 ```php
@@ -211,8 +221,8 @@ if (is_wp_error($rawEntry)) {
     wp_die('Entry not found');
 }
 
-$url = ConfirmationHandler::buildUrlFor(
-    new Entry($rawEntry),
+$url = \Itineris\SagePay\ConfirmationHandler::buildUrlFor(
+    new \Itineris\SagePay\Entry($rawEntry),
     86400 // expires in 24 hours (24*3600=86400)
 );
 
@@ -233,8 +243,9 @@ If the user quits before completing formB, you could use `ConfirmationHandler::b
 Note:
 - The url continues Gravity Forms confirmation
 - Whoever got the url will go on confirmation, no authentication performed
+- Each call replaces the entry's previous token, so any earlier url for the same entry (including the one SagePay sends the customer to) stops working
 - The confirmation will use latest field values from database which could have changed
-- No payment status checking
+- A payment that is not Paid or Pending is sent to the feed's cancel URL when one is set
 
 #### Redirect URL Retrieval Failure Handling
 
@@ -262,7 +273,7 @@ Improper settings might lead to disasters.
 
 Example:
 ```php
-add_filter('gf_sagepay_redirect_url_failure_wp_die', function(bool $shouldWpDie, ServerAuthorizeResponse $response, Entry $entry, GFPaymentAddOn $addOn): bool {
+add_filter('gf_sagepay_redirect_url_failure_wp_die', function(bool $shouldWpDie, \Omnipay\SagePay\Message\ServerAuthorizeResponse $response, \Itineris\SagePay\Entry $entry, \GFPaymentAddOn $addOn): bool {
 
     // Do something.
 
@@ -275,7 +286,7 @@ add_filter('gf_sagepay_redirect_url_failure_wp_die', function(bool $shouldWpDie,
 When registration ends in an exception instead of a reply from SagePay (for example SagePay cannot be reached, or omnipay cannot build the request), there is no `ServerAuthorizeResponse`. The entry is still marked as `Failed` with the exception in its notes, and the `'gf_sagepay_redirect_url_exception_wp_die'` filter decides whether to `wp_die`. It receives the exception instead of the response, and returning `false` has the same effect as above:
 
 ```php
-add_filter('gf_sagepay_redirect_url_exception_wp_die', function(bool $shouldWpDie, Throwable $exception, Entry $entry, GFPaymentAddOn $addOn): bool {
+add_filter('gf_sagepay_redirect_url_exception_wp_die', function(bool $shouldWpDie, \Throwable $exception, \Itineris\SagePay\Entry $entry, \GFPaymentAddOn $addOn): bool {
     return $shouldWpDie;
 }, 10, 4);
 ```

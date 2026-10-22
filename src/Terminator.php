@@ -9,6 +9,9 @@ use function function_exists;
 use function ignore_user_abort;
 use function litespeed_finish_request;
 
+/**
+ * @internal
+ */
 final class Terminator
 {
     /**

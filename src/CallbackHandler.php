@@ -16,7 +16,10 @@ use function is_array;
 use function is_string;
 use function json_decode;
 
-class CallbackHandler
+/**
+ * @internal
+ */
+final class CallbackHandler
 {
     public static function run(GFPaymentAddOn $addOn): never
     {
@@ -25,23 +28,23 @@ class CallbackHandler
         // Nothing that terminates may run inside these try blocks: a throwing terminate listener would be
         // caught and a second reply sent.
         try {
-            $entry = static::getVerifiedEntry($request, $addOn);
+            $entry = self::getVerifiedEntry($request, $addOn);
         } catch (Throwable $exception) {
-            static::logException(__METHOD__, $exception, $addOn);
+            self::logException(__METHOD__, $exception, $addOn);
             $entry = 'Unable to process notification';
         }
 
         if (! $entry instanceof Entry) {
-            static::reject($request, $addOn, $entry);
+            self::reject($request, $addOn, $entry);
         }
 
         // The notification is genuine from here on, so SagePay always gets an OK reply.
         try {
-            static::applyStatus($request, $entry, $addOn);
-            $nextUrl = static::getNextUrl($entry);
+            self::applyStatus($request, $entry, $addOn);
+            $nextUrl = self::getNextUrl($entry);
         } catch (Throwable $exception) {
-            static::logException(__METHOD__, $exception, $addOn);
-            $nextUrl = static::getFallbackNextUrl();
+            self::logException(__METHOD__, $exception, $addOn);
+            $nextUrl = self::getFallbackNextUrl();
         }
 
         $addOn->log_debug(__METHOD__ . '(): Confirm entry ' . $entry->getId());
@@ -54,9 +57,9 @@ class CallbackHandler
      *
      * @return Entry|string The verified entry, or the reason the notification is rejected.
      */
-    protected static function getVerifiedEntry(ServerNotifyRequest $request, GFPaymentAddOn $addOn): Entry|string
+    private static function getVerifiedEntry(ServerNotifyRequest $request, GFPaymentAddOn $addOn): Entry|string
     {
-        if (! static::hasOnlyStringFields($request)) {
+        if (! self::hasOnlyStringFields($request)) {
             return 'Malformed notification';
         }
 
@@ -65,17 +68,17 @@ class CallbackHandler
             return 'Unknown transaction';
         }
 
-        $entry = static::getEntryByTransactionId($transactionId, $addOn);
+        $entry = self::getEntryByTransactionId($transactionId, $addOn);
         if (! $entry instanceof Entry) {
             return 'Unknown transaction';
         }
 
         $reference = $entry->getMeta('transaction_reference');
-        if (! static::isUsableReference($reference, $transactionId)) {
+        if (! self::isUsableReference($reference, $transactionId)) {
             return 'Unusable transaction reference for entry ' . $entry->getId();
         }
 
-        $vendor = static::getVendor($entry, $addOn);
+        $vendor = self::getVendor($entry, $addOn);
         if ('' === $vendor) {
             return 'No vendor code for entry ' . $entry->getId();
         }
@@ -88,16 +91,16 @@ class CallbackHandler
             return 'Signature not valid for entry ' . $entry->getId();
         }
 
-        static::logDebug(__METHOD__, $request, $addOn);
+        self::logDebug(__METHOD__, $request, $addOn);
 
         return $entry;
     }
 
-    protected static function reject(ServerNotifyRequest $request, GFPaymentAddOn $addOn, string $message): never
+    private static function reject(ServerNotifyRequest $request, GFPaymentAddOn $addOn, string $message): never
     {
         $addOn->log_error(__METHOD__ . '(): ' . $message);
         $request->invalid(
-            static::getFallbackNextUrl(),
+            self::getFallbackNextUrl(),
             $message,
         );
         Terminator::terminate();
@@ -106,7 +109,7 @@ class CallbackHandler
     /**
      * The vendor code the payment was registered with, or the feed's for entries registered without one stored.
      */
-    protected static function getVendor(Entry $entry, GFPaymentAddOn $addOn): string
+    private static function getVendor(Entry $entry, GFPaymentAddOn $addOn): string
     {
         $vendor = $entry->getVendor();
         if ('' !== $vendor) {
@@ -118,7 +121,7 @@ class CallbackHandler
         return $feed instanceof Feed ? $feed->getVendor() : '';
     }
 
-    protected static function hasOnlyStringFields(ServerNotifyRequest $request): bool
+    private static function hasOnlyStringFields(ServerNotifyRequest $request): bool
     {
         foreach ($request->getData() as $value) {
             if (! is_string($value)) {
@@ -134,7 +137,7 @@ class CallbackHandler
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint $reference
      */
-    protected static function isUsableReference($reference, string $transactionId): bool
+    private static function isUsableReference($reference, string $transactionId): bool
     {
         if (! is_string($reference)) {
             return false;
@@ -152,7 +155,7 @@ class CallbackHandler
     /**
      * Applies the notified status without repeating it, and never downgrades a paid entry.
      */
-    protected static function applyStatus(ServerNotifyRequest $request, Entry $entry, GFPaymentAddOn $addOn): void
+    private static function applyStatus(ServerNotifyRequest $request, Entry $entry, GFPaymentAddOn $addOn): void
     {
         $status = $request->getTransactionStatus();
         $targetStatus = match ($status) {
@@ -184,7 +187,7 @@ class CallbackHandler
         };
     }
 
-    protected static function logException(string $methodName, Throwable $exception, GFPaymentAddOn $addOn): void
+    private static function logException(string $methodName, Throwable $exception, GFPaymentAddOn $addOn): void
     {
         $addOn->log_error(
             $methodName . '(): ' . $exception->getMessage()
@@ -195,7 +198,7 @@ class CallbackHandler
     /**
      * Log the notification via Gravity Forms logger, without the signature.
      */
-    protected static function logDebug(string $methodName, ServerNotifyRequest $request, GFPaymentAddOn $addOn): void
+    private static function logDebug(string $methodName, ServerNotifyRequest $request, GFPaymentAddOn $addOn): void
     {
         $data = $request->getData();
         unset($data['VPSSignature']);
@@ -206,18 +209,18 @@ class CallbackHandler
         $addOn->log_debug($methodName . '(): TransactionId (VendorTxCode) - ' . $request->getTransactionId());
     }
 
-    protected static function getEntryByTransactionId(string $transactionId, GFPaymentAddOn $addOn): ?Entry
+    private static function getEntryByTransactionId(string $transactionId, GFPaymentAddOn $addOn): ?Entry
     {
-        $rawEntry = static::getRawEntryByProperty($transactionId, $addOn);
+        $rawEntry = self::getRawEntryByProperty($transactionId, $addOn);
         // Workaround for Gravity Forms Encrypted Fields.
         if (! is_array($rawEntry)) {
-            $rawEntry = static::getRawEntryByMeta($transactionId, $addOn);
+            $rawEntry = self::getRawEntryByMeta($transactionId, $addOn);
         }
 
         return is_array($rawEntry) ? new Entry($rawEntry) : null;
     }
 
-    protected static function getRawEntryByProperty(string $transactionId, GFPaymentAddOn $addOn): ?array
+    private static function getRawEntryByProperty(string $transactionId, GFPaymentAddOn $addOn): ?array
     {
         $entryId = $addOn->get_entry_by_transaction_id($transactionId);
         if (empty($entryId)) {
@@ -228,7 +231,7 @@ class CallbackHandler
         return is_array($rawEntry) ? $rawEntry : null;
     }
 
-    protected static function getRawEntryByMeta(string $transactionId, GFPaymentAddOn $addOn): ?array
+    private static function getRawEntryByMeta(string $transactionId, GFPaymentAddOn $addOn): ?array
     {
         /** @var wpdb $wpdb */
         $wpdb = $GLOBALS['wpdb'];
@@ -252,12 +255,12 @@ class CallbackHandler
         return is_array($rawEntry) ? $rawEntry : null;
     }
 
-    protected static function getFallbackNextUrl(): string
+    private static function getFallbackNextUrl(): string
     {
         return home_url();
     }
 
-    protected static function getNextUrl(Entry $entry): string
+    private static function getNextUrl(Entry $entry): string
     {
         return ConfirmationHandler::buildUrlFor($entry);
     }

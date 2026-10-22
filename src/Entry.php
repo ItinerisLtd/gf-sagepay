@@ -8,13 +8,11 @@ use GFAPI;
 use GFPaymentAddOn;
 
 use function in_array;
-use function is_int;
-use function strtotime;
-use function time;
+use function is_array;
 
-class Entry
+final class Entry
 {
-    protected const NOT_FULFILLED = 0;
+    private const NOT_FULFILLED = 0;
 
     /**
      * Gravity Forms entry object array
@@ -22,7 +20,7 @@ class Entry
      * @var array
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
-    protected $data;
+    private $data;
 
     /**
      * Entry constructor.
@@ -34,6 +32,9 @@ class Entry
         $this->data = $data;
     }
 
+    /**
+     * @internal
+     */
     public function markAsProcessing(string $uuid, float $amount): void
     {
         $this->setPropertyWithoutReload('transaction_id', $uuid);
@@ -48,25 +49,9 @@ class Entry
     }
 
     /**
-     * Updates a single property of an entry to the given value.
-     *
-     * @param string $property The property of the Entry object to be updated.
-     *
-     * @return bool Whether the entry property was updated successfully.
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint $value
      */
-    public function setProperty(string $property, $value): bool
-    {
-        $result = $this->setPropertyWithoutReload($property, $value);
-        $this->reload();
-
-        return $result;
-    }
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint $value
-     */
-    protected function setPropertyWithoutReload(string $property, $value): bool
+    private function setPropertyWithoutReload(string $property, $value): bool
     {
         return (bool) GFAPI::update_entry_property($this->getId(), $property, $value);
     }
@@ -76,11 +61,23 @@ class Entry
         return (int) $this->data['id'];
     }
 
-    protected function reload(): void
+    /**
+     * Keeps the current data if the entry can no longer be loaded.
+     */
+    private function reload(): void
     {
-        $this->data = GFAPI::get_entry($this->getId());
+        $rawEntry = GFAPI::get_entry($this->getId());
+
+        if (! is_array($rawEntry)) {
+            return;
+        }
+
+        $this->data = $rawEntry;
     }
 
+    /**
+     * @internal
+     */
     public function markAsPaid(GFPaymentAddOn $addOn, ?string $note = null): void
     {
         $asArray = $this->toArray();
@@ -119,6 +116,9 @@ class Entry
         return rgar($this->data, (string) $prop, $default);
     }
 
+    /**
+     * @internal
+     */
     public function markAsPending(GFPaymentAddOn $addOn, ?string $note = null): void
     {
         $asArray = $this->toArray();
@@ -148,6 +148,9 @@ class Entry
         $this->reload();
     }
 
+    /**
+     * @internal
+     */
     public function markAsFailed(GFPaymentAddOn $addOn, ?string $note = null): void
     {
         $asArray = $this->toArray();
@@ -184,17 +187,25 @@ class Entry
 
     /**
      * The vendor code the payment was registered with.
+     *
+     * @internal
      */
     public function getVendor(): string
     {
         return (string) $this->getMeta('gf_sagepay_vendor');
     }
 
+    /**
+     * @internal
+     */
     public function getConfirmationTokenHash(): string
     {
         return (string) $this->getMeta('gf_sagepay_token_hash');
     }
 
+    /**
+     * @internal
+     */
     public function getUsedConfirmationTokenHash(): string
     {
         return (string) $this->getMeta('gf_sagepay_token_used_hash');
@@ -202,6 +213,8 @@ class Entry
 
     /**
      * Records the hash of the consumed token, so a refresh of the same link can be recognised.
+     *
+     * @internal
      */
     public function setUsedConfirmationTokenHash(string $hash): bool
     {
@@ -218,6 +231,9 @@ class Entry
         return gform_get_meta($this->getId(), $key);
     }
 
+    /**
+     * @internal
+     */
     public function setConfirmationTokenHash(string $confirmationToken, int $expiredAt): void
     {
         $this->setMeta('gf_sagepay_token_hash', $confirmationToken);
@@ -230,6 +246,7 @@ class Entry
      *
      * @param string $key The key for the meta data to be stored.
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint $value
+     * @internal
      */
     public function setMeta(string $key, $value): void
     {
@@ -240,17 +257,9 @@ class Entry
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint $value
      */
-    protected function setMetaWithoutReload(string $key, $value): void
+    private function setMetaWithoutReload(string $key, $value): void
     {
         gform_update_meta($this->getId(), $key, $value);
-    }
-
-    /**
-     * @deprecated The confirmation flow consumes the token with deleteConfirmationTokenHash().
-     */
-    public function expireConfirmationTokenNow(): void
-    {
-        $this->setMeta('gf_sagepay_token_expired_at', 0);
     }
 
     /**
@@ -258,12 +267,16 @@ class Entry
      * Returns the number of rows deleted, or false/null when Gravity Forms could not run the query.
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
+     * @internal
      */
     public function deleteConfirmationTokenHash()
     {
         return gform_delete_meta($this->getId(), 'gf_sagepay_token_hash');
     }
 
+    /**
+     * @internal
+     */
     public function getConfirmationTokenExpiredAt(): int
     {
         return (int) $this->getMeta('gf_sagepay_token_expired_at');
@@ -276,19 +289,5 @@ class Entry
             ['Paid', 'Pending'],
             true,
         );
-    }
-
-    /**
-     * @deprecated The confirmation flow trusts the payment status SagePay reported, whatever the entry's age.
-     */
-    public function isTimeout(): bool
-    {
-        $dateCreated = strtotime($this->getProperty('date_created'));
-
-        if (! is_int($dateCreated)) {
-            return false;
-        }
-
-        return time() - $dateCreated > 1800; // 30 minutes.
     }
 }

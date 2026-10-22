@@ -7,7 +7,10 @@ namespace Itineris\SagePay;
 use GFAddOn;
 use GFForms;
 
-class GFSagePay
+/**
+ * @internal
+ */
+final class GFSagePay
 {
     public const VERSION = '0.10.10';
 

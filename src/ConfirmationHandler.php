@@ -21,15 +21,21 @@ use function time;
 /**
  * Taken from `GFPayPal::maybe_thankyou_page`.
  */
-class ConfirmationHandler
+final class ConfirmationHandler
 {
     private const HASH_HMAC_ALGO = 'sha512';
 
+    /**
+     * @internal
+     */
     public static function init(): void
     {
         add_action('wp', [self::class, 'maybeContinue'], 5);
     }
 
+    /**
+     * @internal
+     */
     public static function maybeContinue(): void
     {
         $entryId = rgget('entry');
