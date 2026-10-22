@@ -20,7 +20,6 @@ class CallbackHandler
 {
     public static function run(GFPaymentAddOn $addOn): never
     {
-        /** @var ServerNotifyRequest $request */
         $request = GatewayFactory::buildForNotification()->acceptNotification();
 
         // Nothing that terminates may run inside these try blocks: a throwing terminate listener would be
