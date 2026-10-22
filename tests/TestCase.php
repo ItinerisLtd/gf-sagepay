@@ -34,6 +34,7 @@ abstract class TestCase extends MantleTestCase
     protected function tearDown(): void
     {
         self::$running = false;
+        FakeSagePayHttpStrategy::reset();
 
         if (class_exists(GFFormDisplay::class)) {
             GFFormDisplay::$submission = [];

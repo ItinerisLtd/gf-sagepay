@@ -37,6 +37,7 @@
         "alleyinteractive/pest-plugin-wordpress": "^1.1",
         "itinerisltd/itineris-wp-coding-standards": "^2.0",
         "pestphp/pest": "^5.3",
+        "php-http/mock-client": "^1.6",
         "roave/security-advisories": "dev-master"
     },
     "config": {
