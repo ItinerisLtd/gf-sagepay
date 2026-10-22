@@ -6,7 +6,7 @@
  * Description:       SagePay payment gateway for Gravity Forms
  * Version:           0.12.0
  * Requires at least: 6.7
- * Requires PHP:      8.4
+ * Requires PHP:      8.4.1
  * Author:            Itineris Limited
  * Author URI:        https://www.itineris.co.uk/
  * Text Domain:       gf-sagepay

@@ -27,7 +27,8 @@
         }
     ],
     "require": {
-        "php": "^8.4",
+        "php": "^8.4.1",
+        "ext-bcmath": "*",
         "ext-curl": "*",
         "league/omnipay": "^3.2",
         "omnipay/sagepay": "^4.1"
@@ -38,7 +39,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.4"
+            "php": "8.4.1"
         },
         "sort-packages": true,
         "allow-plugins": {

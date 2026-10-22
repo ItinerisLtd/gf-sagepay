@@ -18,7 +18,7 @@ composer release:build # wipes vendor, installs --no-dev, zips to release/gf-sag
 
 There is no test suite. CI (`.github/workflows/test.yml`) runs `style:check` on PHP 8.4 for pull requests only; branch pushes, including to `master`, do not trigger it. Tag pushes (`*.*.*`) trigger `release.yml`, which builds the zip, runs `php -l` on every file and creates a GitHub release.
 
-`composer.json` pins `config.platform.php` to 8.4, so only use PHP 8.4-compatible syntax.
+`composer.json` pins `config.platform.php` to 8.4.1, so only use PHP 8.4-compatible syntax.
 
 ## Coding standards
 
