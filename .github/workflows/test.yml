@@ -117,7 +117,7 @@ jobs:
   e2e:
     name: e2e
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     env:
       CLOUDFLARED_VERSION: 2026.9.3
       CLOUDFLARED_SHA256: 77e26d8d900e0b8469f416239d14b5f296525fdf79fee6f511ef55609e3fbac2
@@ -144,9 +144,6 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-8.4-composer-nodev-${{ hashFiles('composer.lock') }}
           restore-keys: ${{ runner.os }}-8.4-composer-nodev-
-
-      - name: Install Composer dependencies
-        run: composer install --no-dev --no-progress --prefer-dist --optimize-autoloader
 
       - name: Install Gravity Forms
         run: composer install --working-dir=tests/gravityforms --no-progress --prefer-dist
