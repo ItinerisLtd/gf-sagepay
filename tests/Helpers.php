@@ -148,16 +148,17 @@ function captureWpDieResponseCode(): ArrayObject
 /**
  * Creates an entry waiting for SagePay's notification, as RedirectUrlFactory leaves it after registration.
  *
- * @param array<string, mixed> $entry Entry properties to override.
+ * @param array<string, mixed> $entry    Entry properties to override.
+ * @param array<string, mixed> $feedMeta Feed meta to override.
  */
-function createPendingSagePayEntry(string $securityKey = TEST_SECURITY_KEY, array $entry = []): Entry
+function createPendingSagePayEntry(string $securityKey = TEST_SECURITY_KEY, array $entry = [], array $feedMeta = []): Entry
 {
     $transactionId = wp_generate_uuid4();
     $sagePayEntry = createSagePayEntry(array_merge([
         'transaction_id' => $transactionId,
         'payment_status' => 'Processing',
         'payment_amount' => '10.00',
-    ], $entry));
+    ], $entry), $feedMeta);
 
     gform_update_meta($sagePayEntry->getId(), 'transaction_id', $transactionId);
     gform_update_meta($sagePayEntry->getId(), 'payment_amount', '10.00');
@@ -166,6 +167,12 @@ function createPendingSagePayEntry(string $securityKey = TEST_SECURITY_KEY, arra
         'VPSTxId' => TEST_VPS_TX_ID,
         'VendorTxCode' => $transactionId,
     ]));
+    $feed = Feed::forEntry(AddOn::get_instance(), $sagePayEntry);
+    if (! $feed instanceof Feed) {
+        throw new RuntimeException('Unable to load the test entry\'s feed.');
+    }
+
+    gform_update_meta($sagePayEntry->getId(), 'gf_sagepay_vendor', $feed->getVendor());
 
     return $sagePayEntry;
 }
@@ -177,7 +184,12 @@ function createPendingSagePayEntry(string $securityKey = TEST_SECURITY_KEY, arra
  *
  * @return array<string, string>
  */
-function signedNotification(string $transactionId, string $securityKey = TEST_SECURITY_KEY, array $fields = []): array
+function signedNotification(
+    string $transactionId,
+    string $securityKey = TEST_SECURITY_KEY,
+    array $fields = [],
+    string $vendor = TEST_VENDOR,
+): array
 {
     $fields = array_merge([
         'VPSProtocol' => '4.00',
@@ -190,15 +202,28 @@ function signedNotification(string $transactionId, string $securityKey = TEST_SE
     ], $fields);
 
     $signer = new ServerNotifyRequest(new Client(), Request::create('/', 'POST', $fields));
-    $signer->setVendor(TEST_VENDOR);
+    $signer->setVendor($vendor);
     $signer->setSecurityKey($securityKey);
 
     return array_merge($fields, ['VPSSignature' => strtoupper($signer->buildSignature())]);
 }
 
-function notificationPath(string $isTest = 'true'): string
+function feedIdOf(Entry $entry): int
 {
-    return '/?callback=gf-sagepay&vendor=' . TEST_VENDOR . '&isTest=' . $isTest;
+    return (int) gform_get_meta($entry->getId(), 'processed_feeds')['gf-sagepay'][0];
+}
+
+function notificationPath(): string
+{
+    return '/?callback=gf-sagepay';
+}
+
+/**
+ * A notification URL that also carries `vendor` and `isTest` query args, which the handler ignores.
+ */
+function legacyNotificationPath(string $vendor, string $isTest): string
+{
+    return notificationPath() . '&vendor=' . $vendor . '&isTest=' . $isTest;
 }
 
 /**

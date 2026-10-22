@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Itineris\SagePay;
 
+use GFPaymentAddOn;
+
+use function is_array;
+
 class Feed
 {
     /**
@@ -22,6 +26,16 @@ class Feed
     public function __construct(array $data)
     {
         $this->data = $data;
+    }
+
+    /**
+     * The feed that processed the entry, whether or not it is still active.
+     */
+    public static function forEntry(GFPaymentAddOn $addOn, Entry $entry): ?self
+    {
+        $rawFeed = $addOn->get_payment_feed($entry->toArray());
+
+        return is_array($rawFeed) ? new self($rawFeed) : null;
     }
 
     public function getFormId(): int
