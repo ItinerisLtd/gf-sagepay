@@ -20,18 +20,24 @@ use function json_decode;
 
 class CallbackHandler
 {
-    public static function run(GFPaymentAddOn $addOn): void
+    public static function run(GFPaymentAddOn $addOn): never
     {
         $gateway = static::buildGatewayBySuperglobals($addOn);
 
         /** @var ServerNotifyRequest $request */
         $request = $gateway->acceptNotification();
 
+        // Nothing that terminates may run inside these try blocks: a throwing terminate listener would be
+        // caught and a second reply sent.
         try {
             $entry = static::getVerifiedEntry($request, $addOn);
         } catch (Throwable $exception) {
             static::logException(__METHOD__, $exception, $addOn);
-            static::reject($request, $addOn, 'Unable to process notification');
+            $entry = 'Unable to process notification';
+        }
+
+        if (! $entry instanceof Entry) {
+            static::reject($request, $addOn, $entry);
         }
 
         // The notification is genuine from here on, so SagePay always gets an OK reply.
@@ -45,37 +51,39 @@ class CallbackHandler
 
         $addOn->log_debug(__METHOD__ . '(): Confirm entry ' . $entry->getId());
         $request->confirm($nextUrl);
-        exit;
+        Terminator::terminate();
     }
 
     /**
-     * Rejects anything that cannot be matched to an entry and verified, leaving the entry untouched.
+     * Matches the notification to an entry and verifies it, without touching the entry.
+     *
+     * @return Entry|string The verified entry, or the reason the notification is rejected.
      */
-    protected static function getVerifiedEntry(ServerNotifyRequest $request, GFPaymentAddOn $addOn): Entry
+    protected static function getVerifiedEntry(ServerNotifyRequest $request, GFPaymentAddOn $addOn): Entry|string
     {
         if (! static::hasOnlyStringFields($request)) {
-            static::reject($request, $addOn, 'Malformed notification');
+            return 'Malformed notification';
         }
 
         $transactionId = $request->getTransactionId();
         if (! is_string($transactionId) || ! wp_is_uuid($transactionId)) {
-            static::reject($request, $addOn, 'Unknown transaction');
+            return 'Unknown transaction';
         }
 
         $entry = static::getEntryByTransactionId($transactionId, $addOn);
         if (! $entry instanceof Entry) {
-            static::reject($request, $addOn, 'Unknown transaction');
+            return 'Unknown transaction';
         }
 
         $reference = $entry->getMeta('transaction_reference');
         if (! static::isUsableReference($reference, $transactionId)) {
-            static::reject($request, $addOn, 'Unusable transaction reference for entry ' . $entry->getId());
+            return 'Unusable transaction reference for entry ' . $entry->getId();
         }
 
         $request->setTransactionReference($reference);
 
         if (! $request->isValid()) {
-            static::reject($request, $addOn, 'Signature not valid for entry ' . $entry->getId());
+            return 'Signature not valid for entry ' . $entry->getId();
         }
 
         static::logDebug(__METHOD__, $request, $addOn);
@@ -90,7 +98,7 @@ class CallbackHandler
             static::getFallbackNextUrl(),
             $message,
         );
-        exit;
+        Terminator::terminate();
     }
 
     protected static function buildGatewayBySuperglobals(GFPaymentAddOn $addOn): ServerGateway
