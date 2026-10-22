@@ -22,17 +22,21 @@ use Mantle\Testing\WP_Die;
 use Omnipay\Common\Http\Client;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use WP_Error;
 
+use function array_map;
 use function array_merge;
 use function implode;
 use function in_array;
 use function is_array;
 use function json_encode;
+use function parse_str;
 use function parse_url;
 use function preg_quote;
+use function range;
 use function strtoupper;
 
 const TEST_VENDOR = 'testvendor';
@@ -41,13 +45,14 @@ const TEST_VPS_TX_ID = '{11111111-2222-3333-4444-555555555555}';
 const TEST_CHECKOUT_URL = 'https://sandbox.opayo.eu.elavon.com/gateway/service/cardselection?vpstxid=' . TEST_VPS_TX_ID;
 
 /**
- * Creates a form with a SagePay feed and an entry processed by that feed.
+ * Creates a form with an active SagePay feed and returns the form and feed IDs.
  *
- * @param array<string, mixed> $entry    Entry properties to override.
  * @param array<string, mixed> $feedMeta Feed meta to override.
  * @param array<string, mixed> $form     Form properties to override.
+ *
+ * @return array{int, int}
  */
-function createSagePayEntry(array $entry = [], array $feedMeta = [], array $form = []): Entry
+function createSagePayForm(array $feedMeta = [], array $form = []): array
 {
     $formId = GFAPI::add_form(array_merge(['title' => 'SagePay test form', 'fields' => []], $form));
     if ($formId instanceof WP_Error) {
@@ -62,6 +67,20 @@ function createSagePayEntry(array $entry = [], array $feedMeta = [], array $form
     if ($feedId instanceof WP_Error) {
         throw new RuntimeException($feedId->get_error_message());
     }
+
+    return [$formId, $feedId];
+}
+
+/**
+ * Creates a form with a SagePay feed and an entry processed by that feed.
+ *
+ * @param array<string, mixed> $entry    Entry properties to override.
+ * @param array<string, mixed> $feedMeta Feed meta to override.
+ * @param array<string, mixed> $form     Form properties to override.
+ */
+function createSagePayEntry(array $entry = [], array $feedMeta = [], array $form = []): Entry
+{
+    [$formId, $feedId] = createSagePayForm($feedMeta, $form);
 
     $entryId = GFAPI::add_entry(array_merge([
         'form_id' => $formId,
@@ -322,4 +341,94 @@ function registerPayment(Entry $entry): string
     $addOn = AddOn::get_instance();
 
     return RedirectUrlFactory::build($addOn, new Feed($addOn->get_payment_feed($entry->toArray())), $entry, 10.0);
+}
+
+/**
+ * Reads the registration request omnipay last sent, and the query of the notification URL inside it.
+ *
+ * @return array{array<string, mixed>, array<string, mixed>}
+ */
+function sentRegistration(MockHttpClient $http): array
+{
+    $request = $http->getLastRequest();
+    if (! $request instanceof RequestInterface) {
+        throw new RuntimeException('No registration request was sent to SagePay.');
+    }
+
+    parse_str((string) $request->getBody(), $sent);
+    parse_str((string) parse_url((string) ($sent['NotificationURL'] ?? ''), PHP_URL_QUERY), $notificationQuery);
+
+    return [$sent, $notificationQuery];
+}
+
+/**
+ * Submits a payment form whose feed maps every customer and address field, and returns what SagePay was sent.
+ *
+ * @param array<string, string> $address Address inputs 3.1 to 3.6, keyed by input number.
+ *
+ * @return array{array<string, mixed>, array<string, string>}
+ */
+function submitSagePayForm(string $addressType, array $address): array
+{
+    $http = fakeSagePayHttp();
+    $http->addResponse(registrationResponse());
+
+    $addressMapping = [];
+    foreach (['address' => 1, 'address2' => 2, 'city' => 3, 'state' => 4, 'zip' => 5, 'country' => 6] as $key => $input) {
+        $addressMapping['billingInformation_' . $key] = '3.' . $input;
+        $addressMapping['shippingInformation_' . $key] = '3.' . $input;
+    }
+
+    [$formId] = createSagePayForm(
+        array_merge([
+            'transactionType' => 'product',
+            'paymentAmount' => 'form_total',
+            'description' => 'Test payment',
+            'customerInformation_firstName' => '1.3',
+            'customerInformation_lastName' => '1.6',
+            'customerInformation_email' => '2',
+        ], $addressMapping),
+        ['fields' => [
+            ['id' => 1, 'type' => 'name', 'label' => 'Name', 'nameFormat' => 'advanced', 'inputs' => [
+                ['id' => '1.3', 'label' => 'First'],
+                ['id' => '1.6', 'label' => 'Last'],
+            ]],
+            ['id' => 2, 'type' => 'email', 'label' => 'Email'],
+            ['id' => 3, 'type' => 'address', 'label' => 'Address', 'addressType' => $addressType, 'inputs' => array_map(
+                static fn (int $input): array => ['id' => '3.' . $input, 'label' => 'Address ' . $input],
+                range(1, 6),
+            )],
+            ['id' => 4, 'type' => 'product', 'inputType' => 'singleproduct', 'label' => 'Donation', 'basePrice' => '$10.00', 'inputs' => [
+                ['id' => '4.1', 'label' => 'Name'],
+                ['id' => '4.2', 'label' => 'Price'],
+                ['id' => '4.3', 'label' => 'Quantity'],
+            ]],
+            ['id' => 5, 'type' => 'total', 'label' => 'Total'],
+        ]],
+    );
+
+    $values = [
+        'input_1_3' => 'Ada',
+        'input_1_6' => 'Lovelace',
+        'input_2' => 'ada@example.org',
+        'input_4_1' => 'Donation',
+        'input_4_2' => '$10.00',
+        'input_4_3' => '1',
+    ];
+    foreach ($address as $input => $value) {
+        $values['input_3_' . $input] = $value;
+    }
+
+    $result = GFAPI::submit_form($formId, $values);
+    if ($result instanceof WP_Error) {
+        throw new RuntimeException($result->get_error_message());
+    }
+
+    if (true !== $result['is_valid']) {
+        throw new RuntimeException('Submission failed validation: ' . json_encode($result['validation_messages'] ?? []));
+    }
+
+    [$sent] = sentRegistration($http);
+
+    return [$result, $sent];
 }

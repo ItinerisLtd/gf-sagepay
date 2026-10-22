@@ -72,6 +72,27 @@ it('says the link was already used when the same token comes back', function (bo
     'after expiry' => [true],
 ]);
 
+it('says the link was already used when a concurrent request consumes the token first', function (): void {
+    $entry = createSagePayEntry();
+    $path = confirmationPath($entry);
+    $hash = freshEntryMeta($entry, 'gf_sagepay_token_hash');
+
+    $consumeFirst = static function (string $query) use (&$consumeFirst, $entry): string {
+        if (str_starts_with($query, 'DELETE') && str_contains($query, 'gf_sagepay_token_hash')) {
+            remove_filter('query', $consumeFirst);
+            gform_delete_meta($entry->getId(), 'gf_sagepay_token_hash');
+        }
+
+        return $query;
+    };
+    add_filter('query', $consumeFirst);
+
+    expect(fn () => $this->get($path))
+        ->toThrow(WP_Die_Exception::class, 'This confirmation link has already been used.')
+        ->and(confirmationShownFor($entry))->toBeFalse()
+        ->and(freshEntryMeta($entry, 'gf_sagepay_token_used_hash'))->toBe($hash);
+});
+
 it('ignores a different token once one has been used', function (): void {
     $entry = createSagePayEntry();
     $this->get(confirmationPath($entry));
