@@ -6,3 +6,7 @@
 
 #phpstorm
 .idea
+### Tests ###
+/.phpunit.cache/
+/tests/gravityforms/vendor/
+auth.json

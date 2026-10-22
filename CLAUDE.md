@@ -14,9 +14,20 @@ composer style:check   # phpcs with the Itineris ruleset (phpcs.xml)
 composer style:fix     # phpcbf
 composer release:build # wipes vendor, installs --no-dev, zips to release/gf-sagepay.zip
                        # leaves vendor without phpcs; run composer install again afterwards
+composer test          # Pest integration suite (see Testing)
 ```
 
-There is no test suite. CI (`.github/workflows/test.yml`) runs `style:check` on PHP 8.4 for pull requests only; branch pushes, including to `master`, do not trigger it. Tag pushes (`*.*.*`) trigger `release.yml`, which builds the zip, runs `php -l` on every file and creates a GitHub release.
+CI (`.github/workflows/test.yml`) runs on pull requests only; branch pushes, including to `master`, do not trigger it. It runs `style:check` on PHP 8.4, plus the integration suite against WordPress 6.7 and latest. The integration job installs Gravity Forms with the org secret `PRIVATE_PACKAGIST_TOKEN` (an Actions and a Dependabot secret); fork PRs don't receive it, so their integration check fails. Tag pushes (`*.*.*`) trigger `release.yml`, which builds the zip, runs `php -l` on every file and creates a GitHub release.
+
+## Testing
+
+Integration tests use Pest with `alleyinteractive/pest-plugin-wordpress` (Mantle testkit), real WordPress and real Gravity Forms. `tests/Pest.php` rsyncs the plugin into a throwaway WordPress install (`WP_CORE_DIR`, default `/tmp/wordpress`), copies Gravity Forms in next to it, activates both and re-runs Pest from there.
+
+- Gravity Forms comes from `tests/gravityforms`, a separate Composer project that pulls `gravity/gravityforms` through Private Packagist. Install it with `composer install --working-dir=tests/gravityforms` (needs Private Packagist credentials), or point `GRAVITYFORMS_PATH` at an existing copy. Never cache or commit its `vendor/`.
+- MySQL is required; SQLite is not supported by Gravity Forms. Locally: `docker run -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=wordpress_unit_tests -p 3307:3306 mysql:8`, then `WP_DB_HOST=127.0.0.1:3307 WP_DB_USER=root WP_DB_PASSWORD=root WP_SKIP_DB_CREATE=true composer test`.
+- `tests/TestCase.php` uses Mantle's `Refresh_Database`, so each test runs in a rolled-back transaction; create fixtures in `beforeEach`, not `beforeAll`.
+- `tests/bootstrap-hooks.php` makes `gf_sagepay_terminate` throw `Exit_Simulation_Exception`, disables asynchronous notifications and empties the `gf_*` tables once per run. Mantle turns `wp_die()` into `WP_Die_Exception` and `wp_redirect()` into `WP_Redirect_Exception`.
+- `tests/` is excluded from phpcs and from the release zip.
 
 `composer.json` pins `config.platform.php` to 8.4.1, so only use PHP 8.4-compatible syntax.
 
