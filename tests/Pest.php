@@ -8,6 +8,7 @@ use Mantle\Testing\Installation_Manager;
 use function Mantle\Testing\manager;
 
 require_once __DIR__ . '/TestCase.php';
+require_once __DIR__ . '/Helpers.php';
 
 uses(TestCase::class)->in('Integration');
 
