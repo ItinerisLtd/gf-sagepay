@@ -86,7 +86,8 @@ Although these features are not supported by this plugin, but you might able to 
 
 ## Minimum Requirements
 
-- PHP v8.4
+- PHP v8.4.1
+- PHP bcmath Extension
 - PHP cURL Extension
 - WordPress v6.7
 - [Gravity Forms](https://www.gravityforms.com/) v2.4.14.4

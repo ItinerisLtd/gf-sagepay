@@ -15,8 +15,9 @@ class MinimumRequirements
                 'version' => '6.7',
             ],
             'php' => [
-                'version' => '8.4',
+                'version' => '8.4.1',
                 'extensions' => [
+                    'bcmath',
                     'curl',
                 ],
             ],
