@@ -25,6 +25,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
+use Throwable;
 use WP_Error;
 
 use function array_map;
@@ -260,7 +261,7 @@ function expectRedirectUrl(Test_Response $response, string $url): void
  */
 final class FakeSagePayHttpStrategy implements DiscoveryStrategy
 {
-    private static ?MockHttpClient $client = null;
+    private static MockHttpClient|Throwable|null $client = null;
 
     /**
      * @return array<int, array{class: callable}>
@@ -268,14 +269,17 @@ final class FakeSagePayHttpStrategy implements DiscoveryStrategy
     public static function getCandidates($type): array
     {
         $client = self::$client;
-        if (! $client instanceof MockHttpClient || ! in_array($type, [ClientInterface::class, HttpClient::class], true)) {
+        if (null === $client || ! in_array($type, [ClientInterface::class, HttpClient::class], true)) {
             return [];
         }
 
-        return [['class' => static fn (): MockHttpClient => $client]];
+        return [['class' => static fn (): MockHttpClient => $client instanceof Throwable ? throw $client : $client]];
     }
 
-    public static function use(MockHttpClient $client): void
+    /**
+     * Hands omnipay this client, or throws this exception when omnipay looks for one.
+     */
+    public static function use(MockHttpClient|Throwable $client): void
     {
         self::$client = $client;
 
@@ -288,7 +292,7 @@ final class FakeSagePayHttpStrategy implements DiscoveryStrategy
 
     public static function reset(): void
     {
-        if (! self::$client instanceof MockHttpClient) {
+        if (null === self::$client) {
             return;
         }
 
@@ -334,13 +338,13 @@ function createUnpaidSagePayEntry(array $feedMeta = []): Entry
 }
 
 /**
- * Registers a 10.00 payment for the entry through its feed and returns the checkout URL.
+ * Registers a payment for the entry through its feed and returns the checkout URL.
  */
-function registerPayment(Entry $entry): string
+function registerPayment(Entry $entry, float $amount = 10.0): string
 {
     $addOn = AddOn::get_instance();
 
-    return RedirectUrlFactory::build($addOn, new Feed($addOn->get_payment_feed($entry->toArray())), $entry, 10.0);
+    return RedirectUrlFactory::build($addOn, new Feed($addOn->get_payment_feed($entry->toArray())), $entry, $amount);
 }
 
 /**

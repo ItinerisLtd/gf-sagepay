@@ -2,7 +2,12 @@
 
 declare(strict_types=1);
 
+use GuzzleHttp\Psr7\Request;
+use Http\Client\Exception\NetworkException;
+use Itineris\SagePay\Tests\FakeSagePayHttpStrategy;
 use Mantle\Testing\Exceptions\WP_Die_Exception;
+use Omnipay\Common\Exception\InvalidRequestException;
+use Omnipay\Common\Http\Exception as HttpException;
 
 use function Itineris\SagePay\Tests\createUnpaidSagePayEntry;
 use function Itineris\SagePay\Tests\fakeSagePayHttp;
@@ -85,6 +90,50 @@ it('returns no URL instead of stopping when the failure filter says so', functio
         ->and(paymentStatus($entry))->toBe('Failed');
 });
 
+it('marks the entry failed and stops when SagePay cannot be reached', function (): void {
+    fakeSagePayHttp()->addException(new NetworkException('Could not resolve host', new Request('POST', 'https://sandbox.opayo.eu.elavon.com/')));
+    $entry = createUnpaidSagePayEntry();
+
+    expect(fn () => registerPayment($entry))
+        ->toThrow(WP_Die_Exception::class, 'Failed to retrieve SagePay checkout form URL')
+        ->and(paymentStatus($entry))->toBe('Failed')
+        ->and(freshEntryMeta($entry, 'transaction_reference'))->toBe('')
+        ->and(array_column(GFFormsModel::get_lead_notes($entry->getId()), 'value'))
+        ->toContain('Itineris\\SagePay\\RedirectUrlFactory::handleException(): Unable to register the payment with SagePay - Omnipay\\Common\\Http\\Exception\\NetworkException: Could not resolve host');
+});
+
+it('marks the entry failed when omnipay cannot build the request', function (): void {
+    $http = fakeSagePayHttp();
+    $entry = createUnpaidSagePayEntry();
+    $filtered = new ArrayObject();
+    add_filter('gf_sagepay_redirect_url_exception_wp_die', static function (bool $shouldWpDie, Throwable $exception) use ($filtered): bool {
+        $filtered[] = $exception;
+
+        return false;
+    }, 10, 2);
+
+    expect(registerPayment($entry, -10.0))->toBe('')
+        ->and(paymentStatus($entry))->toBe('Failed')
+        ->and($filtered[0] ?? null)->toBeInstanceOf(InvalidRequestException::class)
+        ->and($http->getRequests())->toBeEmpty();
+});
+
+it('returns no URL instead of stopping when the exception filter says so', function (): void {
+    fakeSagePayHttp()->addException(new NetworkException('Could not resolve host', new Request('POST', 'https://sandbox.opayo.eu.elavon.com/')));
+    $filtered = new ArrayObject();
+    add_filter('gf_sagepay_redirect_url_exception_wp_die', static function (bool $shouldWpDie, Throwable $exception) use ($filtered): bool {
+        $filtered[] = $exception;
+
+        return false;
+    }, 10, 2);
+    $entry = createUnpaidSagePayEntry();
+
+    expect(registerPayment($entry))->toBe('')
+        ->and(paymentStatus($entry))->toBe('Failed')
+        ->and($filtered->getArrayCopy())->toHaveCount(1)
+        ->and($filtered[0])->toBeInstanceOf(HttpException::class);
+});
+
 it('registers with uploaded files present and leaves them for Gravity Forms', function (): void {
     fakeSagePayHttp()->addResponse(registrationResponse());
     $previous = $_FILES;
@@ -94,6 +143,23 @@ it('registers with uploaded files present and leaves them for Gravity Forms', fu
     try {
         expect(registerPayment(createUnpaidSagePayEntry()))->toBe(TEST_CHECKOUT_URL)
             ->and($_FILES)->toBe($files);
+    } finally {
+        $_FILES = $previous;
+    }
+});
+
+it('marks the entry failed and leaves uploaded files when the gateway cannot be built', function (): void {
+    FakeSagePayHttpStrategy::use(new RuntimeException('No HTTP client available'));
+    $previous = $_FILES;
+    $files = ['input_5' => ['name' => 'a.pdf', 'type' => 'application/pdf', 'tmp_name' => '/nonexistent/upload', 'error' => 0, 'size' => 10]];
+    $_FILES = $files;
+
+    try {
+        $entry = createUnpaidSagePayEntry();
+
+        expect(fn () => registerPayment($entry))->toThrow(WP_Die_Exception::class)
+            ->and($_FILES)->toBe($files)
+            ->and(paymentStatus($entry))->toBe('Failed');
     } finally {
         $_FILES = $previous;
     }
