@@ -27,7 +27,7 @@ Integration tests use Pest with `alleyinteractive/pest-plugin-wordpress` (Mantle
 - MySQL is required; SQLite is not supported by Gravity Forms. Locally: `docker run -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=wordpress_unit_tests -p 3307:3306 mysql:8`, then `WP_DB_HOST=127.0.0.1:3307 WP_DB_USER=root WP_DB_PASSWORD=root WP_SKIP_DB_CREATE=true composer test`.
 - `tests/TestCase.php` uses Mantle's `Refresh_Database`, so each test runs in a rolled-back transaction; create fixtures in `beforeEach`, not `beforeAll`.
 - `tests/bootstrap-hooks.php` makes `gf_sagepay_terminate` throw `Exit_Simulation_Exception`, disables asynchronous notifications and empties the `gf_*` tables once per run. Mantle turns `wp_die()` into `WP_Die_Exception` and `wp_redirect()` into `WP_Redirect_Exception`.
-- `tests/Helpers.php`: `createSagePayEntry()` builds a form, a SagePay feed and an entry processed by it; `captureWpDieResponseCode()` records the HTTP status passed to `wp_die()`.
+- `tests/Helpers.php`: `createSagePayEntry()` builds a form, a SagePay feed and an entry processed by it; `createPendingSagePayEntry()` adds the transaction ID and reference left by registration; `signedNotification()` builds notification fields signed with omnipay's own `buildSignature()` and `notificationPath()` gives the matching callback URL (both use the shared `TEST_*` constants); `captureWpDieResponseCode()` records the HTTP status passed to `wp_die()`; `captureGravityFormsLog()` collects log lines through `gform_pre_log_message`.
 - `tests/` is excluded from phpcs and from the release zip.
 
 `composer.json` pins `config.platform.php` to 8.4.1, so only use PHP 8.4-compatible syntax.
