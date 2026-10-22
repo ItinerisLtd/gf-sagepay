@@ -6,11 +6,17 @@ namespace Itineris\SagePay;
 
 use GFAPI;
 use GFPaymentAddOn;
+use Omnipay\Common\Message\NotificationInterface;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
 use Omnipay\SagePay\ServerGateway;
-use WP_Error;
+use Throwable;
+use wpdb;
 
+use function hash_equals;
+use function in_array;
 use function is_array;
+use function is_string;
+use function json_decode;
 
 class CallbackHandler
 {
@@ -18,63 +24,71 @@ class CallbackHandler
     {
         $gateway = static::buildGatewayBySuperglobals($addOn);
 
-        $addOn->log_debug(__METHOD__ . '(): Before accepting notification');
-
         /** @var ServerNotifyRequest $request */
         $request = $gateway->acceptNotification();
 
-        static::logDebug(__METHOD__, $request, $addOn);
+        try {
+            $entry = static::getVerifiedEntry($request, $addOn);
+        } catch (Throwable $exception) {
+            static::logException(__METHOD__, $exception, $addOn);
+            static::reject($request, $addOn, 'Unable to process notification');
+        }
 
-        $entry = static::getEntryByRequest($request, $addOn);
+        // The notification is genuine from here on, so SagePay always gets an OK reply.
+        try {
+            static::applyStatus($request, $entry, $addOn);
+            $nextUrl = static::getNextUrl($entry);
+        } catch (Throwable $exception) {
+            static::logException(__METHOD__, $exception, $addOn);
+            $nextUrl = static::getFallbackNextUrl();
+        }
 
-        $request->setTransactionReference(
-            $entry->getMeta('transaction_reference'),
-        );
+        $addOn->log_debug(__METHOD__ . '(): Confirm entry ' . $entry->getId());
+        $request->confirm($nextUrl);
+        exit;
+    }
 
-        // Get the response message ready for returning.
-        /** @var ServerNotifyRequest $response */
-        $response = $request->send();
+    /**
+     * Rejects anything that cannot be matched to an entry and verified, leaving the entry untouched.
+     */
+    protected static function getVerifiedEntry(ServerNotifyRequest $request, GFPaymentAddOn $addOn): Entry
+    {
+        if (! static::hasOnlyStringFields($request)) {
+            static::reject($request, $addOn, 'Malformed notification');
+        }
 
-        $addOn->log_debug(__METHOD__ . '(): After accepting notification');
-        static::logDebug(__METHOD__, $response, $addOn);
+        $transactionId = $request->getTransactionId();
+        if (! is_string($transactionId) || ! wp_is_uuid($transactionId)) {
+            static::reject($request, $addOn, 'Unknown transaction');
+        }
 
-        // Save the final transactionReference against the transaction in the database. It will
-        // be needed if you want to capture the payment (for an authorize) or void or refund or
-        // repeat the payment later.
-        $entry->setMeta(
-            'final_transaction_reference',
-            $response->getTransactionReference(),
-        );
+        $entry = static::getEntryByTransactionId($transactionId, $addOn);
+        if (! $entry instanceof Entry) {
+            static::reject($request, $addOn, 'Unknown transaction');
+        }
 
-        $addOn->log_debug(__METHOD__ . '(): Final transaction reference saved');
+        $reference = $entry->getMeta('transaction_reference');
+        if (! static::isUsableReference($reference, $transactionId)) {
+            static::reject($request, $addOn, 'Unusable transaction reference for entry ' . $entry->getId());
+        }
+
+        $request->setTransactionReference($reference);
 
         if (! $request->isValid()) {
-            $message = 'Signature not valid';
-
-            $addOn->log_error(__METHOD__ . '(): ' . $message);
-            $entry->markAsFailed($addOn, $message);
-            $response->invalid(
-                static::getNextUrl($entry),
-                $message,
-            );
+            static::reject($request, $addOn, 'Signature not valid for entry ' . $entry->getId());
         }
 
-        switch ($request->getTransactionStatus()) {
-            case $request::STATUS_COMPLETED:
-                $entry->markAsPaid($addOn);
-                break;
-            case $request::STATUS_PENDING:
-                $entry->markAsPending($addOn);
-                break;
-            default:
-                $entry->markAsFailed($addOn);
-                break;
-        }
+        static::logDebug(__METHOD__, $request, $addOn);
 
-        $addOn->log_debug(__METHOD__ . '(): ' . static::getNextUrl($entry));
-        $addOn->log_debug(__METHOD__ . '(): Confirm!');
-        $response->confirm(
-            static::getNextUrl($entry),
+        return $entry;
+    }
+
+    protected static function reject(ServerNotifyRequest $request, GFPaymentAddOn $addOn, string $message): never
+    {
+        $addOn->log_error(__METHOD__ . '(): ' . $message);
+        $request->invalid(
+            static::getFallbackNextUrl(),
+            $message,
         );
         exit;
     }
@@ -84,91 +98,147 @@ class CallbackHandler
         $vendor = rgget('vendor');
         $isTest = rgget('isTest');
 
-        $addOn->log_debug(__METHOD__ . '(): Vendor - ' . $vendor . ' isTest - ' . $isTest);
-
-        if ('' === $vendor || '' === $isTest) {
+        if (! is_string($vendor) || '' === $vendor || ! in_array($isTest, ['true', 'false'], true)) {
             $message = 'Unable to get vendor code and/or environment from superglobals';
             $addOn->log_error(__METHOD__ . '(): ' . $message);
             wp_die(esc_html($message), 'Bad Request', 400);
-        }
-
-        return GatewayFactory::build($vendor, (bool) $isTest);
-    }
-
-    /**
-     * Log SagePay api object via Gravity Forms logger.
-     *
-     * @param string              $methodName The caller method name.
-     * @param ServerNotifyRequest $request    SagePay api object.
-     * @param GFPaymentAddOn      $addOn      Add-on instance.
-     */
-    protected static function logDebug(string $methodName, ServerNotifyRequest $request, GFPaymentAddOn $addOn): void
-    {
-        $addOn->log_debug($methodName . '(): Status - ' . $request->getTransactionStatus());
-        $addOn->log_debug($methodName . '(): Message - ' . $request->getMessage());
-        $addOn->log_debug($methodName . '(): Data - ' . wp_json_encode($request->getData()));
-        $addOn->log_debug($methodName . '(): TransactionId (VendorTxCode) - ' . $request->getTransactionId());
-        // phpcs:ignore Generic.Files.LineLength.TooLong
-        $addOn->log_debug($methodName . '(): TransactionReference (final_transaction_reference) - ' . wp_json_encode($request->getTransactionReference()));
-    }
-
-    protected static function getEntryByRequest(ServerNotifyRequest $request, GFPaymentAddOn $addOn): Entry
-    {
-        $rawEntry = static::getRawEntryByProperty($request, $addOn);
-        // Workaround for Gravity Forms Encrypted Fields.
-        if (empty($rawEntry)) {
-            $rawEntry = static::getRawEntryByMeta($request, $addOn);
-        }
-
-        if (is_wp_error($rawEntry)) {
-            /** @var WP_Error $rawEntry */
-            $message = __METHOD__ . '(): Unable to find entry by transaction id (VendorTxCode)' . $rawEntry->get_error_message(); // phpcs:ignore Generic.Files.LineLength.TooLong
-            $addOn->log_error($message);
-
-            /** @var ServerNotifyRequest $response */
-            $response = $request->send();
-            $response->error(
-                static::getFallbackNextUrl(),
-                $message,
-            );
             exit;
         }
 
-        return new Entry($rawEntry);
+        $addOn->log_debug(__METHOD__ . '(): Vendor - ' . $vendor . ' isTest - ' . $isTest);
+
+        return GatewayFactory::build($vendor, 'true' === $isTest);
     }
 
-    protected static function getRawEntryByProperty(ServerNotifyRequest $request, GFPaymentAddOn $addOn): ?array
+    protected static function hasOnlyStringFields(ServerNotifyRequest $request): bool
     {
-        $entryId = $addOn->get_entry_by_transaction_id(
-            $request->getTransactionId(),
+        foreach ($request->getData() as $value) {
+            if (! is_string($value)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * The stored reference must belong to this transaction and include its SecurityKey.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint $reference
+     */
+    protected static function isUsableReference($reference, string $transactionId): bool
+    {
+        if (! is_string($reference)) {
+            return false;
+        }
+
+        $parts = json_decode($reference, true);
+
+        return is_array($parts)
+            && is_string($parts['SecurityKey'] ?? null)
+            && '' !== $parts['SecurityKey']
+            && is_string($parts['VendorTxCode'] ?? null)
+            && hash_equals($parts['VendorTxCode'], $transactionId);
+    }
+
+    /**
+     * Applies the notified status without repeating it, and never downgrades a paid entry.
+     */
+    protected static function applyStatus(ServerNotifyRequest $request, Entry $entry, GFPaymentAddOn $addOn): void
+    {
+        $status = $request->getTransactionStatus();
+        $targetStatus = match ($status) {
+            NotificationInterface::STATUS_COMPLETED => 'Paid',
+            NotificationInterface::STATUS_PENDING => 'Pending',
+            default => 'Failed',
+        };
+        $currentStatus = $entry->getProperty('payment_status');
+
+        if ($targetStatus === $currentStatus || 'Paid' === $currentStatus) {
+            $addOn->log_debug(
+                __METHOD__ . '(): Entry ' . $entry->getId() . ' already ' . $currentStatus . ', ignoring ' . $status,
+            );
+            return;
+        }
+
+        // Save the final transactionReference against the transaction in the database. It will
+        // be needed if you want to capture the payment (for an authorize) or void or refund or
+        // repeat the payment later.
+        $entry->setMeta(
+            'final_transaction_reference',
+            $request->getTransactionReference(),
         );
+
+        match ($targetStatus) {
+            'Paid' => $entry->markAsPaid($addOn),
+            'Pending' => $entry->markAsPending($addOn),
+            default => $entry->markAsFailed($addOn),
+        };
+    }
+
+    protected static function logException(string $methodName, Throwable $exception, GFPaymentAddOn $addOn): void
+    {
+        $addOn->log_error(
+            $methodName . '(): ' . $exception->getMessage()
+            . ' in ' . $exception->getFile() . ':' . $exception->getLine(),
+        );
+    }
+
+    /**
+     * Log the notification via Gravity Forms logger, without the signature.
+     */
+    protected static function logDebug(string $methodName, ServerNotifyRequest $request, GFPaymentAddOn $addOn): void
+    {
+        $data = $request->getData();
+        unset($data['VPSSignature']);
+
+        $addOn->log_debug($methodName . '(): Status - ' . $request->getTransactionStatus());
+        $addOn->log_debug($methodName . '(): Message - ' . $request->getMessage());
+        $addOn->log_debug($methodName . '(): Data - ' . wp_json_encode($data));
+        $addOn->log_debug($methodName . '(): TransactionId (VendorTxCode) - ' . $request->getTransactionId());
+    }
+
+    protected static function getEntryByTransactionId(string $transactionId, GFPaymentAddOn $addOn): ?Entry
+    {
+        $rawEntry = static::getRawEntryByProperty($transactionId, $addOn);
+        // Workaround for Gravity Forms Encrypted Fields.
+        if (! is_array($rawEntry)) {
+            $rawEntry = static::getRawEntryByMeta($transactionId, $addOn);
+        }
+
+        return is_array($rawEntry) ? new Entry($rawEntry) : null;
+    }
+
+    protected static function getRawEntryByProperty(string $transactionId, GFPaymentAddOn $addOn): ?array
+    {
+        $entryId = $addOn->get_entry_by_transaction_id($transactionId);
+        if (empty($entryId)) {
+            return null;
+        }
 
         $rawEntry = GFAPI::get_entry($entryId);
         return is_array($rawEntry) ? $rawEntry : null;
     }
 
-    protected static function getRawEntryByMeta(ServerNotifyRequest $request, GFPaymentAddOn $addOn): ?array
+    protected static function getRawEntryByMeta(string $transactionId, GFPaymentAddOn $addOn): ?array
     {
+        /** @var wpdb $wpdb */
         $wpdb = $GLOBALS['wpdb'];
         $entryMetaTableName = $addOn->get_entry_meta_table_name();
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-        $results = $wpdb->get_results(
+        $entryId = $wpdb->get_var(
             $wpdb->prepare(
-            // See:  https://github.com/WordPress/WordPress-Coding-Standards/issues/1589.
-            // phpcs:ignore Generic.Files.LineLength.TooLong,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                "SELECT `entry_id` FROM `$entryMetaTableName` WHERE `meta_key` = 'transaction_reference' AND `meta_value` LIKE %s LIMIT 1",
-                '%"VendorTxCode":"' . $request->getTransactionId() . '"%',
+                'SELECT `entry_id` FROM %i WHERE `meta_key` = %s AND `meta_value` LIKE %s LIMIT 1',
+                $entryMetaTableName,
+                'transaction_reference',
+                '%' . $wpdb->esc_like('"VendorTxCode":"' . $transactionId . '"') . '%',
             ),
-            ARRAY_A,
         );
 
-        if (! is_array($results)) {
+        if (empty($entryId)) {
             return null;
         }
-
-        $firstResult = $results[0] ?? [];
-        $entryId = $firstResult['entry_id'];
 
         $rawEntry = GFAPI::get_entry($entryId);
         return is_array($rawEntry) ? $rawEntry : null;
