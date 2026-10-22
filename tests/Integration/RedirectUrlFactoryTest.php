@@ -1,0 +1,101 @@
+<?php
+
+declare(strict_types=1);
+
+use Mantle\Testing\Exceptions\WP_Die_Exception;
+
+use function Itineris\SagePay\Tests\createUnpaidSagePayEntry;
+use function Itineris\SagePay\Tests\fakeSagePayHttp;
+use function Itineris\SagePay\Tests\freshEntryMeta;
+use function Itineris\SagePay\Tests\notificationPath;
+use function Itineris\SagePay\Tests\paymentStatus;
+use function Itineris\SagePay\Tests\registerPayment;
+use function Itineris\SagePay\Tests\registrationResponse;
+use function Itineris\SagePay\Tests\signedNotification;
+
+use const Itineris\SagePay\Tests\TEST_CHECKOUT_URL;
+use const Itineris\SagePay\Tests\TEST_SECURITY_KEY;
+use const Itineris\SagePay\Tests\TEST_VENDOR;
+
+it('registers the payment with SagePay and returns its checkout URL', function (): void {
+    $http = fakeSagePayHttp();
+    $http->addResponse(registrationResponse());
+    $entry = createUnpaidSagePayEntry();
+
+    expect(registerPayment($entry))->toBe(TEST_CHECKOUT_URL);
+
+    $transactionId = (string) $entry->getProperty('transaction_id');
+    parse_str((string) $http->getLastRequest()->getBody(), $sent);
+
+    expect(wp_is_uuid($transactionId))->toBeTrue()
+        ->and(paymentStatus($entry))->toBe('Processing')
+        ->and(freshEntryMeta($entry, 'transaction_id'))->toBe($transactionId)
+        ->and(json_decode(freshEntryMeta($entry, 'transaction_reference'), true))
+        ->toMatchArray(['SecurityKey' => TEST_SECURITY_KEY, 'VendorTxCode' => $transactionId])
+        ->and($sent)->toMatchArray([
+            'Vendor' => TEST_VENDOR,
+            'VendorTxCode' => $transactionId,
+            'Amount' => '10.00',
+            'Currency' => 'GBP',
+        ]);
+});
+
+it('registers with the environment the feed selects', function (string $environment, string $endpoint, string $isTest): void {
+    $http = fakeSagePayHttp();
+    $http->addResponse(registrationResponse());
+
+    registerPayment(createUnpaidSagePayEntry(['isTest' => $environment]));
+    $request = $http->getLastRequest();
+    parse_str((string) $request->getBody(), $sent);
+    parse_str((string) parse_url($sent['NotificationURL'], PHP_URL_QUERY), $notificationQuery);
+
+    expect((string) $request->getUri())->toStartWith($endpoint)
+        ->and($sent['NotificationURL'])->toStartWith(home_url())
+        ->and($notificationQuery)->toBe(['callback' => 'gf-sagepay', 'vendor' => TEST_VENDOR, 'isTest' => $isTest]);
+})->with([
+    'test' => ['test', 'https://sandbox.opayo.eu.elavon.com/', 'true'],
+    'production' => ['production', 'https://live.opayo.eu.elavon.com/', 'false'],
+]);
+
+it('marks the entry failed and stops when SagePay rejects the registration', function (): void {
+    fakeSagePayHttp()->addResponse(registrationResponse('INVALID'));
+    $entry = createUnpaidSagePayEntry();
+
+    expect(fn () => registerPayment($entry))
+        ->toThrow(WP_Die_Exception::class, 'Failed to retrieve SagePay checkout form URL')
+        ->and(paymentStatus($entry))->toBe('Failed');
+});
+
+it('returns no URL instead of stopping when the failure filter says so', function (): void {
+    fakeSagePayHttp()->addResponse(registrationResponse('INVALID'));
+    add_filter('gf_sagepay_redirect_url_failure_wp_die', '__return_false');
+    $entry = createUnpaidSagePayEntry();
+
+    expect(registerPayment($entry))->toBe('')
+        ->and(paymentStatus($entry))->toBe('Failed');
+});
+
+it('registers with uploaded files present and leaves them for Gravity Forms', function (): void {
+    fakeSagePayHttp()->addResponse(registrationResponse());
+    $previous = $_FILES;
+    $files = ['input_5' => ['name' => 'a.pdf', 'type' => 'application/pdf', 'tmp_name' => '/nonexistent/upload', 'error' => 0, 'size' => 10]];
+    $_FILES = $files;
+
+    try {
+        expect(registerPayment(createUnpaidSagePayEntry()))->toBe(TEST_CHECKOUT_URL)
+            ->and($_FILES)->toBe($files);
+    } finally {
+        $_FILES = $previous;
+    }
+});
+
+it('accepts the notification SagePay sends for the registered payment', function (): void {
+    fakeSagePayHttp()->addResponse(registrationResponse(securityKey: 'ROUNDTRIPKEY'));
+    $entry = createUnpaidSagePayEntry();
+    registerPayment($entry);
+
+    $this->post(notificationPath(), signedNotification((string) $entry->getProperty('transaction_id'), 'ROUNDTRIPKEY'))
+        ->assertSee('Status=OK');
+
+    expect(paymentStatus($entry))->toBe('Paid');
+});

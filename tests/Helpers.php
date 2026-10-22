@@ -7,17 +7,28 @@ namespace Itineris\SagePay\Tests;
 use ArrayObject;
 use GFAPI;
 use GFFormDisplay;
+use GuzzleHttp\Psr7\Response;
+use Http\Client\HttpClient;
+use Http\Discovery\Psr18ClientDiscovery;
+use Http\Discovery\Strategy\DiscoveryStrategy;
+use Http\Mock\Client as MockHttpClient;
+use Itineris\SagePay\AddOn;
 use Itineris\SagePay\ConfirmationHandler;
 use Itineris\SagePay\Entry;
+use Itineris\SagePay\Feed;
+use Itineris\SagePay\RedirectUrlFactory;
 use Mantle\Testing\Test_Response;
 use Mantle\Testing\WP_Die;
 use Omnipay\Common\Http\Client;
 use Omnipay\SagePay\Message\ServerNotifyRequest;
+use Psr\Http\Client\ClientInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use WP_Error;
 
 use function array_merge;
+use function implode;
+use function in_array;
 use function is_array;
 use function json_encode;
 use function parse_url;
@@ -27,6 +38,7 @@ use function strtoupper;
 const TEST_VENDOR = 'testvendor';
 const TEST_SECURITY_KEY = 'SECURITYKEY';
 const TEST_VPS_TX_ID = '{11111111-2222-3333-4444-555555555555}';
+const TEST_CHECKOUT_URL = 'https://sandbox.opayo.eu.elavon.com/gateway/service/cardselection?vpstxid=' . TEST_VPS_TX_ID;
 
 /**
  * Creates a form with a SagePay feed and an entry processed by that feed.
@@ -222,4 +234,92 @@ function expectRejected(Test_Response $response, Entry $entry): void
 function expectRedirectUrl(Test_Response $response, string $url): void
 {
     expect((string) $response->get_content())->toMatch('/^RedirectUrl=' . preg_quote($url, '/') . '\r?$/m');
+}
+
+/**
+ * Hands omnipay the current test's mock HTTP client through PSR-18 discovery, so no request ever reaches SagePay.
+ */
+final class FakeSagePayHttpStrategy implements DiscoveryStrategy
+{
+    private static ?MockHttpClient $client = null;
+
+    /**
+     * @return array<int, array{class: callable}>
+     */
+    public static function getCandidates($type): array
+    {
+        $client = self::$client;
+        if (! $client instanceof MockHttpClient || ! in_array($type, [ClientInterface::class, HttpClient::class], true)) {
+            return [];
+        }
+
+        return [['class' => static fn (): MockHttpClient => $client]];
+    }
+
+    public static function use(MockHttpClient $client): void
+    {
+        self::$client = $client;
+
+        if (! in_array(self::class, (array) Psr18ClientDiscovery::getStrategies(), true)) {
+            Psr18ClientDiscovery::prependStrategy(self::class);
+        }
+
+        Psr18ClientDiscovery::clearCache();
+    }
+
+    public static function reset(): void
+    {
+        if (! self::$client instanceof MockHttpClient) {
+            return;
+        }
+
+        self::$client = null;
+        Psr18ClientDiscovery::clearCache();
+    }
+}
+
+/**
+ * Replaces SagePay's HTTP endpoint with a mock client until the test ends.
+ */
+function fakeSagePayHttp(): MockHttpClient
+{
+    $client = new MockHttpClient();
+    FakeSagePayHttpStrategy::use($client);
+
+    return $client;
+}
+
+/**
+ * SagePay's reply to a transaction registration.
+ */
+function registrationResponse(string $status = 'OK', string $securityKey = TEST_SECURITY_KEY): Response
+{
+    return new Response(200, [], implode("\r\n", [
+        'VPSProtocol=4.00',
+        'Status=' . $status,
+        'StatusDetail=' . ('OK' === $status ? '2014 : The Transaction was Registered Successfully.' : '3048 : The CardNumber length is invalid.'),
+        'VPSTxId=' . TEST_VPS_TX_ID,
+        'SecurityKey=' . $securityKey,
+        'NextURL=' . TEST_CHECKOUT_URL,
+    ]));
+}
+
+/**
+ * Creates an entry as Gravity Forms hands it to the add-on on submission, before registration.
+ *
+ * @param array<string, mixed> $feedMeta Feed meta to override.
+ */
+function createUnpaidSagePayEntry(array $feedMeta = []): Entry
+{
+    return createSagePayEntry(['payment_status' => '', 'currency' => 'GBP'], $feedMeta);
+}
+
+/**
+ * Registers a 10.00 payment for the entry through its feed and returns the checkout URL.
+ */
+function registerPayment(Entry $entry): string
+{
+    $addOn = AddOn::get_instance();
+
+    return RedirectUrlFactory::build($addOn, new Feed($addOn->get_payment_feed($entry->toArray())), $entry, 10.0);
 }
