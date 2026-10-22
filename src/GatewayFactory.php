@@ -7,7 +7,10 @@ namespace Itineris\SagePay;
 use Omnipay\Omnipay;
 use Omnipay\SagePay\ServerGateway;
 
-class GatewayFactory
+/**
+ * @internal
+ */
+final class GatewayFactory
 {
     public static function buildFromFeed(Feed $feed): ServerGateway
     {
@@ -25,7 +28,7 @@ class GatewayFactory
         return new NotifyGateway();
     }
 
-    public static function build(string $vendor, bool $isTest): ServerGateway
+    private static function build(string $vendor, bool $isTest): ServerGateway
     {
         /** @var ServerGateway $gateway */
         $gateway = Omnipay::create('SagePay\Server');

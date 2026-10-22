@@ -8,7 +8,10 @@ use GFPaymentAddOn;
 
 use function is_array;
 
-class Feed
+/**
+ * @internal
+ */
+final class Feed
 {
     /**
      * Gravity Forms feed object array
@@ -19,7 +22,7 @@ class Feed
     private $data;
 
     /**
-     * Entry constructor.
+     * Feed constructor.
      *
      * @param array $data Gravity Forms feed object array.
      */
@@ -41,11 +44,6 @@ class Feed
     public function getFormId(): int
     {
         return (int) rgar($this->data, 'form_id');
-    }
-
-    public function isActive(): bool
-    {
-        return (bool) rgar($this->data, 'is_active');
     }
 
     public function isTest(): bool

@@ -13,7 +13,10 @@ use function array_merge;
 use function array_unique;
 use function sprintf;
 
-class FeedSettingsFields
+/**
+ * @internal
+ */
+final class FeedSettingsFields
 {
     public static function toArray(GFFeedAddOn $addOn): array
     {

@@ -10,6 +10,8 @@ use function hash_equals;
 
 /**
  * A SagePay Server notification whose signature is compared in constant time; omnipay's own check uses ===.
+ *
+ * @internal
  */
 final class NotifyRequest extends ServerNotifyRequest
 {

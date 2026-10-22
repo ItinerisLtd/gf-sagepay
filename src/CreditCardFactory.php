@@ -10,7 +10,10 @@ use Omnipay\Common\CreditCard;
 
 use function array_filter;
 
-class CreditCardFactory
+/**
+ * @internal
+ */
+final class CreditCardFactory
 {
     public static function build(Feed $feed, Entry $entry): CreditCard
     {

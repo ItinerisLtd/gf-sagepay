@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Itineris\SagePay;
 
-class MinimumRequirements
+/**
+ * @internal
+ */
+final class MinimumRequirements
 {
     public const GRAVITY_FORMS_VERSION = '3.1';
 

@@ -10,8 +10,9 @@ use GFPaymentAddOn;
  * Avoid adding code in this class!
  *
  * @see https://docs.gravityforms.com/gfpaymentaddon/
+ * @internal
  */
-class AddOn extends GFPaymentAddOn
+final class AddOn extends GFPaymentAddOn
 {
     private static ?self $_instance = null;
     protected $_version = GFSagePay::VERSION;

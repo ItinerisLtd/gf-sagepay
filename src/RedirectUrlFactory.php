@@ -10,7 +10,10 @@ use Omnipay\SagePay\Message\ServerAuthorizeResponse;
 use Omnipay\SagePay\Message\ServerPurchaseRequest;
 use Throwable;
 
-class RedirectUrlFactory
+/**
+ * @internal
+ */
+final class RedirectUrlFactory
 {
     public static function build(GFPaymentAddOn $addOn, Feed $feed, Entry $entry, float $amount): string
     {
@@ -60,7 +63,7 @@ class RedirectUrlFactory
     /**
      * Sends the transaction registration to SagePay.
      */
-    protected static function register(GFPaymentAddOn $addOn, Feed $feed, Entry $entry): ServerAuthorizeResponse
+    private static function register(GFPaymentAddOn $addOn, Feed $feed, Entry $entry): ServerAuthorizeResponse
     {
         // Temporarily reset $_FILES to prevent conflicts with symfony/http-foundation.
         $originalFiles = $_FILES; // phpcs:ignore WordPress.Security.NonceVerification.Missing
@@ -97,7 +100,7 @@ class RedirectUrlFactory
         return $response;
     }
 
-    protected static function getNotifyUrl(GFPaymentAddOn $addOn): string
+    private static function getNotifyUrl(GFPaymentAddOn $addOn): string
     {
         return esc_url_raw(
             add_query_arg(
@@ -107,7 +110,7 @@ class RedirectUrlFactory
         );
     }
 
-    protected static function handleFailure(ServerAuthorizeResponse $response, Entry $entry, GFPaymentAddOn $addOn): void // phpcs:ignore Generic.Files.LineLength.TooLong
+    private static function handleFailure(ServerAuthorizeResponse $response, Entry $entry, GFPaymentAddOn $addOn): void // phpcs:ignore Generic.Files.LineLength.TooLong
     {
         self::fail(
             __METHOD__ . '(): Unable to retrieve SagePay redirect url - ' . $response->getMessage(),
@@ -121,7 +124,7 @@ class RedirectUrlFactory
     /**
      * Handles a registration that never got a reply from SagePay, such as a network error or a request omnipay rejects.
      */
-    protected static function handleException(Throwable $exception, Entry $entry, GFPaymentAddOn $addOn): void
+    private static function handleException(Throwable $exception, Entry $entry, GFPaymentAddOn $addOn): void
     {
         self::fail(
             __METHOD__ . '(): Unable to register the payment with SagePay - ' . $exception::class . ': '

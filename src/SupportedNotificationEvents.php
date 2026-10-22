@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Itineris\SagePay;
 
-class SupportedNotificationEvents
+/**
+ * @internal
+ */
+final class SupportedNotificationEvents
 {
     public static function toArray(): array
     {
