@@ -113,3 +113,83 @@ jobs:
             "password": "${{ secrets.PRIVATE_PACKAGIST_TOKEN }}"}}}
 
       - run: composer test
+
+  e2e:
+    name: e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARED_VERSION: 2026.9.3
+      CLOUDFLARED_SHA256: 77e26d8d900e0b8469f416239d14b5f296525fdf79fee6f511ef55609e3fbac2
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: 8.4
+          coverage: none
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "${GITHUB_OUTPUT}"
+
+      - name: Cache dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-8.4-composer-nodev-${{ hashFiles('composer.lock') }}
+          restore-keys: ${{ runner.os }}-8.4-composer-nodev-
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Install Gravity Forms
+        run: composer install --working-dir=tests/gravityforms --no-progress --prefer-dist
+        env:
+          COMPOSER_CACHE_DIR: ${{ runner.temp }}/gravityforms-composer-cache
+          COMPOSER_AUTH: >-
+            {"http-basic": {"repo.packagist.com": {"username": "itineris",
+            "password": "${{ secrets.PRIVATE_PACKAGIST_TOKEN }}"}}}
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: tests/e2e/.nvmrc
+          cache: npm
+          cache-dependency-path: tests/e2e/package-lock.json
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('tests/e2e/package-lock.json') }}
+
+      # The runner image already has Chrome's system libraries, so Playwright's --with-deps apt install is skipped.
+      - name: Install e2e dependencies
+        run: |
+          npm ci --prefix tests/e2e
+          npx --prefix tests/e2e playwright install --only-shell chromium
+
+      - name: Type-check the e2e tests
+        run: npm run typecheck --prefix tests/e2e
+
+      - name: Install cloudflared
+        run: |
+          curl -fsSL -o "${RUNNER_TEMP}/cloudflared" \
+            "https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-amd64"
+          echo "${CLOUDFLARED_SHA256}  ${RUNNER_TEMP}/cloudflared" | sha256sum --check
+          chmod +x "${RUNNER_TEMP}/cloudflared"
+          echo "${RUNNER_TEMP}" >> "${GITHUB_PATH}"
+
+      - run: tests/e2e/run.sh
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: failure()
+        with:
+          name: e2e-test-results
+          path: tests/e2e/test-results/
+          retention-days: 7
