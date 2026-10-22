@@ -11,6 +11,7 @@ use function Itineris\SagePay\Tests\notificationPath;
 use function Itineris\SagePay\Tests\paymentStatus;
 use function Itineris\SagePay\Tests\registerPayment;
 use function Itineris\SagePay\Tests\registrationResponse;
+use function Itineris\SagePay\Tests\sentRegistration;
 use function Itineris\SagePay\Tests\signedNotification;
 
 use const Itineris\SagePay\Tests\TEST_CHECKOUT_URL;
@@ -25,7 +26,7 @@ it('registers the payment with SagePay and returns its checkout URL', function (
     expect(registerPayment($entry))->toBe(TEST_CHECKOUT_URL);
 
     $transactionId = (string) $entry->getProperty('transaction_id');
-    parse_str((string) $http->getLastRequest()->getBody(), $sent);
+    [$sent] = sentRegistration($http);
 
     expect(wp_is_uuid($transactionId))->toBeTrue()
         ->and(paymentStatus($entry))->toBe('Processing')
@@ -45,17 +46,26 @@ it('registers with the environment the feed selects', function (string $environm
     $http->addResponse(registrationResponse());
 
     registerPayment(createUnpaidSagePayEntry(['isTest' => $environment]));
-    $request = $http->getLastRequest();
-    parse_str((string) $request->getBody(), $sent);
-    parse_str((string) parse_url($sent['NotificationURL'], PHP_URL_QUERY), $notificationQuery);
+    [$sent, $notificationQuery] = sentRegistration($http);
 
-    expect((string) $request->getUri())->toStartWith($endpoint)
+    expect((string) $http->getLastRequest()->getUri())->toStartWith($endpoint)
         ->and($sent['NotificationURL'])->toStartWith(home_url())
         ->and($notificationQuery)->toBe(['callback' => 'gf-sagepay', 'vendor' => TEST_VENDOR, 'isTest' => $isTest]);
 })->with([
     'test' => ['test', 'https://sandbox.opayo.eu.elavon.com/', 'true'],
     'production' => ['production', 'https://live.opayo.eu.elavon.com/', 'false'],
 ]);
+
+it('registers with a custom vendor code', function (): void {
+    $http = fakeSagePayHttp();
+    $http->addResponse(registrationResponse());
+
+    registerPayment(createUnpaidSagePayEntry(['vendor' => 'gf_custom', 'vendor_custom' => 'customvendor']));
+    [$sent, $notificationQuery] = sentRegistration($http);
+
+    expect($sent['Vendor'])->toBe('customvendor')
+        ->and($notificationQuery['vendor'])->toBe('customvendor');
+});
 
 it('marks the entry failed and stops when SagePay rejects the registration', function (): void {
     fakeSagePayHttp()->addResponse(registrationResponse('INVALID'));
