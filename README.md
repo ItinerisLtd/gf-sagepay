@@ -61,6 +61,7 @@ Allow Gravity Forms to accept SagePay (now Opayo by Elavon) one-off payments via
 - [SagePay Server](https://www.elavon.co.uk/content/dam/elavon/en-gb/v2/documents/resource-center/opayo/my-opayo---sagepay/troubleshooting/SERVER_Integration_and_Protocol_Guidelines_270815.pdf)
 - [Gift Aid](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo.html)
 - [3D Secure](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo/fraud-prevention/3D-Secure.html)
+  - Strong Customer Authentication (SCA) is handled on Opayo's hosted payment pages (Server protocol 4.00), so card details and 3D Secure challenges never touch your site. See [Fraud Protection](#fraud-protection) for the feed setting
 - [AVS/CV2](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo/fraud-prevention/AVS-CV2.html)
 - [Gravity Forms Logging](https://docs.gravityforms.com/logging-and-debugging/)
 - [Gravity Forms Notification Events](https://docs.gravityforms.com/gravity-forms-notification-events/)
@@ -159,6 +160,8 @@ Always double check payment status on [MySagePay](https://live.sagepay.com/mysag
 ### Fraud Protection
 
 To prevent chargebacks, enforce [3D Secure](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo/fraud-prevention/3D-Secure.html) and [AVS/CV2](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo/fraud-prevention/AVS-CV2.html) rules whenever possible.
+
+Each feed's 3D-Secure setting decides how 3D Secure applies to its payments. New feeds default to "Use MSP Setting", which follows the 3D Secure rules in MySagePay; existing feeds keep their saved value, so check them after upgrading. Avoid "Disable", since card issuers can decline unauthenticated payments under SCA, and note that "Force Ignoring Rules" skips your MySagePay 3D Secure rules.
 
 ## Test Sandbox
 
