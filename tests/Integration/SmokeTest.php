@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Itineris\SagePay\AddOn;
+use Itineris\SagePay\GFSagePay;
 use Itineris\SagePay\Terminator;
 use Mantle\Testing\Exceptions\Exit_Simulation_Exception;
 
@@ -13,6 +14,12 @@ it('loads Gravity Forms and creates its tables', function (): void {
     expect(class_exists(GFForms::class))->toBeTrue()
         ->and($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->prefix . 'gf_entry')))
         ->toBe($wpdb->prefix . 'gf_entry');
+});
+
+it('declares the same version in the plugin header and GFSagePay::VERSION', function (): void {
+    $header = get_file_data(dirname(__DIR__, 2) . '/gf-sagepay.php', ['Version' => 'Version']);
+
+    expect($header['Version'])->toBe(GFSagePay::VERSION);
 });
 
 it('registers the SagePay add-on with Gravity Forms', function (): void {
