@@ -4,18 +4,44 @@ name: release
 # yamllint disable-line rule:truthy
 on:
   push:
-    tags:
-      - "*.*.*"
+    branches:
+      - master
 
 permissions:
   contents: read
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          client-id: ${{ vars.RELEASE_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        id: release
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
   build:
     runs-on: ubuntu-latest
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
           persist-credentials: false
 
       - name: Setup PHP 8.4
@@ -50,14 +76,17 @@ jobs:
 
   publish-to-github-releases:
     runs-on: ubuntu-latest
-    needs: lint-wp-org
+    needs: [release-please, lint-wp-org]
     permissions:
       contents: write
     steps:
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: gf-sagepay
-      - name: Create release
-        run: gh release create "${GITHUB_REF_NAME}" gf-sagepay.zip --repo "${GITHUB_REPOSITORY}" --generate-notes
+      - name: Upload release asset and publish
+        run: |
+          gh release upload "${TAG_NAME}" gf-sagepay.zip --clobber --repo "${GITHUB_REPOSITORY}"
+          gh release edit "${TAG_NAME}" --draft=false --repo "${GITHUB_REPOSITORY}"
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ needs.release-please.outputs.tag_name }}

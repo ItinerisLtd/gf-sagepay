@@ -8,3 +8,6 @@ updates:
       timezone: Europe/London
     cooldown:
       default-days: 21
+    commit-message:
+      prefix: deps
+      prefix-development: chore
