@@ -1,7 +1,8 @@
 {
     "name": "itinerisltd/gf-sagepay",
-    "type": "wordpress-plugin",
     "description": "Gravity Forms Add-on for SagePay",
+    "license": "MIT",
+    "type": "wordpress-plugin",
     "keywords": [
         "gravityforms",
         "gravity-forms",
@@ -10,8 +11,6 @@
         "wordpress",
         "wp"
     ],
-    "homepage": "https://github.com/ItinerisLtd/gf-sagepay",
-    "license": "MIT",
     "authors": [
         {
             "name": "Itineris Limited",
@@ -26,6 +25,12 @@
             "role": "Developer"
         }
     ],
+    "homepage": "https://github.com/ItinerisLtd/gf-sagepay",
+    "support": {
+        "email": "dev@itineris.co.uk",
+        "issues": "https://github.com/ItinerisLtd/gf-sagepay/issues",
+        "source": "https://github.com/ItinerisLtd/gf-sagepay"
+    },
     "require": {
         "php": "^8.4.1",
         "ext-bcmath": "*",
@@ -41,22 +46,7 @@
         "php-http/mock-client": "^1.6",
         "roave/security-advisories": "dev-master"
     },
-    "config": {
-        "platform": {
-            "php": "8.4.1"
-        },
-        "sort-packages": true,
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "php-http/discovery": false,
-            "pestphp/pest-plugin": true
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.x-dev"
-        }
-    },
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Itineris\\SagePay\\": "src/"
@@ -73,15 +63,23 @@
             "tests"
         ]
     },
-    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": false
+        },
+        "platform": {
+            "php": "8.4.1"
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
     "scripts": {
-        "pretag": [
-            "composer update",
-            "@style:check",
-            "composer normalize",
-            "github_changelog_generator --no-verbose",
-            "npx doctoc README.md"
-        ],
         "release:build": [
             "rm -fr vendor",
             "composer install --no-dev --prefer-dist --optimize-autoloader --no-suggest",
@@ -90,11 +88,9 @@
         ],
         "style:check": "phpcs",
         "style:fix": "phpcbf",
-        "test": ["Composer\\Config::disableProcessTimeout", "pest"]
-    },
-    "support": {
-        "email": "dev@itineris.co.uk",
-        "issues": "https://github.com/ItinerisLtd/gf-sagepay/issues",
-        "source": "https://github.com/ItinerisLtd/gf-sagepay"
+        "test": [
+            "Composer\\Config::disableProcessTimeout",
+            "pest"
+        ]
     }
 }
