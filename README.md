@@ -6,19 +6,19 @@
 [![Packagist Downloads](https://img.shields.io/packagist/dt/itinerisltd/gf-sagepay.svg?label=packagist%20downloads&style=flat-square)](https://packagist.org/packages/itinerisltd/gf-sagepay/stats)
 [![GitHub License](https://img.shields.io/github/license/itinerisltd/gf-sagepay.svg?style=flat-square)](https://github.com/ItinerisLtd/gf-sagepay/blob/master/LICENSE)
 [![Hire Itineris](https://img.shields.io/badge/Hire-Itineris-ff69b4.svg?style=flat-square)](https://www.itineris.co.uk/contact/)
-[![Twitter Follow @itineris_ltd](https://img.shields.io/twitter/follow/itineris_ltd?style=flat-square&color=1da1f2)](https://twitter.com/itineris_ltd)
-[![Twitter Follow @TangRufus](https://img.shields.io/twitter/follow/TangRufus?style=flat-square&color=1da1f2)](https://twitter.com/tangrufus)
+[![Twitter Follow @itineris_ltd](https://img.shields.io/twitter/follow/itineris_ltd?style=flat-square&color=1da1f2)](https://x.com/itineris_ltd)
+[![Twitter Follow @TangRufus](https://img.shields.io/twitter/follow/TangRufus?style=flat-square&color=1da1f2)](https://x.com/tangrufus)
 
 SagePay payment gateway for GravityForms.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Goal](#goal)
 - [Features](#features)
 - [Not Supported / Not Implemented](#not-supported--not-implemented)
 - [Minimum Requirements](#minimum-requirements)
+- [Upgrading to 1.0](#upgrading-to-10)
 - [Installation](#installation)
   - [Composer (Recommended)](#composer-recommended)
   - [Build from Source (Not Recommended)](#build-from-source-not-recommended)
@@ -54,22 +54,27 @@ SagePay payment gateway for GravityForms.
 
 ## Goal
 
-Allow Gravity Forms accepts SagePay one-off payments via [SagePay Server](https://www.sagepay.co.uk/support/15/36/sage-pay-server-understanding-the-process).
+Allow Gravity Forms to accept SagePay (now Opayo by Elavon) one-off payments via [SagePay Server](https://www.elavon.co.uk/content/dam/elavon/en-gb/v2/documents/resource-center/opayo/my-opayo---sagepay/troubleshooting/SERVER_Integration_and_Protocol_Guidelines_270815.pdf).
 
 ## Features
 
-- [SagePay Server](https://www.sagepay.co.uk/support/15/36/sage-pay-server-understanding-the-process)
-- [Gift Aid](https://www.sagepay.co.uk/support/12/36/gift-aid)
-- [3D Secure](https://www.sagepay.co.uk/support/12/36/3d-secure-explained)
-- [AVS/CV2](https://www.sagepay.co.uk/support/28/36/activating-adding-avs/cv2-rules)
+- [SagePay Server](https://www.elavon.co.uk/content/dam/elavon/en-gb/v2/documents/resource-center/opayo/my-opayo---sagepay/troubleshooting/SERVER_Integration_and_Protocol_Guidelines_270815.pdf)
+- [Gift Aid](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo.html)
+- [3D Secure](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo/fraud-prevention/3D-Secure.html)
+- [AVS/CV2](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo/fraud-prevention/AVS-CV2.html)
 - [Gravity Forms Logging](https://docs.gravityforms.com/logging-and-debugging/)
 - [Gravity Forms Notification Events](https://docs.gravityforms.com/gravity-forms-notification-events/)
-- [Gravity Forms Confirmation](https://docs.gravityforms.com/configuring-confirmations-in-gravity-forms/)
+- [Gravity Forms Confirmation](https://docs.gravityforms.com/confirmation-type-page/)
 - [Gravity Forms Conditional Logic](https://docs.gravityforms.com/enable-conditional-logic/)
+- Payment statuses: SagePay's notification sets the entry's payment status and fires the matching [Gravity Forms notification events](https://docs.gravityforms.com/gravity-forms-notification-events/) (payment completed, pending or failed)
+  - `OK` or `OK REPEATED` → **Paid**
+  - `PENDING` → **Pending**
+  - `NOTAUTHED`, `REJECTED`, `ABORT` or `ERROR` → **Failed**
+  - Repeated notifications are ignored, and a Paid entry is never downgraded
 
 ## Not Supported / Not Implemented
 
-Although these features are not supported by this plugin, but you might able to do so via [MySagePay](https://live.sagepay.com/mysagepay/login.msp):
+These features are not supported by this plugin, but you might be able to use them via [MySagePay](https://live.sagepay.com/mysagepay/login.msp):
 - Card reference
 - Token billing
 - Deferred payment
@@ -82,7 +87,7 @@ Although these features are not supported by this plugin, but you might able to 
 - Account Type M – for telephone (MOTO) transactions
 - Account Type C – for repeat transactions
 
-[Pull requests](https://github.com/ItinerisLtd/gf-sagepay) are welcomed.
+[Pull requests](https://github.com/ItinerisLtd/gf-sagepay) are welcome.
 
 ## Minimum Requirements
 
@@ -91,6 +96,29 @@ Although these features are not supported by this plugin, but you might able to 
 - PHP cURL Extension
 - WordPress v6.7
 - [Gravity Forms](https://www.gravityforms.com/) v3.1
+
+## Upgrading to 1.0
+
+1.0.0 is a major release. Before upgrading from 0.12:
+
+1. Check the [minimum requirements](#minimum-requirements): PHP 8.4.1 with bcmath, WordPress 6.7 and Gravity Forms 3.1.
+1. If your project pins `config.platform.php` in `composer.json`, set it to `8.4.1` or higher (`8.4` means 8.4.0 and is refused).
+1. Update the Composer constraint, letting only gf-sagepay's own dependencies move (it needs `omnipay/common` 3.5.1 or newer):
+   ```sh
+   composer require itinerisltd/gf-sagepay:^1.0 --update-with-dependencies
+   ```
+1. If you extend any of the plugin's classes or call methods outside the [public API](#public-api), update that code:
+   - every class is now `final`, `protected` members are `private`, and everything outside the public API is `@internal`
+   - `Entry::isTimeout()`, `Entry::expireConfirmationTokenNow()`, `Entry::setProperty()` and `Feed::isActive()` are removed
+   - `GatewayFactory::build()` is private (use `GatewayFactory::buildFromFeed()`)
+   - `Entry::setMeta()` requires a `string` key, and `CallbackHandler::run()` now ends the request (`never`)
+
+Good to know:
+
+- Existing feeds, entries and settings carry over unchanged.
+- Gravity Forms only enforces its minimum version in wp-admin. A site still on Gravity Forms 2.x keeps taking payments, but the SagePay settings pages stay hidden until Gravity Forms is updated.
+- If a theme or another plugin bundles its own Guzzle, that copy may be the one loaded. Any Guzzle 7 release works.
+- The notification URL sent to SagePay is now `?callback=gf-sagepay` (previously `?callback=gf-sagepay&vendor=<vendor code>&isTest=true|false`). Notifications are verified against the vendor code stored when the payment was registered, and any `vendor` or `isTest` query args are ignored.
 
 ## Installation
 
@@ -104,7 +132,7 @@ composer require itinerisltd/gf-sagepay
 
 ```bash
 # Make sure you use the same PHP version as remote servers.
-# Building inside docker images is recommanded.
+# Building inside docker images is recommended.
 php -v
 
 # Checkout source code
@@ -116,7 +144,7 @@ git checkout <the-tag-or-the-branch-or-the-commit>
 composer release:build
 ```
 
-Then, install `release/gf-sagepay.zip` [as usual](https://codex.wordpress.org/Managing_Plugins#Installing_Plugins).
+Then, install `release/gf-sagepay.zip` [as usual](https://wordpress.org/documentation/article/manage-plugins/).
 
 ## Best Practices
 
@@ -130,23 +158,23 @@ Always double check payment status on [MySagePay](https://live.sagepay.com/mysag
 
 ### Fraud Protection
 
-To prevent chargebacks, enforce [3D Secure](https://www.sagepay.co.uk/support/12/36/3d-secure-explained) and [AVS/CV2](https://www.sagepay.co.uk/support/28/36/activating-adding-avs/cv2-rules) rules whenever possible.
+To prevent chargebacks, enforce [3D Secure](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo/fraud-prevention/3D-Secure.html) and [AVS/CV2](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo/fraud-prevention/AVS-CV2.html) rules whenever possible.
 
 ## Test Sandbox
 
-Always test the plugin and your fraud protection rules in test sandbox before going live.
+Always test the plugin and your fraud protection rules in the test sandbox before going live.
 
-If you can't whitelist test server IPs, use `protxross` as `Vendor Code`.
+Your own test account only accepts registrations from IP addresses whitelisted in MySagePay (otherwise error 4020). If you can't whitelist yours, use the shared `protxross` vendor code, which accepts registrations from any IP.
 
-Use [ngrok](https://ngrok.com/) to make local notification URLs publicly accessible.
+SagePay must be able to reach the notification URL, so a local site needs a public tunnel. A [Cloudflare quick tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/) works without an account, but SagePay only reaches it over plain `http://`; [ngrok](https://ngrok.com/) is an alternative.
 
-Use one of the [test credit cards](https://www.sagepay.co.uk/support/12/36/test-card-details-for-your-test-transactions).
+Use one of the [test cards](https://developer.elavon.com/products/en-uk/opayo/v1/test-in-sandbox), for example Visa `4929000000006` with CVV `123`, or `4929602110085639` to simulate a decline.
 
 ## Common Issues
 
 ### Missing Gift Aid Acceptance Box
 
-Only registered charities can use [Gift Aid](https://www.sagepay.co.uk/support/12/36/gift-aid) through the Sage Pay platform.
+Only registered charities can use [Gift Aid](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo.html) through the Sage Pay platform.
 The gift aid acceptance box only appears if your vendor account is Gift Aid enabled and using **Donation** as transaction type.
 
 ### GF SagePay is Missing on Form Settings
@@ -155,7 +183,7 @@ Make sure you meet the [minimum requirements](#minimum-requirements). Check your
 
 ## Shipping Address
 
-[OmniPay](https://omnipay.thephpleague.com/) requires both billing address and shipping address.
+SagePay requires both a billing address and a delivery address, so map both sets of fields in the feed (a missing delivery country fails with error 3140).
 
 ### Use case: Not delivering any physical goods
 
@@ -163,7 +191,7 @@ Map the shipping address fields to the billing ones.
 
 ### Use case: Allow ship to billing address
 
-This is similar to the the WooCommerce way.
+This is similar to the WooCommerce way.
 
 Use Gravity Forms' built-in feature: [Display option to use the values submitted in different field](https://docs.gravityforms.com/address-field/#advanced-settings)
 
@@ -171,7 +199,7 @@ Use Gravity Forms' built-in feature: [Display option to use the values submitted
 
 ### Will you add support for older PHP versions?
 
-Never! This plugin will only work on [actively supported PHP versions](https://secure.php.net/supported-versions.php).
+Never! This plugin will only work on [actively supported PHP versions](https://www.php.net/supported-versions.php).
 
 Don't use it on **end of life** or **security fixes only** PHP versions.
 
@@ -180,15 +208,14 @@ Don't use it on **end of life** or **security fixes only** PHP versions.
 - Articles on [Itineris' blog](https://www.itineris.co.uk/blog/)
 - More projects on [Itineris' GitHub profile](https://github.com/itinerisltd)
 - More plugins on [Itineris](https://profiles.wordpress.org/itinerisltd/#content-plugins) and [TangRufus](https://profiles.wordpress.org/tangrufus/#content-plugins) wp.org profiles
-- Follow [@itineris_ltd](https://twitter.com/itineris_ltd) and [@TangRufus](https://twitter.com/tangrufus) on Twitter
+- Follow [@itineris_ltd](https://x.com/itineris_ltd) and [@TangRufus](https://x.com/tangrufus) on Twitter
 - Hire [Itineris](https://www.itineris.co.uk/services/) to build your next awesome site
 
 ### Where can I give :star::star::star::star::star: reviews?
 
-Thanks! Glad you like it. It's important to let my boss knows somebody is using this project. Please consider:
+Thanks! Glad you like it. It's important to let us know somebody is using this project. Please consider:
 
-- leave a 5-star review on [wordpress.org](https://wordpress.org/support/plugin/gf-sagepay/reviews/)
-- tweet something good with mentioning [@itineris_ltd](https://twitter.com/itineris_ltd) and [@TangRufus](https://twitter.com/tangrufus)
+- tweet something good with mentioning [@itineris_ltd](https://x.com/itineris_ltd) and [@TangRufus](https://x.com/tangrufus)
 - :star: star this [Github repo](https://github.com/ItinerisLtd/gf-sagepay)
 - :eyes: watch this [Github repo](https://github.com/ItinerisLtd/gf-sagepay)
 - write blog posts
@@ -227,18 +254,18 @@ $url = \Itineris\SagePay\ConfirmationHandler::buildUrlFor(
 );
 
 echo $url;
-// https://example.com?entry=123&gf-sagepay-token=XXXXXXXXXXXX
+// https://example.com/the-form-page/?entry=123&gf-sagepay-token=XXXXXXXXXXXX (the entry's source page)
 ```
 
 Use Case:
-With ["using confirmation query strings to populate a form based on another submission"](https://docs.gravityforms.com/using-confirmation-query-strings-to-populate-a-form-based-on-another-submission/):
+With ["using confirmation query strings to populate a form based on another submission"](https://docs.gravityforms.com/confirmation-query-string-populate-form/):
 1. User fills in formA
-1. User completes SagePay checkout form
-1. User comes back and hits `CallbackHandler`
-1. `CallbackHandler` sends user to formB according to confirmation settings
-1. User arrives formB url with merged query strings
+1. User completes the SagePay checkout form
+1. SagePay notifies `CallbackHandler`, which records the payment and replies with a single-use confirmation URL
+1. SagePay sends the user to that URL, where `ConfirmationHandler` runs formA's confirmation and sends the user to formB
+1. User arrives at formB's URL with merged query strings
 
-If the user quits before completing formB, you could use `ConfirmationHandler::buildUrlFor` generate a single-use, short-lived url for the user to resume formB.
+If the user quits before completing formB, you could use `ConfirmationHandler::buildUrlFor` to generate a single-use, short-lived url for the user to resume formB.
 
 Note:
 - The url continues Gravity Forms confirmation
@@ -249,7 +276,7 @@ Note:
 
 #### Redirect URL Retrieval Failure Handling
 
-After form submit, this plugin sends order information to SagePay in exchange for a redirect URL(the SagePay hosted checkout form URL).
+After form submission, this plugin sends the order to SagePay in exchange for a redirect URL (the SagePay hosted checkout form URL).
 
 By default, when redirect URL retrieval fails:
 1. Mark entry payment status as `Failed`
@@ -258,7 +285,7 @@ By default, when redirect URL retrieval fails:
 
 Common failure reasons:
 - Incorrect vendor code
-- Server IP not whitelisted
+- Server IP not whitelisted (error 4020)
 
 Tips: Check the [log](https://docs.gravityforms.com/logging-and-debugging/).
 
@@ -279,7 +306,7 @@ add_filter('gf_sagepay_redirect_url_failure_wp_die', function(bool $shouldWpDie,
 
     return true; // Do `wp_die`
     return false; // Don't `wp_die`, continue normal flow
-    return $shouldWpDie; // Undecisive
+    return $shouldWpDie; // Keep the default
 }, 10, 4);
 ```
 
@@ -293,24 +320,28 @@ add_filter('gf_sagepay_redirect_url_exception_wp_die', function(bool $shouldWpDi
 
 ### Required Reading List
 
-Read the followings before developing:
-- [SagePay Server: Understanding the process](https://www.sagepay.co.uk/support/15/36/sage-pay-server-understanding-the-process)
-- [SagePay Server integration kits, protocols and documents](https://www.sagepay.co.uk/support/find-an-integration-document/server-integration-documents)
+Read the following before developing:
+- [SagePay Server: Understanding the process](https://www.elavon.co.uk/content/dam/elavon/en-gb/v2/documents/resource-center/opayo/my-opayo---sagepay/troubleshooting/SERVER_Integration_and_Protocol_Guidelines_270815.pdf)
+- [SagePay Server integration kits, protocols and documents](https://www.elavon.co.uk/customer-centre/help-with-your-solutions/opayo.html)
 - [Gravity Forms: GFPaymentAddOn](https://docs.gravityforms.com/gfpaymentaddon/)
 - [Gravity Forms: Entry Object](https://docs.gravityforms.com/entry-object/)
 - [Omnipay: Sage Pay](https://github.com/thephpleague/omnipay-sagepay)
 - [thephpleague/omnipay-sagepay#45 (comment)](https://github.com/thephpleague/omnipay-sagepay/pull/45#issuecomment-150667423)
-- [thephpleague/omnipay-sagepay#255 (comment)](https://github.com/thephpleague/omnipay/issues/255#issuecomment-90509446)
+- [thephpleague/omnipay#255 (comment)](https://github.com/thephpleague/omnipay/issues/255#issuecomment-90509446)
 
 ### Gravity Forms
 
-Gravity Forms has undocumented hidden magics, read its source code.
+Gravity Forms has undocumented behaviour; read its source code when in doubt.
 
 ### Testing
 
 ```bash
-composer style:check
+composer style:check   # coding standards
+composer test          # Pest integration suite (real WordPress, Gravity Forms and MySQL)
+tests/e2e/run.sh       # Playwright payments against Opayo's sandbox (wp-env, Docker and cloudflared)
 ```
+
+See [CLAUDE.md](./CLAUDE.md#testing) for the local setup each one needs.
 
 Pull requests without tests will not be accepted!
 
@@ -327,13 +358,14 @@ Please see [CHANGELOG](./CHANGELOG.md) for more information on what has changed 
 ## Security
 
 If you discover any security related issues, please email [dev@itineris.co.uk](mailto:dev@itineris.co.uk) instead of using the issue tracker.
+You can also report it privately through GitHub's [private vulnerability reporting](https://github.com/ItinerisLtd/gf-sagepay/security/advisories/new).
 
 ## Credits
 
-[GF SagePay](https://github.com/ItinerisLtd/gf-sagepay) is a [Itineris Limited](https://www.itineris.co.uk/) project created by [Tang Rufus](https://typist.tech).
+[GF SagePay](https://github.com/ItinerisLtd/gf-sagepay) is an [Itineris Limited](https://www.itineris.co.uk/) project created by [Tang Rufus](https://typist.tech) and maintained by [Lee Hanbury-Pickett](https://github.com/codepuncher).
 
 Full list of contributors can be found [here](https://github.com/ItinerisLtd/gf-sagepay/graphs/contributors).
 
 ## License
 
-[GF SagePay](https://github.com/ItinerisLtd/gf-sagepay) is released under the [MIT License](https://opensource.org/licenses/MIT).
+[GF SagePay](https://github.com/ItinerisLtd/gf-sagepay) is released under the [MIT License](https://opensource.org/license/MIT).

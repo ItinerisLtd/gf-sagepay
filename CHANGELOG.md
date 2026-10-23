@@ -1,5 +1,66 @@
 # Changelog
 
+## [1.0.0](https://github.com/itinerisltd/gf-sagepay/tree/1.0.0) (2026-10-23)
+
+[Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.12.1...1.0.0)
+
+**Merged pull requests:**
+
+- test\(e2e\): cover declined, retried and cancelled sandbox payments [\#273](https://github.com/ItinerisLtd/gf-sagepay/pull/273) ([codepuncher](https://github.com/codepuncher))
+- test\(e2e\): cover a sandbox payment with playwright [\#272](https://github.com/ItinerisLtd/gf-sagepay/pull/272) ([codepuncher](https://github.com/codepuncher))
+- refactor\(api\): define the public API for 1.0.0 [\#271](https://github.com/ItinerisLtd/gf-sagepay/pull/271) ([codepuncher](https://github.com/codepuncher))
+- chore\(requirements\): require gravity forms 3.1 [\#270](https://github.com/ItinerisLtd/gf-sagepay/pull/270) ([codepuncher](https://github.com/codepuncher))
+- fix\(callback\): close the notification response before shutdown work [\#269](https://github.com/ItinerisLtd/gf-sagepay/pull/269) ([codepuncher](https://github.com/codepuncher))
+- test\(isolation\): reset add-on submission state between tests [\#268](https://github.com/ItinerisLtd/gf-sagepay/pull/268) ([codepuncher](https://github.com/codepuncher))
+- fix\(callback\): compare notification signatures in constant time [\#267](https://github.com/ItinerisLtd/gf-sagepay/pull/267) ([codepuncher](https://github.com/codepuncher))
+- fix\(callback\): verify notifications with the registered vendor code [\#266](https://github.com/ItinerisLtd/gf-sagepay/pull/266) ([codepuncher](https://github.com/codepuncher))
+- fix\(redirect\): mark entry failed when registration throws [\#265](https://github.com/ItinerisLtd/gf-sagepay/pull/265) ([codepuncher](https://github.com/codepuncher))
+- test\(integration\): cover submission, vendors and token races [\#264](https://github.com/ItinerisLtd/gf-sagepay/pull/264) ([codepuncher](https://github.com/codepuncher))
+- test\(redirect\): cover payment registration [\#263](https://github.com/ItinerisLtd/gf-sagepay/pull/263) ([codepuncher](https://github.com/codepuncher))
+- test\(callback\): cover notification handling [\#262](https://github.com/ItinerisLtd/gf-sagepay/pull/262) ([codepuncher](https://github.com/codepuncher))
+- test\(confirmation\): cover the return flow [\#261](https://github.com/ItinerisLtd/gf-sagepay/pull/261) ([codepuncher](https://github.com/codepuncher))
+- test\(integration\): add pest integration suite infrastructure [\#260](https://github.com/ItinerisLtd/gf-sagepay/pull/260) ([codepuncher](https://github.com/codepuncher))
+- refactor\(callback\): route termination through a hook [\#259](https://github.com/ItinerisLtd/gf-sagepay/pull/259) ([codepuncher](https://github.com/codepuncher))
+- chore\(deps\): update omnipay dependencies and require php 8.4.1 [\#258](https://github.com/ItinerisLtd/gf-sagepay/pull/258) ([codepuncher](https://github.com/codepuncher))
+- fix\(callback\): verify notifications before updating entries [\#257](https://github.com/ItinerisLtd/gf-sagepay/pull/257) ([codepuncher](https://github.com/codepuncher))
+- fix\(confirmation\): show already used on refresh instead of the empty form [\#256](https://github.com/ItinerisLtd/gf-sagepay/pull/256) ([codepuncher](https://github.com/codepuncher))
+- fix\(confirmation\): trust the reported payment status regardless of entry age [\#255](https://github.com/ItinerisLtd/gf-sagepay/pull/255) ([codepuncher](https://github.com/codepuncher))
+- style\(php\): import native functions and name the suppressed sniff [\#254](https://github.com/ItinerisLtd/gf-sagepay/pull/254) ([codepuncher](https://github.com/codepuncher))
+- fix\(confirmation\): consume the confirmation token atomically after loading [\#253](https://github.com/ItinerisLtd/gf-sagepay/pull/253) ([codepuncher](https://github.com/codepuncher))
+- fix\(confirmation\): stop with an error when the form cannot be loaded [\#252](https://github.com/ItinerisLtd/gf-sagepay/pull/252) ([codepuncher](https://github.com/codepuncher))
+- fix\(confirmation\): reject non-string token and entry query args [\#251](https://github.com/ItinerisLtd/gf-sagepay/pull/251) ([codepuncher](https://github.com/codepuncher))
+- chore\(deps\): update runtime dependencies within current majors [\#250](https://github.com/ItinerisLtd/gf-sagepay/pull/250) ([codepuncher](https://github.com/codepuncher))
+- chore\(deps\): upgrade itineris-wp-coding-standards to 2.0 [\#249](https://github.com/ItinerisLtd/gf-sagepay/pull/249) ([codepuncher](https://github.com/codepuncher))
+- ci\(actions\): update and pin actions to commit shas [\#248](https://github.com/ItinerisLtd/gf-sagepay/pull/248) ([codepuncher](https://github.com/codepuncher))
+- chore\(php\): bump minimum php version to 8.4 [\#247](https://github.com/ItinerisLtd/gf-sagepay/pull/247) ([codepuncher](https://github.com/codepuncher))
+- ci\(test\): run on pull requests instead of branch pushes [\#246](https://github.com/ItinerisLtd/gf-sagepay/pull/246) ([codepuncher](https://github.com/codepuncher))
+- docs\(claude\): add CLAUDE.md [\#245](https://github.com/ItinerisLtd/gf-sagepay/pull/245) ([codepuncher](https://github.com/codepuncher))
+- Add 21-day cooldown to Dependabot composer updates [\#244](https://github.com/ItinerisLtd/gf-sagepay/pull/244) ([codepuncher](https://github.com/codepuncher))
+
+## [0.12.1](https://github.com/itinerisltd/gf-sagepay/tree/0.12.1) (2025-11-03)
+
+[Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.12.0...0.12.1)
+
+**Merged pull requests:**
+
+- fix\(bug\): PHP fatal error: Class 'GFForm' not found [\#243](https://github.com/ItinerisLtd/gf-sagepay/pull/243) ([itineris-milos](https://github.com/itineris-milos))
+- Update GitHub Actions workflows to version `v4` [\#242](https://github.com/ItinerisLtd/gf-sagepay/pull/242) ([codepuncher](https://github.com/codepuncher))
+
+## [0.12.0](https://github.com/itinerisltd/gf-sagepay/tree/0.12.0) (2024-01-10)
+
+[Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.11.0...0.12.0)
+
+**Closed issues:**
+
+- Update `omnipay/sagepay`  to v4 [\#234](https://github.com/ItinerisLtd/gf-sagepay/issues/234)
+
+**Merged pull requests:**
+
+- Bump version 0.12.0 [\#238](https://github.com/ItinerisLtd/gf-sagepay/pull/238) ([codepuncher](https://github.com/codepuncher))
+- Replace CircleCI badge with GitHub Actions badge [\#237](https://github.com/ItinerisLtd/gf-sagepay/pull/237) ([codepuncher](https://github.com/codepuncher))
+- Upgrade `omnipay/sagepay` from `3.2.0` to `4.1.1` [\#236](https://github.com/ItinerisLtd/gf-sagepay/pull/236) ([codepuncher](https://github.com/codepuncher))
+- Migrate to GitHub Actions [\#235](https://github.com/ItinerisLtd/gf-sagepay/pull/235) ([codepuncher](https://github.com/codepuncher))
+
 ## [0.11.0](https://github.com/itinerisltd/gf-sagepay/tree/0.11.0) (2023-01-23)
 
 [Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.10.10...0.11.0)
@@ -24,8 +85,8 @@
 **Merged pull requests:**
 
 - Fix getProperty cast [\#219](https://github.com/ItinerisLtd/gf-sagepay/pull/219) ([danlapteacru](https://github.com/danlapteacru))
-- Update CircleCI config [\#206](https://github.com/ItinerisLtd/gf-sagepay/pull/206) ([TangRufus](https://github.com/TangRufus))
-- Give up publishing to wp.org [\#205](https://github.com/ItinerisLtd/gf-sagepay/pull/205) ([TangRufus](https://github.com/TangRufus))
+- Update CircleCI config [\#206](https://github.com/ItinerisLtd/gf-sagepay/pull/206) ([tangrufus](https://github.com/tangrufus))
+- Give up publishing to wp.org [\#205](https://github.com/ItinerisLtd/gf-sagepay/pull/205) ([tangrufus](https://github.com/tangrufus))
 - Bump symfony/http-foundation from 4.4.16 to 4.4.17 [\#196](https://github.com/ItinerisLtd/gf-sagepay/pull/196) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump php-http/discovery from 1.12.0 to 1.13.0 [\#195](https://github.com/ItinerisLtd/gf-sagepay/pull/195) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump php-http/message from 1.9.1 to 1.10.0 [\#194](https://github.com/ItinerisLtd/gf-sagepay/pull/194) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
@@ -90,8 +151,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.10.9 [\#123](https://github.com/ItinerisLtd/gf-sagepay/pull/123) ([TangRufus](https://github.com/TangRufus))
-- Defer setting transcation id and payment amount [\#122](https://github.com/ItinerisLtd/gf-sagepay/pull/122) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.10.9 [\#123](https://github.com/ItinerisLtd/gf-sagepay/pull/123) ([tangrufus](https://github.com/tangrufus))
+- Defer setting transcation id and payment amount [\#122](https://github.com/ItinerisLtd/gf-sagepay/pull/122) ([tangrufus](https://github.com/tangrufus))
 - Bump wp-coding-standards/wpcs from 2.2.0 to 2.2.1 [\#121](https://github.com/ItinerisLtd/gf-sagepay/pull/121) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [0.10.8](https://github.com/itinerisltd/gf-sagepay/tree/0.10.8) (2020-01-31)
@@ -100,8 +161,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.10.8 [\#120](https://github.com/ItinerisLtd/gf-sagepay/pull/120) ([TangRufus](https://github.com/TangRufus))
-- Fix entry not found in callback [\#119](https://github.com/ItinerisLtd/gf-sagepay/pull/119) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.10.8 [\#120](https://github.com/ItinerisLtd/gf-sagepay/pull/120) ([tangrufus](https://github.com/tangrufus))
+- Fix entry not found in callback [\#119](https://github.com/ItinerisLtd/gf-sagepay/pull/119) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.10.7](https://github.com/itinerisltd/gf-sagepay/tree/0.10.7) (2020-01-31)
 
@@ -109,10 +170,10 @@
 
 **Merged pull requests:**
 
-- Version bump 0.10.7 [\#118](https://github.com/ItinerisLtd/gf-sagepay/pull/118) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.10.7 [\#118](https://github.com/ItinerisLtd/gf-sagepay/pull/118) ([tangrufus](https://github.com/tangrufus))
 - Bump squizlabs/php\_codesniffer from 3.5.3 to 3.5.4 [\#117](https://github.com/ItinerisLtd/gf-sagepay/pull/117) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Add more logging; Speed improvment; Ensure `exit` after confirmation [\#116](https://github.com/ItinerisLtd/gf-sagepay/pull/116) ([TangRufus](https://github.com/TangRufus))
-- Composer: Lock platform to PHP v7.2; Cleanup `.gitignore` [\#115](https://github.com/ItinerisLtd/gf-sagepay/pull/115) ([TangRufus](https://github.com/TangRufus))
+- Add more logging; Speed improvment; Ensure `exit` after confirmation [\#116](https://github.com/ItinerisLtd/gf-sagepay/pull/116) ([tangrufus](https://github.com/tangrufus))
+- Composer: Lock platform to PHP v7.2; Cleanup `.gitignore` [\#115](https://github.com/ItinerisLtd/gf-sagepay/pull/115) ([tangrufus](https://github.com/tangrufus))
 - Bump symfony/http-foundation from 4.4.2 to 4.4.3 [\#113](https://github.com/ItinerisLtd/gf-sagepay/pull/113) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [0.10.6](https://github.com/itinerisltd/gf-sagepay/tree/0.10.6) (2020-01-17)
@@ -121,8 +182,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.10.6 [\#112](https://github.com/ItinerisLtd/gf-sagepay/pull/112) ([TangRufus](https://github.com/TangRufus))
-- Fix entry not found in callback; composer update [\#111](https://github.com/ItinerisLtd/gf-sagepay/pull/111) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.10.6 [\#112](https://github.com/ItinerisLtd/gf-sagepay/pull/112) ([tangrufus](https://github.com/tangrufus))
+- Fix entry not found in callback; composer update [\#111](https://github.com/ItinerisLtd/gf-sagepay/pull/111) ([tangrufus](https://github.com/tangrufus))
 - Bump php-http/discovery from 1.7.3 to 1.7.4 [\#110](https://github.com/ItinerisLtd/gf-sagepay/pull/110) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump moneyphp/money from 3.2.1 to 3.3.0 [\#109](https://github.com/ItinerisLtd/gf-sagepay/pull/109) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump php-http/discovery from 1.7.1 to 1.7.3 [\#108](https://github.com/ItinerisLtd/gf-sagepay/pull/108) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
@@ -141,12 +202,12 @@
 
 **Merged pull requests:**
 
-- composer require omnipay/sagepay && composer require --dev itinerisltd/itineris-wp-coding-standards [\#97](https://github.com/ItinerisLtd/gf-sagepay/pull/97) ([TangRufus](https://github.com/TangRufus))
-- Version bump 0.10.5 [\#96](https://github.com/ItinerisLtd/gf-sagepay/pull/96) ([TangRufus](https://github.com/TangRufus))
-- Add dependabot [\#94](https://github.com/ItinerisLtd/gf-sagepay/pull/94) ([TangRufus](https://github.com/TangRufus))
-- composer update [\#93](https://github.com/ItinerisLtd/gf-sagepay/pull/93) ([TangRufus](https://github.com/TangRufus))
-- README.md: Fix `Minimum Requirements` [\#92](https://github.com/ItinerisLtd/gf-sagepay/pull/92) ([TangRufus](https://github.com/TangRufus))
-- Plugin Header: Add `Requires at least` and `Requires PHP` [\#91](https://github.com/ItinerisLtd/gf-sagepay/pull/91) ([TangRufus](https://github.com/TangRufus))
+- composer require omnipay/sagepay && composer require --dev itinerisltd/itineris-wp-coding-standards [\#97](https://github.com/ItinerisLtd/gf-sagepay/pull/97) ([tangrufus](https://github.com/tangrufus))
+- Version bump 0.10.5 [\#96](https://github.com/ItinerisLtd/gf-sagepay/pull/96) ([tangrufus](https://github.com/tangrufus))
+- Add dependabot [\#94](https://github.com/ItinerisLtd/gf-sagepay/pull/94) ([tangrufus](https://github.com/tangrufus))
+- composer update [\#93](https://github.com/ItinerisLtd/gf-sagepay/pull/93) ([tangrufus](https://github.com/tangrufus))
+- README.md: Fix `Minimum Requirements` [\#92](https://github.com/ItinerisLtd/gf-sagepay/pull/92) ([tangrufus](https://github.com/tangrufus))
+- Plugin Header: Add `Requires at least` and `Requires PHP` [\#91](https://github.com/ItinerisLtd/gf-sagepay/pull/91) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.10.4](https://github.com/itinerisltd/gf-sagepay/tree/0.10.4) (2019-10-20)
 
@@ -154,8 +215,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.10.4 [\#90](https://github.com/ItinerisLtd/gf-sagepay/pull/90) ([TangRufus](https://github.com/TangRufus))
-- Update `Plugin URI` to GitHub repo URL [\#89](https://github.com/ItinerisLtd/gf-sagepay/pull/89) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.10.4 [\#90](https://github.com/ItinerisLtd/gf-sagepay/pull/90) ([tangrufus](https://github.com/tangrufus))
+- Update `Plugin URI` to GitHub repo URL [\#89](https://github.com/ItinerisLtd/gf-sagepay/pull/89) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.10.3](https://github.com/itinerisltd/gf-sagepay/tree/0.10.3) (2019-10-20)
 
@@ -167,8 +228,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.10.3 [\#88](https://github.com/ItinerisLtd/gf-sagepay/pull/88) ([TangRufus](https://github.com/TangRufus))
-- Composer: Do not archive `tests` [\#87](https://github.com/ItinerisLtd/gf-sagepay/pull/87) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.10.3 [\#88](https://github.com/ItinerisLtd/gf-sagepay/pull/88) ([tangrufus](https://github.com/tangrufus))
+- Composer: Do not archive `tests` [\#87](https://github.com/ItinerisLtd/gf-sagepay/pull/87) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.10.2](https://github.com/itinerisltd/gf-sagepay/tree/0.10.2) (2019-10-20)
 
@@ -180,8 +241,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.10.2 [\#86](https://github.com/ItinerisLtd/gf-sagepay/pull/86) ([TangRufus](https://github.com/TangRufus))
-- Prepare for wp.org review [\#85](https://github.com/ItinerisLtd/gf-sagepay/pull/85) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.10.2 [\#86](https://github.com/ItinerisLtd/gf-sagepay/pull/86) ([tangrufus](https://github.com/tangrufus))
+- Prepare for wp.org review [\#85](https://github.com/ItinerisLtd/gf-sagepay/pull/85) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.10.1](https://github.com/itinerisltd/gf-sagepay/tree/0.10.1) (2019-10-16)
 
@@ -189,8 +250,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.10.1 [\#83](https://github.com/ItinerisLtd/gf-sagepay/pull/83) ([TangRufus](https://github.com/TangRufus))
-- Composer: Fix `release:build` [\#82](https://github.com/ItinerisLtd/gf-sagepay/pull/82) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.10.1 [\#83](https://github.com/ItinerisLtd/gf-sagepay/pull/83) ([tangrufus](https://github.com/tangrufus))
+- Composer: Fix `release:build` [\#82](https://github.com/ItinerisLtd/gf-sagepay/pull/82) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.10.0](https://github.com/itinerisltd/gf-sagepay/tree/0.10.0) (2019-10-16)
 
@@ -198,16 +259,16 @@
 
 **Merged pull requests:**
 
-- Version bump 0.10.0 [\#81](https://github.com/ItinerisLtd/gf-sagepay/pull/81) ([TangRufus](https://github.com/TangRufus))
-- Add support for `vendorData` \(reference\) field [\#80](https://github.com/ItinerisLtd/gf-sagepay/pull/80) ([TangRufus](https://github.com/TangRufus))
-- Update code standards [\#79](https://github.com/ItinerisLtd/gf-sagepay/pull/79) ([TangRufus](https://github.com/TangRufus))
-- Remove Preflight [\#78](https://github.com/ItinerisLtd/gf-sagepay/pull/78) ([TangRufus](https://github.com/TangRufus))
-- Update readme [\#77](https://github.com/ItinerisLtd/gf-sagepay/pull/77) ([TangRufus](https://github.com/TangRufus))
-- remove `.prettyci.composer.json` [\#76](https://github.com/ItinerisLtd/gf-sagepay/pull/76) ([TangRufus](https://github.com/TangRufus))
-- Git: Track `composer.json` [\#75](https://github.com/ItinerisLtd/gf-sagepay/pull/75) ([TangRufus](https://github.com/TangRufus))
-- Replace PrettyCI with CircleCI [\#74](https://github.com/ItinerisLtd/gf-sagepay/pull/74) ([TangRufus](https://github.com/TangRufus))
-- Bump minimum gravity forms version to 2.4.14.4; Bump minimum PHP version to 7.2 [\#73](https://github.com/ItinerisLtd/gf-sagepay/pull/73) ([TangRufus](https://github.com/TangRufus))
-- Use Itineris WP Coding Standards [\#72](https://github.com/ItinerisLtd/gf-sagepay/pull/72) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.10.0 [\#81](https://github.com/ItinerisLtd/gf-sagepay/pull/81) ([tangrufus](https://github.com/tangrufus))
+- Add support for `vendorData` \(reference\) field [\#80](https://github.com/ItinerisLtd/gf-sagepay/pull/80) ([tangrufus](https://github.com/tangrufus))
+- Update code standards [\#79](https://github.com/ItinerisLtd/gf-sagepay/pull/79) ([tangrufus](https://github.com/tangrufus))
+- Remove Preflight [\#78](https://github.com/ItinerisLtd/gf-sagepay/pull/78) ([tangrufus](https://github.com/tangrufus))
+- Update readme [\#77](https://github.com/ItinerisLtd/gf-sagepay/pull/77) ([tangrufus](https://github.com/tangrufus))
+- remove `.prettyci.composer.json` [\#76](https://github.com/ItinerisLtd/gf-sagepay/pull/76) ([tangrufus](https://github.com/tangrufus))
+- Git: Track `composer.json` [\#75](https://github.com/ItinerisLtd/gf-sagepay/pull/75) ([tangrufus](https://github.com/tangrufus))
+- Replace PrettyCI with CircleCI [\#74](https://github.com/ItinerisLtd/gf-sagepay/pull/74) ([tangrufus](https://github.com/tangrufus))
+- Bump minimum gravity forms version to 2.4.14.4; Bump minimum PHP version to 7.2 [\#73](https://github.com/ItinerisLtd/gf-sagepay/pull/73) ([tangrufus](https://github.com/tangrufus))
+- Use Itineris WP Coding Standards [\#72](https://github.com/ItinerisLtd/gf-sagepay/pull/72) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.9.6](https://github.com/itinerisltd/gf-sagepay/tree/0.9.6) (2018-10-18)
 
@@ -215,8 +276,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.9.6 [\#71](https://github.com/ItinerisLtd/gf-sagepay/pull/71) ([TangRufus](https://github.com/TangRufus))
-- Restore original `$_FILES` after symfony/http-foundation is initialized [\#70](https://github.com/ItinerisLtd/gf-sagepay/pull/70) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.9.6 [\#71](https://github.com/ItinerisLtd/gf-sagepay/pull/71) ([tangrufus](https://github.com/tangrufus))
+- Restore original `$_FILES` after symfony/http-foundation is initialized [\#70](https://github.com/ItinerisLtd/gf-sagepay/pull/70) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.9.5](https://github.com/itinerisltd/gf-sagepay/tree/0.9.5) (2018-10-18)
 
@@ -224,8 +285,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.9.5 [\#69](https://github.com/ItinerisLtd/gf-sagepay/pull/69) ([TangRufus](https://github.com/TangRufus))
-- Empty `$_FILES` to prevent conflicts with `symfony/http-foundation` [\#68](https://github.com/ItinerisLtd/gf-sagepay/pull/68) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.9.5 [\#69](https://github.com/ItinerisLtd/gf-sagepay/pull/69) ([tangrufus](https://github.com/tangrufus))
+- Empty `$_FILES` to prevent conflicts with `symfony/http-foundation` [\#68](https://github.com/ItinerisLtd/gf-sagepay/pull/68) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.9.4](https://github.com/itinerisltd/gf-sagepay/tree/0.9.4) (2018-10-16)
 
@@ -233,8 +294,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.9.4 [\#67](https://github.com/ItinerisLtd/gf-sagepay/pull/67) ([TangRufus](https://github.com/TangRufus))
-- Add extra query param to confirmation URL [\#66](https://github.com/ItinerisLtd/gf-sagepay/pull/66) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.9.4 [\#67](https://github.com/ItinerisLtd/gf-sagepay/pull/67) ([tangrufus](https://github.com/tangrufus))
+- Add extra query param to confirmation URL [\#66](https://github.com/ItinerisLtd/gf-sagepay/pull/66) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.9.3](https://github.com/itinerisltd/gf-sagepay/tree/0.9.3) (2018-10-11)
 
@@ -242,9 +303,9 @@
 
 **Merged pull requests:**
 
-- Version bump 0.9.3 [\#65](https://github.com/ItinerisLtd/gf-sagepay/pull/65) ([TangRufus](https://github.com/TangRufus))
-- Extra check for timeout payment [\#64](https://github.com/ItinerisLtd/gf-sagepay/pull/64) ([TangRufus](https://github.com/TangRufus))
-- Update `wp-coding-standards/wpcs` to v1.1.0 [\#61](https://github.com/ItinerisLtd/gf-sagepay/pull/61) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.9.3 [\#65](https://github.com/ItinerisLtd/gf-sagepay/pull/65) ([tangrufus](https://github.com/tangrufus))
+- Extra check for timeout payment [\#64](https://github.com/ItinerisLtd/gf-sagepay/pull/64) ([tangrufus](https://github.com/tangrufus))
+- Update `wp-coding-standards/wpcs` to v1.1.0 [\#61](https://github.com/ItinerisLtd/gf-sagepay/pull/61) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.9.2](https://github.com/itinerisltd/gf-sagepay/tree/0.9.2) (2018-09-09)
 
@@ -257,8 +318,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.9.2 [\#60](https://github.com/ItinerisLtd/gf-sagepay/pull/60) ([TangRufus](https://github.com/TangRufus))
-- CallbackHandler: Remove useless validation [\#59](https://github.com/ItinerisLtd/gf-sagepay/pull/59) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.9.2 [\#60](https://github.com/ItinerisLtd/gf-sagepay/pull/60) ([tangrufus](https://github.com/tangrufus))
+- CallbackHandler: Remove useless validation [\#59](https://github.com/ItinerisLtd/gf-sagepay/pull/59) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.9.1](https://github.com/itinerisltd/gf-sagepay/tree/0.9.1) (2018-09-05)
 
@@ -266,9 +327,9 @@
 
 **Merged pull requests:**
 
-- Version bump 0.9.1 [\#57](https://github.com/ItinerisLtd/gf-sagepay/pull/57) ([TangRufus](https://github.com/TangRufus))
-- Update code standards; Add PrettryCI config [\#56](https://github.com/ItinerisLtd/gf-sagepay/pull/56) ([TangRufus](https://github.com/TangRufus))
-- Better logging [\#55](https://github.com/ItinerisLtd/gf-sagepay/pull/55) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.9.1 [\#57](https://github.com/ItinerisLtd/gf-sagepay/pull/57) ([tangrufus](https://github.com/tangrufus))
+- Update code standards; Add PrettryCI config [\#56](https://github.com/ItinerisLtd/gf-sagepay/pull/56) ([tangrufus](https://github.com/tangrufus))
+- Better logging [\#55](https://github.com/ItinerisLtd/gf-sagepay/pull/55) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.9.0](https://github.com/itinerisltd/gf-sagepay/tree/0.9.0) (2018-08-22)
 
@@ -280,10 +341,10 @@
 
 **Merged pull requests:**
 
-- Version bump 0.9.0 [\#53](https://github.com/ItinerisLtd/gf-sagepay/pull/53) ([TangRufus](https://github.com/TangRufus))
-- :bike:Bikeshedding for open sourcing [\#52](https://github.com/ItinerisLtd/gf-sagepay/pull/52) ([TangRufus](https://github.com/TangRufus))
-- Create LICENSE [\#51](https://github.com/ItinerisLtd/gf-sagepay/pull/51) ([TangRufus](https://github.com/TangRufus))
-- Rename: `Entry::{make --> mark}AsProcessing` [\#50](https://github.com/ItinerisLtd/gf-sagepay/pull/50) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.9.0 [\#53](https://github.com/ItinerisLtd/gf-sagepay/pull/53) ([tangrufus](https://github.com/tangrufus))
+- :bike:Bikeshedding for open sourcing [\#52](https://github.com/ItinerisLtd/gf-sagepay/pull/52) ([tangrufus](https://github.com/tangrufus))
+- Create LICENSE [\#51](https://github.com/ItinerisLtd/gf-sagepay/pull/51) ([tangrufus](https://github.com/tangrufus))
+- Rename: `Entry::{make --> mark}AsProcessing` [\#50](https://github.com/ItinerisLtd/gf-sagepay/pull/50) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.8.0](https://github.com/itinerisltd/gf-sagepay/tree/0.8.0) (2018-08-20)
 
@@ -291,9 +352,9 @@
 
 **Merged pull requests:**
 
-- Version bump 0.8.0 [\#48](https://github.com/ItinerisLtd/gf-sagepay/pull/48) ([TangRufus](https://github.com/TangRufus))
-- Add preflight checker; Fix incorrect fallback to test mode [\#47](https://github.com/ItinerisLtd/gf-sagepay/pull/47) ([TangRufus](https://github.com/TangRufus))
-- Bikeshedding [\#46](https://github.com/ItinerisLtd/gf-sagepay/pull/46) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.8.0 [\#48](https://github.com/ItinerisLtd/gf-sagepay/pull/48) ([tangrufus](https://github.com/tangrufus))
+- Add preflight checker; Fix incorrect fallback to test mode [\#47](https://github.com/ItinerisLtd/gf-sagepay/pull/47) ([tangrufus](https://github.com/tangrufus))
+- Bikeshedding [\#46](https://github.com/ItinerisLtd/gf-sagepay/pull/46) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.7.0](https://github.com/itinerisltd/gf-sagepay/tree/0.7.0) (2018-07-23)
 
@@ -301,8 +362,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.7.0 [\#44](https://github.com/ItinerisLtd/gf-sagepay/pull/44) ([TangRufus](https://github.com/TangRufus))
-- Revert "New Feature: Copy billing address to shipping address" [\#43](https://github.com/ItinerisLtd/gf-sagepay/pull/43) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.7.0 [\#44](https://github.com/ItinerisLtd/gf-sagepay/pull/44) ([tangrufus](https://github.com/tangrufus))
+- Revert "New Feature: Copy billing address to shipping address" [\#43](https://github.com/ItinerisLtd/gf-sagepay/pull/43) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.6.0](https://github.com/itinerisltd/gf-sagepay/tree/0.6.0) (2018-05-28)
 
@@ -314,8 +375,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.6.0 [\#42](https://github.com/ItinerisLtd/gf-sagepay/pull/42) ([TangRufus](https://github.com/TangRufus))
-- New Feature: Copy billing address to shipping address [\#41](https://github.com/ItinerisLtd/gf-sagepay/pull/41) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.6.0 [\#42](https://github.com/ItinerisLtd/gf-sagepay/pull/42) ([tangrufus](https://github.com/tangrufus))
+- New Feature: Copy billing address to shipping address [\#41](https://github.com/ItinerisLtd/gf-sagepay/pull/41) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.5.3](https://github.com/itinerisltd/gf-sagepay/tree/0.5.3) (2018-05-17)
 
@@ -323,8 +384,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.5.3 [\#39](https://github.com/ItinerisLtd/gf-sagepay/pull/39) ([TangRufus](https://github.com/TangRufus))
-- Update omnipay/sagepay to ^3.0 [\#38](https://github.com/ItinerisLtd/gf-sagepay/pull/38) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.5.3 [\#39](https://github.com/ItinerisLtd/gf-sagepay/pull/39) ([tangrufus](https://github.com/tangrufus))
+- Update omnipay/sagepay to ^3.0 [\#38](https://github.com/ItinerisLtd/gf-sagepay/pull/38) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.5.2](https://github.com/itinerisltd/gf-sagepay/tree/0.5.2) (2018-05-16)
 
@@ -332,8 +393,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.5.2 [\#37](https://github.com/ItinerisLtd/gf-sagepay/pull/37) ([TangRufus](https://github.com/TangRufus))
-- `wp_die` when redirect URL retrievals fail [\#36](https://github.com/ItinerisLtd/gf-sagepay/pull/36) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.5.2 [\#37](https://github.com/ItinerisLtd/gf-sagepay/pull/37) ([tangrufus](https://github.com/tangrufus))
+- `wp_die` when redirect URL retrievals fail [\#36](https://github.com/ItinerisLtd/gf-sagepay/pull/36) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.5.1](https://github.com/itinerisltd/gf-sagepay/tree/0.5.1) (2018-04-30)
 
@@ -341,9 +402,9 @@
 
 **Merged pull requests:**
 
-- Version bump 0.5.1 [\#35](https://github.com/ItinerisLtd/gf-sagepay/pull/35) ([TangRufus](https://github.com/TangRufus))
-- Lower Gravity Forms requirment to v2.2.6.1 [\#34](https://github.com/ItinerisLtd/gf-sagepay/pull/34) ([TangRufus](https://github.com/TangRufus))
-- Apply coding style [\#33](https://github.com/ItinerisLtd/gf-sagepay/pull/33) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.5.1 [\#35](https://github.com/ItinerisLtd/gf-sagepay/pull/35) ([tangrufus](https://github.com/tangrufus))
+- Lower Gravity Forms requirment to v2.2.6.1 [\#34](https://github.com/ItinerisLtd/gf-sagepay/pull/34) ([tangrufus](https://github.com/tangrufus))
+- Apply coding style [\#33](https://github.com/ItinerisLtd/gf-sagepay/pull/33) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.5.0](https://github.com/itinerisltd/gf-sagepay/tree/0.5.0) (2018-04-29)
 
@@ -351,11 +412,11 @@
 
 **Merged pull requests:**
 
-- Version bump 0.5.0 [\#32](https://github.com/ItinerisLtd/gf-sagepay/pull/32) ([TangRufus](https://github.com/TangRufus))
-- Fix: `AddOn::$_path` should point to `gf-sagepay.php` [\#31](https://github.com/ItinerisLtd/gf-sagepay/pull/31) ([TangRufus](https://github.com/TangRufus))
-- New feature: Cancel url [\#30](https://github.com/ItinerisLtd/gf-sagepay/pull/30) ([TangRufus](https://github.com/TangRufus))
-- Lower PHP requirement to ^7.1; Bump GF requirement to v2.3.0.4 [\#29](https://github.com/ItinerisLtd/gf-sagepay/pull/29) ([TangRufus](https://github.com/TangRufus))
-- Add capabilities [\#28](https://github.com/ItinerisLtd/gf-sagepay/pull/28) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.5.0 [\#32](https://github.com/ItinerisLtd/gf-sagepay/pull/32) ([tangrufus](https://github.com/tangrufus))
+- Fix: `AddOn::$_path` should point to `gf-sagepay.php` [\#31](https://github.com/ItinerisLtd/gf-sagepay/pull/31) ([tangrufus](https://github.com/tangrufus))
+- New feature: Cancel url [\#30](https://github.com/ItinerisLtd/gf-sagepay/pull/30) ([tangrufus](https://github.com/tangrufus))
+- Lower PHP requirement to ^7.1; Bump GF requirement to v2.3.0.4 [\#29](https://github.com/ItinerisLtd/gf-sagepay/pull/29) ([tangrufus](https://github.com/tangrufus))
+- Add capabilities [\#28](https://github.com/ItinerisLtd/gf-sagepay/pull/28) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.4.1](https://github.com/itinerisltd/gf-sagepay/tree/0.4.1) (2018-04-28)
 
@@ -363,7 +424,7 @@
 
 **Merged pull requests:**
 
-- Version bump 0.4.1 [\#27](https://github.com/ItinerisLtd/gf-sagepay/pull/27) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.4.1 [\#27](https://github.com/ItinerisLtd/gf-sagepay/pull/27) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.4.0](https://github.com/itinerisltd/gf-sagepay/tree/0.4.0) (2018-04-20)
 
@@ -375,11 +436,11 @@
 
 **Merged pull requests:**
 
-- Version bump 0.4.0 [\#26](https://github.com/ItinerisLtd/gf-sagepay/pull/26) ([TangRufus](https://github.com/TangRufus))
-- Expose `ConfirmationHandler::buildUrlFor` as a public api [\#25](https://github.com/ItinerisLtd/gf-sagepay/pull/25) ([TangRufus](https://github.com/TangRufus))
-- Feed Settings Form: Use `select_custom` as vendor code field type [\#24](https://github.com/ItinerisLtd/gf-sagepay/pull/24) ([TangRufus](https://github.com/TangRufus))
-- Verify token from query string before passing onto confirmation [\#23](https://github.com/ItinerisLtd/gf-sagepay/pull/23) ([TangRufus](https://github.com/TangRufus))
-- Readme: Clarify page confirmation is supported [\#22](https://github.com/ItinerisLtd/gf-sagepay/pull/22) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.4.0 [\#26](https://github.com/ItinerisLtd/gf-sagepay/pull/26) ([tangrufus](https://github.com/tangrufus))
+- Expose `ConfirmationHandler::buildUrlFor` as a public api [\#25](https://github.com/ItinerisLtd/gf-sagepay/pull/25) ([tangrufus](https://github.com/tangrufus))
+- Feed Settings Form: Use `select_custom` as vendor code field type [\#24](https://github.com/ItinerisLtd/gf-sagepay/pull/24) ([tangrufus](https://github.com/tangrufus))
+- Verify token from query string before passing onto confirmation [\#23](https://github.com/ItinerisLtd/gf-sagepay/pull/23) ([tangrufus](https://github.com/tangrufus))
+- Readme: Clarify page confirmation is supported [\#22](https://github.com/ItinerisLtd/gf-sagepay/pull/22) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.3.0](https://github.com/itinerisltd/gf-sagepay/tree/0.3.0) (2018-04-18)
 
@@ -392,11 +453,11 @@
 
 **Merged pull requests:**
 
-- Version bump 0.3.0 [\#21](https://github.com/ItinerisLtd/gf-sagepay/pull/21) ([TangRufus](https://github.com/TangRufus))
-- Use Gravity Forms redirection confirmation as `nextUrl` [\#20](https://github.com/ItinerisLtd/gf-sagepay/pull/20) ([TangRufus](https://github.com/TangRufus))
-- Refactor: Make `CallbackHandler` more like `omnipay-sagepay` readme example [\#19](https://github.com/ItinerisLtd/gf-sagepay/pull/19) ([TangRufus](https://github.com/TangRufus))
-- Use `GFFormsModel::get_uuid` instead of ramsey/uuid package [\#18](https://github.com/ItinerisLtd/gf-sagepay/pull/18) ([TangRufus](https://github.com/TangRufus))
-- Readme: Fix install instruction [\#16](https://github.com/ItinerisLtd/gf-sagepay/pull/16) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.3.0 [\#21](https://github.com/ItinerisLtd/gf-sagepay/pull/21) ([tangrufus](https://github.com/tangrufus))
+- Use Gravity Forms redirection confirmation as `nextUrl` [\#20](https://github.com/ItinerisLtd/gf-sagepay/pull/20) ([tangrufus](https://github.com/tangrufus))
+- Refactor: Make `CallbackHandler` more like `omnipay-sagepay` readme example [\#19](https://github.com/ItinerisLtd/gf-sagepay/pull/19) ([tangrufus](https://github.com/tangrufus))
+- Use `GFFormsModel::get_uuid` instead of ramsey/uuid package [\#18](https://github.com/ItinerisLtd/gf-sagepay/pull/18) ([tangrufus](https://github.com/tangrufus))
+- Readme: Fix install instruction [\#16](https://github.com/ItinerisLtd/gf-sagepay/pull/16) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.2.0](https://github.com/itinerisltd/gf-sagepay/tree/0.2.0) (2018-04-16)
 
@@ -408,8 +469,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.2.0 [\#15](https://github.com/ItinerisLtd/gf-sagepay/pull/15) ([TangRufus](https://github.com/TangRufus))
-- Add gift aid support [\#14](https://github.com/ItinerisLtd/gf-sagepay/pull/14) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.2.0 [\#15](https://github.com/ItinerisLtd/gf-sagepay/pull/15) ([tangrufus](https://github.com/tangrufus))
+- Add gift aid support [\#14](https://github.com/ItinerisLtd/gf-sagepay/pull/14) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.1.1](https://github.com/itinerisltd/gf-sagepay/tree/0.1.1) (2018-04-16)
 
@@ -417,8 +478,8 @@
 
 **Merged pull requests:**
 
-- Version bump 0.1.1 [\#11](https://github.com/ItinerisLtd/gf-sagepay/pull/11) ([TangRufus](https://github.com/TangRufus))
-- Composer: Add type `wordpress-plugin` [\#10](https://github.com/ItinerisLtd/gf-sagepay/pull/10) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.1.1 [\#11](https://github.com/ItinerisLtd/gf-sagepay/pull/11) ([tangrufus](https://github.com/tangrufus))
+- Composer: Add type `wordpress-plugin` [\#10](https://github.com/ItinerisLtd/gf-sagepay/pull/10) ([tangrufus](https://github.com/tangrufus))
 
 ## [0.1.0](https://github.com/itinerisltd/gf-sagepay/tree/0.1.0) (2018-04-16)
 
@@ -426,15 +487,15 @@
 
 **Merged pull requests:**
 
-- Version bump 0.1.0 [\#9](https://github.com/ItinerisLtd/gf-sagepay/pull/9) ([TangRufus](https://github.com/TangRufus))
-- Apply coding style [\#8](https://github.com/ItinerisLtd/gf-sagepay/pull/8) ([TangRufus](https://github.com/TangRufus))
-- Bug fixes [\#7](https://github.com/ItinerisLtd/gf-sagepay/pull/7) ([TangRufus](https://github.com/TangRufus))
-- Add notification support [\#6](https://github.com/ItinerisLtd/gf-sagepay/pull/6) ([TangRufus](https://github.com/TangRufus))
-- Refactor: Extract `NotificationHandler` [\#5](https://github.com/ItinerisLtd/gf-sagepay/pull/5) ([TangRufus](https://github.com/TangRufus))
-- Refactor: Extract `RedirectUrlFactory` [\#4](https://github.com/ItinerisLtd/gf-sagepay/pull/4) ([TangRufus](https://github.com/TangRufus))
-- Readme: Fix typo [\#3](https://github.com/ItinerisLtd/gf-sagepay/pull/3) ([TangRufus](https://github.com/TangRufus))
-- Refactor: Extract `FeedSettingsFields` and `MinimumRequirements` [\#2](https://github.com/ItinerisLtd/gf-sagepay/pull/2) ([TangRufus](https://github.com/TangRufus))
-- First working draft [\#1](https://github.com/ItinerisLtd/gf-sagepay/pull/1) ([TangRufus](https://github.com/TangRufus))
+- Version bump 0.1.0 [\#9](https://github.com/ItinerisLtd/gf-sagepay/pull/9) ([tangrufus](https://github.com/tangrufus))
+- Apply coding style [\#8](https://github.com/ItinerisLtd/gf-sagepay/pull/8) ([tangrufus](https://github.com/tangrufus))
+- Bug fixes [\#7](https://github.com/ItinerisLtd/gf-sagepay/pull/7) ([tangrufus](https://github.com/tangrufus))
+- Add notification support [\#6](https://github.com/ItinerisLtd/gf-sagepay/pull/6) ([tangrufus](https://github.com/tangrufus))
+- Refactor: Extract `NotificationHandler` [\#5](https://github.com/ItinerisLtd/gf-sagepay/pull/5) ([tangrufus](https://github.com/tangrufus))
+- Refactor: Extract `RedirectUrlFactory` [\#4](https://github.com/ItinerisLtd/gf-sagepay/pull/4) ([tangrufus](https://github.com/tangrufus))
+- Readme: Fix typo [\#3](https://github.com/ItinerisLtd/gf-sagepay/pull/3) ([tangrufus](https://github.com/tangrufus))
+- Refactor: Extract `FeedSettingsFields` and `MinimumRequirements` [\#2](https://github.com/ItinerisLtd/gf-sagepay/pull/2) ([tangrufus](https://github.com/tangrufus))
+- First working draft [\#1](https://github.com/ItinerisLtd/gf-sagepay/pull/1) ([tangrufus](https://github.com/tangrufus))
 
 
 
