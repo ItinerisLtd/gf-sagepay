@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/ItinerisLtd/gf-sagepay/compare/1.0.0...1.0.1) (2026-10-29)
+
+
+### Bug Fixes
+
+* **ci:** drop Tailscale from CI jobs ([1c61372](https://github.com/ItinerisLtd/gf-sagepay/commit/1c613728aada1387190f63aa960d83c799540b1d))
+* **ci:** drop Tailscale from CI jobs ([9f5d136](https://github.com/ItinerisLtd/gf-sagepay/commit/9f5d136a55f247a6b81271f0be20dfb624789757))
+
 ## [1.0.0](https://github.com/itinerisltd/gf-sagepay/tree/1.0.0) (2026-10-23)
 
 [Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.12.1...1.0.0)
@@ -496,4 +504,3 @@
 - Readme: Fix typo [\#3](https://github.com/ItinerisLtd/gf-sagepay/pull/3) ([tangrufus](https://github.com/tangrufus))
 - Refactor: Extract `FeedSettingsFields` and `MinimumRequirements` [\#2](https://github.com/ItinerisLtd/gf-sagepay/pull/2) ([tangrufus](https://github.com/tangrufus))
 - First working draft [\#1](https://github.com/ItinerisLtd/gf-sagepay/pull/1) ([tangrufus](https://github.com/tangrufus))
-
