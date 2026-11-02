@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/ItinerisLtd/gf-sagepay/compare/1.0.0...1.0.1) (2026-11-02)
+
+
+### Bug Fixes
+
+* **billing:** accept us state codes for billing state ([c92c7d9](https://github.com/ItinerisLtd/gf-sagepay/commit/c92c7d9307d9e6ead0af98d0a3f8f9aef64fbe1a))
+
 ## [1.0.0](https://github.com/itinerisltd/gf-sagepay/tree/1.0.0) (2026-10-23)
 
 [Full Changelog](https://github.com/itinerisltd/gf-sagepay/compare/0.12.1...1.0.0)
@@ -496,4 +503,3 @@
 - Readme: Fix typo [\#3](https://github.com/ItinerisLtd/gf-sagepay/pull/3) ([tangrufus](https://github.com/tangrufus))
 - Refactor: Extract `FeedSettingsFields` and `MinimumRequirements` [\#2](https://github.com/ItinerisLtd/gf-sagepay/pull/2) ([tangrufus](https://github.com/tangrufus))
 - First working draft [\#1](https://github.com/ItinerisLtd/gf-sagepay/pull/1) ([tangrufus](https://github.com/tangrufus))
-
