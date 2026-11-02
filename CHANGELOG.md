@@ -5,9 +5,7 @@
 
 ### Bug Fixes
 
-* **billing:** accept us state codes for billing state ([66e20be](https://github.com/ItinerisLtd/gf-sagepay/commit/66e20be0e9b7b9b56158bac55416fe7048dcaebe))
 * **billing:** accept us state codes for billing state ([c92c7d9](https://github.com/ItinerisLtd/gf-sagepay/commit/c92c7d9307d9e6ead0af98d0a3f8f9aef64fbe1a))
-* **ci:** drop Tailscale from CI jobs ([1c61372](https://github.com/ItinerisLtd/gf-sagepay/commit/1c613728aada1387190f63aa960d83c799540b1d))
 * **ci:** drop Tailscale from CI jobs ([9f5d136](https://github.com/ItinerisLtd/gf-sagepay/commit/9f5d136a55f247a6b81271f0be20dfb624789757))
 
 ## [1.0.0](https://github.com/itinerisltd/gf-sagepay/tree/1.0.0) (2026-10-23)
