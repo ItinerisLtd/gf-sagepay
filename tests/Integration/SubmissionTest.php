@@ -36,22 +36,26 @@ it('sends a submitted form to the SagePay checkout with its mapped customer deta
         ]);
 });
 
-it('sends US states as their two-letter code', function (): void {
-    [, $sent] = submitSagePayForm('us', [
+it('sends US states as their two-letter code', function (string $addressType, string $state): void {
+    [, $sent] = submitSagePayForm($addressType, [
         1 => '1 Example Avenue',
-        3 => 'Los Angeles',
-        4 => 'California',
-        5 => '90001',
+        3 => 'Phoenix',
+        4 => $state,
+        5 => '85001',
         6 => 'United States',
     ]);
 
     expect($sent)->toMatchArray([
         'BillingCountry' => 'US',
-        'BillingState' => 'CA',
+        'BillingState' => 'AZ',
         'DeliveryCountry' => 'US',
-        'DeliveryState' => 'CA',
+        'DeliveryState' => 'AZ',
     ]);
-});
+})->with([
+    'full name from the US address' => ['us', 'Arizona'],
+    'code typed into an international address' => ['international', 'AZ'],
+    'lowercase code typed into an international address' => ['international', 'az'],
+]);
 
 // Must stay after the submissions above: it checks TestCase::tearDown() cleared the payment state they left on the add-on.
 it('leaves no checkout redirect behind for the next test', function (): void {

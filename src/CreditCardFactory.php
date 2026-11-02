@@ -9,6 +9,10 @@ use GF_Fields;
 use Omnipay\Common\CreditCard;
 
 use function array_filter;
+use function array_key_exists;
+use function is_string;
+use function strtoupper;
+use function trim;
 
 /**
  * @internal
@@ -25,21 +29,27 @@ final class CreditCardFactory
                 $feed->getMeta('billingInformation_country'),
             ),
         );
-        $billingState = $addressFiled->get_us_state_code(
-            $entry->getProperty(
-                $feed->getMeta('billingInformation_state'),
-            ),
-        );
+        $billingState = 'US' === $billingCountry
+            ? self::usStateCode(
+                $addressFiled,
+                $entry->getProperty(
+                    $feed->getMeta('billingInformation_state'),
+                ),
+            )
+            : '';
         $shippingCountry = $addressFiled->get_country_code(
             $entry->getProperty(
                 $feed->getMeta('shippingInformation_country'),
             ),
         );
-        $shippingState = $addressFiled->get_us_state_code(
-            $entry->getProperty(
-                $feed->getMeta('shippingInformation_state'),
-            ),
-        );
+        $shippingState = 'US' === $shippingCountry
+            ? self::usStateCode(
+                $addressFiled,
+                $entry->getProperty(
+                    $feed->getMeta('shippingInformation_state'),
+                ),
+            )
+            : '';
 
         return new CreditCard(
             array_filter([
@@ -87,5 +97,25 @@ final class CreditCardFactory
                 'shippingState' => $shippingState,
             ]),
         );
+    }
+
+    /**
+     * Accepts a two-letter US state code or a full state name.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint $state
+     */
+    private static function usStateCode(GF_Field_Address $field, $state): string
+    {
+        if (! is_string($state)) {
+            return '';
+        }
+
+        $state = trim($state);
+        $code = strtoupper($state);
+        if (array_key_exists($code, $field->get_default_us_states())) {
+            return $code;
+        }
+
+        return $field->get_us_state_code($state);
     }
 }
