@@ -70,7 +70,7 @@ Feed configuration UI is defined in `FeedSettingsFields`; the `isTest` meta valu
 
 Releases come from release-please (`release-please-config.json`, `.release-please-manifest.json`); never push tags by hand. On every push to `master` it opens or updates a `chore(release): x.y.z` PR that prepends the release notes to `CHANGELOG.md` and bumps the version strings. Approve and merge that PR to release. The merge creates the tag (no `v` prefix, as Packagist reads tags) and a draft GitHub release; `release.yml` then builds and lints the zip from the tag, attaches it and publishes the release. If that run fails, re-run its failed jobs: a later push to `master` will not retry them.
 
-- The release PR is rebuilt after every merge to `master`, which dismisses its approval and reruns the full CI (including `e2e`), so approve it just before merging.
+- `always-update` rebuilds the release PR from `master` after every push, even when its notes are unchanged, because the `master` ruleset requires branches to be up to date and hidden-type commits would otherwise leave it behind. Each rebuild dismisses its approval, reruns the full CI (including `e2e`) and overwrites any hand edits to its body or `CHANGELOG.md`, so make those edits and approve it just before merging.
 - Any `feat`, `fix`, `perf`, `revert`, `deps`, `refactor` or `docs` commit opens a release PR; it can stay open until a release is wanted. `test`, `ci`, `chore`, `style` and `build` commits are left out of the changelog.
 - The repository only allows squash merges, for two separate reasons:
   - `master` requires signed commits, and GitHub signs squash commits even when the bot's release branch commits are unsigned.
