@@ -122,7 +122,7 @@ jobs:
         env:
           COMPOSER_CACHE_DIR: ${{ runner.temp }}/gravityforms-composer-cache
           COMPOSER_AUTH: >-
-            {"http-basic": {"repo.packagist.com": {"username": "itineris",
+            {"http-basic": {"repo.packagist.com": {"username": "token",
             "password": "${{ secrets.PRIVATE_PACKAGIST_TOKEN }}"}}}
 
       - run: composer test
@@ -163,7 +163,7 @@ jobs:
         env:
           COMPOSER_CACHE_DIR: ${{ runner.temp }}/gravityforms-composer-cache
           COMPOSER_AUTH: >-
-            {"http-basic": {"repo.packagist.com": {"username": "itineris",
+            {"http-basic": {"repo.packagist.com": {"username": "token",
             "password": "${{ secrets.PRIVATE_PACKAGIST_TOKEN }}"}}}
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
