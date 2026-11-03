@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/ItinerisLtd/gf-sagepay/compare/1.0.1...1.0.2) (2026-11-03)
+
+
+### Bug Fixes
+
+* **composer:** use token as the Private Packagist username ([#285](https://github.com/ItinerisLtd/gf-sagepay/issues/285)) ([48acdfd](https://github.com/ItinerisLtd/gf-sagepay/commit/48acdfd4934846c28545a28b710095e5048c4388))
+
 ## [1.0.1](https://github.com/ItinerisLtd/gf-sagepay/compare/1.0.0...1.0.1) (2026-11-02)
 
 
